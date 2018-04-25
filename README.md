@@ -57,30 +57,47 @@ for all Premium-WP-Advance-Pro-Expert-Shizzle-Developers that don't comply the W
 Mock that a post exists:
 
 ```php
-static::mockGetPost(
-    1337,
-    new \WP_Post(
-        (object) [
-            'post_type'    => Events::NAME,
-            'ID'           => 1337,
-            'post_content' => 'foobar',
-        ]
-    )
-);
+class FooTest extends \PHPUnit\Framework\TestCase {
+    use \Pretzlaw\WPInt\Traits\PostQueryAssertions;
+    
+    protected function setUp() {
+        static::mockGetPost(
+            1337,
+            new \WP_Post(
+                (object) [
+                    'post_type'    => 'page',
+                    'ID'           => 1337,
+                    'post_content' => 'foobar',
+                ]
+            )
+        );
+    }
+    
+    funciton testBar() {
+        $post = get_post(1337);
+    }
+}
 ```
 
-Or its meta data:
+Or its meta data via `use \Pretzlaw\WPInt\Traits\MetaDataAssertions`:
 
 ```php
-$this->mockPostMeta(
+static::mockPostMeta(
     'some_meta_key',
     [
         'think_of' => 'any value you like',
     ],
-    1337 // optional: remove if all posts shall have above meta value
+    1337 // optional: remove the ID if all objects shall have the above meta value
 );
 ```
 
+Or other things like:
+
+- Specific filter
+- Specific actions
+- Disable `wp_die`
+
+... and more.
 
 ## Support and Migration
 
