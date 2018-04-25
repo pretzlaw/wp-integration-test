@@ -1,0 +1,23 @@
+{
+  "name": "pretzlaw/wp-integration-test",
+  "type": "library",
+  "description": "Mocking return value of functions/filters and more for testing WordPress with PHPUnit.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pretzlaw",
+      "email": "mail@mike-pretzlaw.de"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "files": [
+      "lib/Pretzlaw/WPInt/autoloader.php"
+    ]
+  },
+  "require": {},
+  "require-dev": {
+    "phpunit/phpunit": "~6",
+    "wp-cli/wp-cli": "1.5.*"
+  }
+}
