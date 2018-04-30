@@ -5,7 +5,10 @@ namespace Pretzlaw\WPInt\Traits;
 
 
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\IsFalse;
+use PHPUnit\Framework\Constraint\IsInstanceOf;
+use PHPUnit\Framework\Constraint\LogicalNot;
 
 /**
  * Assert that filter work as expected
@@ -16,10 +19,28 @@ trait FilterAssertions {
 	public static function assertFilterNotHasCallback( $filter, $callback ) {
 		global $wp_filter;
 
-		if ( ! $wp_filter
-		     || ! \array_key_exists( $filter, $wp_filter )
-		     || false === $wp_filter[ $filter ] instanceof \WP_Hook ) {
-			throw new AssertionFailedError( \sprintf( 'Filter "%s" not found.', $filter ) );
+		if ( ! $wp_filter ) {
+			throw new AssertionFailedError( 'Could not load filter' );
+		}
+
+		if ( ! \array_key_exists( $filter, $wp_filter ) ) {
+			// Having the filter not yet present is okay too.
+			static::assertThat(
+				$wp_filter,
+				new LogicalNot( new ArrayHasKey( $filter ) )
+			);
+
+			return;
+		}
+
+		if ( false === $wp_filter[ $filter ] instanceof \WP_Hook ) {
+			// Having the filter not yet present is okay too.
+			static::assertThat(
+				$wp_filter[ $filter ],
+				new LogicalNot( new IsInstanceOf( \WP_Hook::class ) )
+			);
+
+			return;
 		}
 
 		static::assertThat(
