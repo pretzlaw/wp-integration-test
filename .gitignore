@@ -1,8 +1,9 @@
 # Ignore such files
 
-/composer.lock
+/.docker
 /srv
 /var
+/composer.lock
 
 ## Frameworks
 
