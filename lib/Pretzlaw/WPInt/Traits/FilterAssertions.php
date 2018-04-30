@@ -5,8 +5,30 @@ namespace Pretzlaw\WPInt\Traits;
 
 
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint\IsFalse;
 
+/**
+ * Assert that filter work as expected
+ *
+ * @package Pretzlaw\WPInt\Traits
+ */
 trait FilterAssertions {
+	public static function assertFilterNotHasCallback( $filter, $callback ) {
+		global $wp_filter;
+
+		if ( ! $wp_filter
+		     || ! \array_key_exists( $filter, $wp_filter )
+		     || false === $wp_filter[ $filter ] instanceof \WP_Hook ) {
+			throw new AssertionFailedError( \sprintf( 'Filter "%s" not found.', $filter ) );
+		}
+
+		static::assertThat(
+			$wp_filter[ $filter ]->has_filter( $callback ),
+			new IsFalse(),
+			sprintf( 'Unexpected callback "%s" registered for "%s" filter.', $callback, $filter )
+		);
+	}
+
 	public static function assertFilterHasCallback( $filter, $expectedCallback ) {
 		global $wp_filter;
 
