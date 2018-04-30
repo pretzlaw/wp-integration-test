@@ -1,5 +1,6 @@
 # Ignore such files
 
+/composer.lock
 /srv
 /var
 
