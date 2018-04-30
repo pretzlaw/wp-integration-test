@@ -13,7 +13,10 @@
   "autoload": {
     "files": [
       "lib/Pretzlaw/WPInt/autoloader.php"
-    ]
+    ],
+    "psr-4": {
+      "Pretzlaw\\WPInt\\": "lib/Pretzlaw/WPInt"
+    }
   },
   "require": {},
   "require-dev": {
