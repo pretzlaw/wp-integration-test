@@ -12,6 +12,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class CurrentUserMock implements MockObject {
 	private $originalUser;
+	private $mockedUser;
 
 	public function __construct( $originalUser, \WP_User $mockedUser ) {
 		$this->originalUser = $originalUser;
@@ -60,8 +61,6 @@ class CurrentUserMock implements MockObject {
 		global $current_user;
 
 		$current_user = $this->originalUser;
-
-		return;
 	}
 
 	/**
