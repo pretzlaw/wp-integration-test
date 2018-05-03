@@ -6,7 +6,9 @@ namespace Pretzlaw\WPInt\Mocks;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
+use PHPUnit\Framework\MockObject\Invocation\ObjectInvocation;
+use PHPUnit\Framework\MockObject\InvocationMocker;
 use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -41,6 +43,11 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	 */
 	private $testCase;
 
+	/**
+	 * @var InvocationMocker|null
+	 */
+	private $invocationMocker;
+
 	public function __construct(
 		\PHPUnit\Framework\TestCase $testCase,
 		string $name,
@@ -57,42 +64,28 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 		// TODO: Implement @method InvocationMocker method($constraint)
 	}
 
+	/**
+	 * @return bool
+	 * @throws \Exception
+	 */
 	public function __invoke() {
-		foreach ( \func_get_args() as $num => $value ) {
-			if ( ! array_key_exists( $num, $this->args ) ) {
-				break;
-			}
+		$returnValue = $this->__phpunit_getInvocationMocker()->invoke(
+			new ObjectInvocation( 'WordPress Filter ', $this->name, \func_get_args(), '', $this )
+		);
 
-			$expectedValue = $this->args[ $num ];
+		$this->validateParameters( \func_get_args() );
 
-			if ( $expectedValue instanceof AnyParameters ) {
-				continue;
-			}
-
-			if ( false === $expectedValue instanceof Constraint ) {
-				$expectedValue = new IsEqual( $expectedValue );
-			}
-
-			$expectedValue->evaluate( $value );
-		}
-
+		/// @deprecated This should be determined using `atLeastOnce` and similar mock methods.
 		$this->hasRun = true;
 
-		return $this->return;
-	}
-
-	/**
-	 * @return InvocationMocker
-	 */
-	public function __phpunit_getInvocationMocker() {
-
+		return $returnValue;
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function __phpunit_hasMatchers() {
-		return true;
+		return $this->__phpunit_getInvocationMocker()->hasMatchers();
 	}
 
 	/**
@@ -111,11 +104,16 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	public function __phpunit_verify() {
 		$this->removeFilter();
 
-		if ( ! $this->hasRun() ) {
-			throw new ExpectationFailedException( $this->getErrorMessage() );
+		try {
+			$this->__phpunit_getInvocationMocker()->verify();
+		} catch ( ExpectationFailedException $e ) {
+			throw new ExpectationFailedException( $this->fixExceptionMessage( $e ), $e->getComparisonFailure() );
 		}
 	}
 
+	/**
+	 * @deprecated 1.0.0 Why is this here? Move this to constructor
+	 */
 	public function addFilter() {
 		\add_filter( $this->getName(), $this, 10, 10 );
 
@@ -128,9 +126,15 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	 *
 	 * @param Invocation $matcher
 	 *
-	 * @return InvocationMocker
+	 * @return InvocationMockerBuilder
 	 */
 	public function expects( Invocation $matcher ) {
+		$invocationMocker = $this->__phpunit_getInvocationMocker()->expects( $matcher )->method( $this->name );
+
+		// In case dev miss this we safely return the value that runs through the filter.
+		$invocationMocker->willReturnArgument( 0 );
+
+		return $invocationMocker;
 	}
 
 	public function getArgs() {
@@ -171,5 +175,58 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 
 	public function tearDown() {
 		$this->removeFilter();
+	}
+
+	/**
+	 * @return InvocationMocker
+	 */
+	public function __phpunit_getInvocationMocker() {
+		if ( null === $this->invocationMocker ) {
+			$this->invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker( [ $this->name ] );
+		}
+
+		return $this->invocationMocker;
+	}
+
+	/**
+	 * @param \Exception $e
+	 *
+	 * @return ExpectationFailedException
+	 */
+	private function fixExceptionMessage( \Exception $e ): string {
+		return \strtr(
+			$e->getMessage(),
+			[
+				'method name' => 'WordPress filter',
+				' invoked '   => ' applied ',
+				'Method '     => 'Filter ',
+				' called '    => ' applied ',
+			]
+		);
+	}
+
+	/**
+	 * @deprecated This should be done using proper mock methods like `withAnyParameter` etc.
+	 *
+	 * @param $parameters
+	 */
+	private function validateParameters( $parameters ) {
+		foreach ( $parameters as $num => $value ) {
+			if ( ! array_key_exists( $num, $this->args ) ) {
+				break;
+			}
+
+			$expectedValue = $this->args[ $num ];
+
+			if ( $expectedValue instanceof AnyParameters ) {
+				continue;
+			}
+
+			if ( false === $expectedValue instanceof Constraint ) {
+				$expectedValue = new IsEqual( $expectedValue );
+			}
+
+			$expectedValue->evaluate( $value );
+		}
 	}
 }

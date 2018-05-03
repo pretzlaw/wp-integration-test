@@ -9,6 +9,7 @@ use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\LogicalNot;
+use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 
 /**
  * Assert that filter work as expected
@@ -70,5 +71,33 @@ trait FilterAssertions {
 		if ( ! array_key_exists( $filter, $wp_filter ) || ! $wp_filter[ $filter ]->has_filters() ) {
 			throw new AssertionFailedError( sprintf( 'Filter "%s" has no registered callbacks.', $filter ) );
 		}
+	}
+
+	/**
+	 * Removes all registered filter
+	 *
+	 * @param string $filterName
+	 */
+	public function truncateFilter( $filterName ) {
+		global $wp_filter;
+
+		if ( ! isset( $wp_filter[ $filterName ] ) ) {
+			return;
+		}
+
+		$wp_filter[ $filterName ]->callbacks = [];
+	}
+
+	/**
+	 * @param string $filterName
+	 *
+	 * @return ExpectedFilter
+	 */
+	public function mockFilter( $filterName ) {
+		$mock = new ExpectedFilter( $this, $filterName );
+
+		$mock->addFilter();
+
+		return $mock;
 	}
 }
