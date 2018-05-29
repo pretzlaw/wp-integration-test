@@ -4,6 +4,7 @@
 namespace Pretzlaw\WPInt\Traits;
 
 
+use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 use Pretzlaw\WPInt\Mocks\Post\ExpectWpInsertPost;
 
 trait PostAssertions {
