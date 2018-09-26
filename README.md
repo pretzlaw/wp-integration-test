@@ -22,9 +22,11 @@ Download or just
 
 We do not require that much:
 
-- PHP 7.0 (once CI runs it 5 & 7)
-- phpUnit 6 (once CI runs it covers 5-7)
-- WordPress 4 (once CI runs we know a complete range)
+- PHP 7.0
+- phpUnit 6
+- WordPress 4
+
+Tests expand continuously to cover a bigger range one day. 
 
 ## Usage
 
@@ -49,8 +51,7 @@ then you may want to have a look at the
 The bootstrapping just loads WordPress
 [as the wp-cli would do](https://github.com/wp-cli/wp-cli/blob/master/php/wp-cli.php)
 using the `\Pretzlaw\WP_Int\run_wp()` function.
-There is a mixed snake-case alias `\Pretzlaw\WPInt\runWp()` that does the same -
-for all Premium-WP-Advance-Pro-Expert-Shizzle-Developers that don't comply the WordPress Standards.
+
 
 ### Examples
 
@@ -98,6 +99,7 @@ Or other things like:
 - Disable `wp_die`
 
 ... and more.
+
 
 ## Support and Migration
 
