@@ -13,6 +13,7 @@ use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use PHPUnit\Framework\MockObject\MockObject;
 use Pretzlaw\WPInt\ClutterInterface;
+use Pretzlaw\WPInt\FilterInvocation;
 
 /**
  * @method InvocationMocker method( $constraint )
@@ -70,7 +71,7 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	 */
 	public function __invoke() {
 		$returnValue = $this->__phpunit_getInvocationMocker()->invoke(
-			new ObjectInvocation( 'WordPress Filter ', $this->name, \func_get_args(), '', $this )
+			new FilterInvocation( 'WordPress Filter ', $this->name, \func_get_args(), '', $this )
 		);
 
 		$this->validateParameters( \func_get_args() );
