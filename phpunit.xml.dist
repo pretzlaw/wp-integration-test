@@ -6,4 +6,18 @@
     <testsuite name="default">
         <directory>lib/Pretzlaw/WPInt/Tests</directory>
     </testsuite>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">lib/Pretzlaw/WPInt</directory>
+            <exclude>
+                <directory>lib/Pretzlaw/WPInt/Tests</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="var/phpunit" lowUpperBound="50" highLowerBound="80"/>
+        <log type="coverage-text" target="php://stdout"/>
+    </logging>
 </phpunit>
