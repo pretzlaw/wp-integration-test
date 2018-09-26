@@ -15,7 +15,7 @@ before_install:
 install:
   - composer update
   - vendor/bin/wp --allow-root core download --version=$WP_VERSION --force
-  - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass=""
+  - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1"
   - vendor/bin/wp --allow-root core install
 
 script:
