@@ -1,0 +1,23 @@
+language: php
+php:
+  - '7.0'
+
+services:
+  - mysql
+
+env:
+  matrix:
+    - WP_VERSION=4.0
+
+before_install:
+  - mysql -e 'CREATE DATABASE dev;'
+
+install:
+  - composer install
+
+script:
+  - ls
+
+matrix:
+  allow_failures:
+  - php: '7.0'
