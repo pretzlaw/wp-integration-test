@@ -13,10 +13,13 @@ before_install:
   - mysql -e 'CREATE DATABASE dev;'
 
 install:
-  - composer install
+  - composer update
+  - vendor/bin/wp --allow-root core download --version=$WP_VERSION --force
+  - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass=""
+  - vendor/bin/wp --allow-root core install
 
 script:
-  - ls
+  - composer validate --strict --no-check-lock
 
 matrix:
   allow_failures:
