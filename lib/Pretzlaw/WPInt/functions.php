@@ -14,10 +14,7 @@ function prepare_env() {
 		$_SERVER = [];
 	}
 
-	$_SERVER = array_merge(
-		$serverVars,
-		$_SERVER
-	);
+	$_SERVER = array_merge( $serverVars, $_SERVER );
 }
 
 /**

@@ -20,6 +20,7 @@ install:
 
 script:
   - composer validate --strict --no-check-lock
+  - vendor/bin/phpunit
 
 matrix:
   allow_failures:
