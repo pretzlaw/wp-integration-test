@@ -155,21 +155,21 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	/**
 	 * @return string
 	 */
-	public function getName(): string {
+	public function getName() {
 		return $this->name;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function hasRun(): bool {
+	public function hasRun() {
 		return $this->hasRun;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function removeFilter(): bool {
+	public function removeFilter() {
 		return \remove_filter( $this->getName(), $this );
 	}
 
@@ -193,7 +193,7 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	 *
 	 * @return ExpectationFailedException
 	 */
-	private function fixExceptionMessage( \Exception $e ): string {
+	private function fixExceptionMessage( \Exception $e ) {
 		return \strtr(
 			$e->getMessage(),
 			[
