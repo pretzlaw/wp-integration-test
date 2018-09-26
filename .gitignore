@@ -1,6 +1,7 @@
 # Ignore such files
 
 /.docker
+/.env
 /srv
 /var
 /composer.lock
