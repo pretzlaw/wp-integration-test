@@ -3,10 +3,8 @@
 namespace Pretzlaw\WPInt\Filter;
 
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Constraint\ArrayHasKey;
-use PHPUnit\Framework\Constraint\IsFalse;
-use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\LogicalNot;
+use Pretzlaw\WPInt\Constraint\FilterHasCallback;
 use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 
 /**
@@ -15,38 +13,20 @@ use Pretzlaw\WPInt\Mocks\ExpectedFilter;
  * @package Pretzlaw\WPInt\Traits
  */
 trait FilterAssertions {
+    /**
+     * @param $filter
+     * @param $callback
+     *
+     * @throws AssertionFailedError
+     */
 	public static function assertFilterNotHasCallback( $filter, $callback ) {
-		global $wp_filter;
+	    try {
+	        $constraint = new LogicalNot(new FilterHasCallback($filter));
+	        $constraint->evaluate($callback);
+        } catch (\Exception $e) {
+	        throw new AssertionFailedError($e->getMessage());
+        }
 
-		if ( ! $wp_filter ) {
-			throw new AssertionFailedError( 'Filter have not yet been initialized' );
-		}
-
-		if ( ! \array_key_exists( $filter, $wp_filter ) ) {
-			// Having the filter not yet present is okay too.
-			static::assertThat(
-				$wp_filter,
-				new LogicalNot( new ArrayHasKey( $filter ) )
-			);
-
-			return;
-		}
-
-		if ( false === $wp_filter[ $filter ] instanceof \WP_Hook ) {
-			// Having the filter not yet present is okay too.
-			static::assertThat(
-				$wp_filter[ $filter ],
-				new LogicalNot( new IsInstanceOf( \WP_Hook::class ) )
-			);
-
-			return;
-		}
-
-		static::assertThat(
-			$wp_filter[ $filter ]->has_filter( $filter, $callback ),
-			new IsFalse(),
-			sprintf( 'Unexpected callback "%s" registered for "%s" filter.', $callback, $filter )
-		);
 	}
 
 	public static function assertFilterHasCallback( $filter, $expectedCallback ) {

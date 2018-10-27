@@ -13,7 +13,7 @@ use Pretzlaw\WPInt\Tests\AllTraits;
  * @inheritdoc
  * @package Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks
  */
-class CallbackDoesExistTest extends AbstractTestCase
+class CallbackDoesExistsTest extends AbstractTestCase
 {
     /**
      * @var string
@@ -40,7 +40,7 @@ class CallbackDoesExistTest extends AbstractTestCase
     {
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage(
-            sprintf('Unexpected callback "__return_true" registered for "%s" filter.', $this->targetFilter)
+            sprintf('Failed asserting that \'__return_true\' does not exist in "%s" filter.', $this->targetFilter)
         );
 
         AllTraits::assertFilterNotHasCallback($this->targetFilter, '__return_true');
