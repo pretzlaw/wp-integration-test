@@ -15,32 +15,26 @@ use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 trait FilterAssertions {
     /**
      * @param $filter
-     * @param $callback
+     * @param $expectedCallback
      *
      * @throws AssertionFailedError
      */
-	public static function assertFilterNotHasCallback( $filter, $callback ) {
+	public static function assertFilterNotHasCallback($filter, $expectedCallback ) {
 	    try {
 	        $constraint = new LogicalNot(new FilterHasCallback($filter));
-	        $constraint->evaluate($callback);
+	        $constraint->evaluate($expectedCallback);
         } catch (\Exception $e) {
 	        throw new AssertionFailedError($e->getMessage());
         }
-
 	}
 
 	public static function assertFilterHasCallback( $filter, $expectedCallback ) {
-		global $wp_filter;
-
-		static::assertFilterNotEmpty( $filter );
-
-		/** @var \WP_Hook $hook */
-		$hook = $wp_filter[ $filter ];
-
-		static::assertNotFalse(
-			$hook->has_filter( $expectedCallback ),
-			sprintf( 'Expected callback not registered for "%s" filter.', $filter )
-		);
+        try {
+            $constraint = new FilterHasCallback($filter);
+            $constraint->evaluate($expectedCallback);
+        } catch (\Exception $e) {
+            throw new AssertionFailedError($e->getMessage());
+        }
 	}
 
 	public static function assertFilterNotEmpty( $filter ) {

@@ -27,8 +27,11 @@ class AssertFilterHasCallbackTest extends AbstractTestCase
     }
 
     /**
+     * assertFilterNotHasCallback
+     *
      * When the assertion has been done to early in the WP runtime,
      * then it could happen that WordPress filters are not initialized yet.
+     * In that case checking for non-existance of a filter will pass.
      *
      * @backupGlobals
      */
@@ -38,14 +41,6 @@ class AssertFilterHasCallbackTest extends AbstractTestCase
 
         $wp_filter = null;
 
-        $this->expectException(AssertionFailedError::class);
-        $this->expectExceptionMessage('Filter have not yet been initialized');
-
-        AllTraits::assertFilterNotHasCallback('', '');
-    }
-
-    public function testFilterNotPresent()
-    {
-
+        static::assertNull(AllTraits::assertFilterNotHasCallback('', ''));
     }
 }
