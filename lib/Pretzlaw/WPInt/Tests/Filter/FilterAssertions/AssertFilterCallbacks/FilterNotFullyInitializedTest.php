@@ -3,6 +3,7 @@
 namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
 
 
+use PHPUnit\Framework\AssertionFailedError;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Tests\AllTraits;
 
@@ -39,5 +40,23 @@ class FilterNotFullyInitializedTest extends AbstractTestCase
     public function testAssertFilterNotHasCallback()
     {
         static::assertNull(AllTraits::assertFilterNotHasCallback($this->targetFilter, ''));
+    }
+
+    /**
+     * FilterEmpty
+     *
+     * The filter could also exist but contain nothing,
+     * neither a \WP_Hook object nor an array but it could be null.
+     * In that case the filter is considered to be empty too.
+     */
+    public function testFilterEmptySucceeds()
+    {
+        static::assertNull(AllTraits::assertFilterEmpty($this->targetFilter));
+    }
+
+    public function testFilterNotEmptyFails()
+    {
+        $this->expectException(AssertionFailedError::class);
+        AllTraits::assertFilterNotEmpty($this->targetFilter);
     }
 }

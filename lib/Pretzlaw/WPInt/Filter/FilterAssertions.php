@@ -5,6 +5,7 @@ namespace Pretzlaw\WPInt\Filter;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use Pretzlaw\WPInt\Constraint\FilterHasCallback;
+use Pretzlaw\WPInt\Constraint\FilterEmpty;
 use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 
 /**
@@ -12,67 +13,75 @@ use Pretzlaw\WPInt\Mocks\ExpectedFilter;
  *
  * @package Pretzlaw\WPInt\Traits
  */
-trait FilterAssertions {
+trait FilterAssertions
+{
     /**
      * @param $filter
      * @param $expectedCallback
      *
      * @throws AssertionFailedError
      */
-	public static function assertFilterNotHasCallback($filter, $expectedCallback ) {
-	    try {
-	        $constraint = new LogicalNot(new FilterHasCallback($filter));
-	        $constraint->evaluate($expectedCallback);
+    public static function assertFilterNotHasCallback($filter, $expectedCallback)
+    {
+        try {
+            $constraint = new LogicalNot(new FilterHasCallback($filter));
+            $constraint->evaluate($expectedCallback);
         } catch (\Exception $e) {
-	        throw new AssertionFailedError($e->getMessage());
+            throw new AssertionFailedError($e->getMessage());
         }
-	}
+    }
 
-	public static function assertFilterHasCallback( $filter, $expectedCallback ) {
+    public static function assertFilterHasCallback($filter, $expectedCallback)
+    {
         try {
             $constraint = new FilterHasCallback($filter);
             $constraint->evaluate($expectedCallback);
         } catch (\Exception $e) {
             throw new AssertionFailedError($e->getMessage());
         }
-	}
+    }
 
-	public static function assertFilterNotEmpty( $filter ) {
-		global $wp_filter;
+    public static function assertFilterNotEmpty($filter, $message = '')
+    {
+        static::assertThat($filter, new LogicalNot(new FilterEmpty()), $message);
+    }
 
-		if ( ! array_key_exists( $filter, $wp_filter ) || ! $wp_filter[ $filter ]->has_filters() ) {
-			throw new AssertionFailedError( sprintf( 'Filter "%s" has no registered callbacks.', $filter ) );
-		}
-	}
 
-	/**
-	 * @param string $filterName
-	 *
-	 * @return ExpectedFilter
-	 */
-	public function mockFilter( $filterName ) {
-		$mock = new ExpectedFilter( $this, $filterName );
+    public static function assertFilterEmpty($filter, $message = '')
+    {
+        static::assertThat($filter, new FilterEmpty(), $message);
+    }
 
-		$mock->addFilter();
+    /**
+     * @param string $filterName
+     *
+     * @return ExpectedFilter
+     */
+    public function mockFilter($filterName)
+    {
+        $mock = new ExpectedFilter($this, $filterName);
 
-		return $mock;
-	}
+        $mock->addFilter();
 
-	/**
-	 * Removes all registered filter
-	 *
-	 * @todo This should not truncate them forever. Recover after each test.
-	 *
-	 * @param string $filterName
-	 */
-	public function truncateFilter( $filterName ) {
-		global $wp_filter;
+        return $mock;
+    }
 
-		if ( ! isset( $wp_filter[ $filterName ] ) ) {
-			return;
-		}
+    /**
+     * Removes all registered filter
+     *
+     * @todo This should not truncate them forever. Recover after each test.
+     *
+     * @param string $filterName
+     */
+    public function truncateFilter($filterName)
+    {
+        global $wp_filter;
 
-		$wp_filter[ $filterName ]->callbacks = [];
-	}
+        if (!isset($wp_filter[$filterName])) {
+            return;
+        }
+
+        $wp_filter[$filterName]->callbacks = [];
+    }
 
 }

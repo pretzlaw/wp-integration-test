@@ -5,6 +5,7 @@ namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\IsAnything;
+use PHPUnit\Framework\ExpectationFailedException;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Tests\AllTraits;
 
@@ -33,5 +34,23 @@ class FilterDoesNotExistTest extends AbstractTestCase
         $this->expectException(AssertionFailedError::class);
 
         AllTraits::assertFilterHasCallback(uniqid('', true), new IsAnything());
+    }
+
+    public function testFilterNotEmptyFails()
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage("Failed asserting that 'foo' does not have callbacks registered.");
+        AllTraits::assertFilterNotEmpty('foo');
+    }
+
+    /**
+     * FilterEmpty
+     *
+     * In case that there is no such filter given,
+     * then assertions like `assertFilterEmpty` will succeed.
+     */
+    public function testFilterEmptySucceeds()
+    {
+        AllTraits::assertFilterEmpty('foo');
     }
 }
