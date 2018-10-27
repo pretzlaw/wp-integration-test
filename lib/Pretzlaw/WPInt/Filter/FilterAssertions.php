@@ -2,6 +2,11 @@
 
 namespace Pretzlaw\WPInt\Filter;
 
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\IsFalse;
+use PHPUnit\Framework\Constraint\IsInstanceOf;
+use PHPUnit\Framework\Constraint\LogicalNot;
 use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 
 /**
@@ -14,7 +19,7 @@ trait FilterAssertions {
 		global $wp_filter;
 
 		if ( ! $wp_filter ) {
-			throw new AssertionFailedError( 'Could not load filter' );
+			throw new AssertionFailedError( 'Filter have not yet been initialized' );
 		}
 
 		if ( ! \array_key_exists( $filter, $wp_filter ) ) {
@@ -38,7 +43,7 @@ trait FilterAssertions {
 		}
 
 		static::assertThat(
-			$wp_filter[ $filter ]->has_filter( $callback ),
+			$wp_filter[ $filter ]->has_filter( $filter, $callback ),
 			new IsFalse(),
 			sprintf( 'Unexpected callback "%s" registered for "%s" filter.', $callback, $filter )
 		);
