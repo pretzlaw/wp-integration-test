@@ -13,7 +13,7 @@ services:
       PHP__memory_limit: 512M
       PHP__session.save_path: /var/www/var/sessions
       PHP_php5enmod: mysqli xdebug zip
-      XDEBUG_CONFIG: remote_host=10.213.37.1 idekey=PHPSTORM remote_connect_back=1 remote_enable=1 profiler_enable_trigger=1
+      XDEBUG_CONFIG: remote_host=10.213.37.1 idekey=PHPSTORM remote_enable=1 profiler_enable_trigger=1
       PHP_IDE_CONFIG: "serverName=php"
     networks:
       default:
