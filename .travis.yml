@@ -5,6 +5,7 @@ php:
   - '7.0' # Until 3 Dec 2018
   - '7.1' # Until 1 Dec 2019
   - '7.2' # Until 30 Nov 2020
+  - '7.3' # RC
 
 services:
   - mysql
@@ -37,4 +38,5 @@ matrix:
   - php: '5.6'
   - php: '7.1'
   - php: '7.2'
+  - php: '7.3'
   - env: WP_VERSION=nightly
