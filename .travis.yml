@@ -40,8 +40,8 @@ before_install:
   - mysql -e 'CREATE DATABASE dev;'
 
 install:
-  - composer update
   - composer require phpunit/phpunit:$PHPUNIT_VERSION
+  - composer update
   # Using WP-CLI instead of Composer because this way we can use the env matrix (above).
   - vendor/bin/wp --allow-root core download --version=$WP_VERSION --force
   - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1"
