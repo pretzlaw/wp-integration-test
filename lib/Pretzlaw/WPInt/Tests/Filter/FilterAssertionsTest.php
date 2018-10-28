@@ -23,6 +23,8 @@ class FilterAssertionsTest extends AbstractTestCase {
 	 * and see if the correct data is passing through for example.
 	 * Unfortunately our hook would stay in the during the whole runtime.
 	 * So we introduce some filter mocks that tear down themselves after each test.
+     *
+     * @backupGlobals
 	 */
 	public function testMockFilter() {
 		static::assertInstanceOf( ExpectedFilter::class, $this->mockFilter( 'some' ) );

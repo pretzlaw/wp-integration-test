@@ -4,9 +4,8 @@
 namespace Pretzlaw\WPInt\Filter;
 
 
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\Constraint\IsIdentical;
 
 /**
  * Helper for working with filters
@@ -51,7 +50,7 @@ class FilterHelper {
 
 		foreach ( $pattern as $key => $value ) {
 			if ( false === $value instanceof Constraint ) {
-				$pattern[ $key ] = new IsEqual( $value );
+				$pattern[ $key ] = new IsIdentical( $value );
 			}
 		}
 
@@ -82,4 +81,6 @@ class FilterHelper {
 			}
 		}
 	}
+
+
 }
