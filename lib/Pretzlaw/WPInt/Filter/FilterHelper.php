@@ -67,13 +67,13 @@ class FilterHelper {
 						continue;
 					}
 
-					try {
-						foreach ( $pattern as $key => $constaint ) {
-							Assert::assertThat( $func[ $key ], $constaint );
-						}
-					} catch ( \Exception $e ) {
-						continue;
-					}
+                    foreach ( $pattern as $key => $constaint ) {
+                        /** @var Constraint $constaint */
+                        if (!$constaint->evaluate($func[ $key ], '', true)) {
+                            // Not our callback
+                            continue 2;
+                        }
+                    }
 
 					// Delegate to WordPress for a clean environment.
 					\remove_filter( $filterName, $callback['function'], $priority );

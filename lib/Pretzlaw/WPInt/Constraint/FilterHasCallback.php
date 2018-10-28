@@ -35,11 +35,12 @@ class FilterHasCallback extends FilterExists
             return false;
         }
 
-        if ($this->list[$this->filterName] instanceof \WP_Hook) {
-            return false !== $this->list[$this->filterName]->has_filter($this->filterName, $callback);
+        $list = $this->list[$this->filterName];
+        if ($list instanceof \WP_Hook) {
+            $list = $list->callbacks;
         }
 
-        if (is_array($this->list[$this->filterName])) {
+        if (is_array($list)) {
             return $this->searchCallback($callback);
         }
 
