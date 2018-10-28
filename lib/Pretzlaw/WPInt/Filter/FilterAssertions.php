@@ -81,7 +81,12 @@ trait FilterAssertions
             return;
         }
 
-        $wp_filter[$filterName]->callbacks = [];
+        if (class_exists('WP_Hook') && $wp_filter[$filterName] instanceof \WP_Hook) {
+            $wp_filter[$filterName]->callbacks = [];
+            return;
+        }
+
+        $wp_filter[$filterName] = [];
     }
 
 }
