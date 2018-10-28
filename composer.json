@@ -18,7 +18,9 @@
       "Pretzlaw\\WPInt\\": "lib/Pretzlaw/WPInt"
     }
   },
-  "require": {},
+  "require": {
+    "phpunit/phpunit-mock-objects": "~5"
+  },
   "require-dev": {
     "phpunit/phpunit": "~6",
     "wp-cli/wp-cli": "1.5.*"
