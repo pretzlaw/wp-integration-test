@@ -20,11 +20,6 @@ class ExpectedFilter implements MockObject {
 	protected $args;
 
 	/**
-	 * @var bool
-	 */
-	private $hasRun = false;
-
-	/**
 	 * @var string
 	 */
 	private $name;
