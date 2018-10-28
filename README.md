@@ -5,12 +5,12 @@
 Writing tests with WordPress is a pain as
 [the official WordPress Unit Tests](https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/)
 always require a lot of hands on for custom projects
-and other UnitTest-Frameworks need to mock the hell out of WordPress because ... well, WordPress.
-This project aims for having a set of helper that ...
+and other UnitTest-Frameworks try to mock the hell out of WordPress.
+The solution is to have a nice integration tests package that ...
 
-- ... can be integrated in your already existing tests (using Traits).
+- ... can be integrated into your already existing tests (using Traits).
+- ... enabled you to test your package against other Plugins or Themes.
 - ... ease testing down to the common PHPUnit style.
-- ... allows you can test your package against other Plugins or Themes.
 
 Overall the goal is **simplicity** and **no time wasting crap** (for me and you).
 
@@ -20,13 +20,16 @@ Download or just
 
     composer install --dev pretzlaw/wp-integration-test
 
-We do not require that much:
+We do not require that much
+([see Packagist.org for more details](https://packagist.org/packages/pretzlaw/wp-integration-test)):
 
 - PHP 7.0
 - phpUnit 6
 - WordPress 4
 
-Tests expand continuously to cover a bigger range one day. 
+Tests expand continuously to cover a bigger range one day
+([see Travis CI](https://travis-ci.org/pretzlaw/wp-integration-test)).
+
 
 ## Usage
 
@@ -44,13 +47,14 @@ in the phpunit.xml or phpunit.dist.xml like this:
 </phpunit>
 ```
 
-*Hint: If you write tests and want to have a customer-readable test evidence to give away
-then you may want to have a look at the
-[PHPUnit Test- and Documentation-Generator](https://github.com/pretzlaw/phpunit-docgen).*
-
 The bootstrapping just loads WordPress
 [as the wp-cli would do](https://github.com/wp-cli/wp-cli/blob/master/php/wp-cli.php)
 using the `\Pretzlaw\WP_Int\run_wp()` function.
+
+
+*Hint: If you write tests and want to have a customer-readable test evidence
+then you may want to have a look at the
+[PHPUnit Test- and Documentation-Generator](https://github.com/pretzlaw/phpunit-docgen).*
 
 
 ### Examples
