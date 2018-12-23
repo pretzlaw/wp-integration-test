@@ -6,6 +6,12 @@ namespace Pretzlaw\WPInt\Mocks\Classes;
 
 use PHPUnit\Framework\MockObject\MockBuilder;
 
+/**
+ * Trait WpQueryMocks
+ * @package Pretzlaw\WPInt\Mocks\Classes
+ *
+ * @deprecated 0.2.0 This will be removed because this is no real feature - just a shortcut.
+ */
 trait WpQueryMocks {
 	/**
 	 * @param array $queryArgs
