@@ -112,6 +112,7 @@ This is simply a list of releases and their EOL:
 :grey_question:    | Version   | Features until  | Hotfixes until
 ------------------ | --------- | --------------- | --------------
 :warning:          | <= 0.1    | 2018-11-15      | (until 0.2 EOL)
+:heavy_check_mark: |    0.2    | TBA             | TBA
 
 
 ## License
