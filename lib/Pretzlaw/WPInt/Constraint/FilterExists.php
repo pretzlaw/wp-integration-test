@@ -16,21 +16,27 @@ class FilterExists extends Constraint
     {
         parent::__construct();
 
-        if (null === $list) {
-            global $wp_filter;
-            $list = $wp_filter;
-        }
-
-        $this->list = (array)$list;
+        $this->list = $list;
     }
 
     protected function matches($filterName)
     {
-        if (!$this->list) {
-            return false;
+        return (bool)$this->getWpHook($filterName);
+    }
+
+    /**
+     * @param string $filterName
+     * @return \WP_Hook|null
+     */
+    final protected function getWpHook(string $filterName)
+    {
+        $list = $this->getList();
+
+        if (null === $list || !array_key_exists($filterName, $list)) {
+            return null;
         }
 
-        return array_key_exists($filterName, $this->list);
+        return $list[$filterName];
     }
 
     /**
@@ -41,5 +47,18 @@ class FilterExists extends Constraint
     public function toString()
     {
         return 'exists';
+    }
+
+    /**
+     * @return array|null
+     */
+    final protected function getList()
+    {
+        if (null === $this->list) {
+            global $wp_filter;
+            return $wp_filter;
+        }
+
+        return $this->list;
     }
 }

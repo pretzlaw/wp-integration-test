@@ -31,20 +31,16 @@ class FilterHasCallback extends FilterExists
             return false;
         }
 
-        if (!\array_key_exists($this->filterName, $this->list) || !$this->list[$this->filterName]) {
+        $list = $this->getWpHook($this->filterName);
+        if (false === $list instanceof \WP_Hook) {
             return false;
         }
 
-        $list = $this->list[$this->filterName];
-        if ($list instanceof \WP_Hook) {
-            $list = $list->callbacks;
+        if (!is_array($list->callbacks)) {
+            return false;
         }
 
-        if (is_array($list)) {
-            return $this->searchCallback($callback);
-        }
-
-        throw new \DomainException('Unknown system state');
+        return $this->searchCallback($callback);
     }
 
     /**
@@ -67,13 +63,11 @@ class FilterHasCallback extends FilterExists
      */
     private function searchCallback($callback)
     {
-        $target = $this->list[$this->filterName];
-
         if (false === $callback instanceof Constraint) {
             $callback = new IsEqual($callback);
         }
 
-        foreach ($target as $perPriority) {
+        foreach ($this->getWpHook($this->filterName) as $perPriority) {
             foreach ($perPriority as $filter) {
                 if ($callback->evaluate($filter['function'], '', true)) {
                     return true;

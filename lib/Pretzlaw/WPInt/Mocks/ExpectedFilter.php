@@ -40,12 +40,10 @@ class ExpectedFilter implements MockObject {
 	private $invocationMocker;
 
 	public function __construct(
-		\PHPUnit\Framework\TestCase $testCase,
 		string $name,
 		$return = true,
 		array $args = []
 	) {
-		$this->testCase = $testCase;
 		$this->name     = $name;
 		$this->return   = $return;
 		$this->args     = array_values( $args );
@@ -91,13 +89,11 @@ class ExpectedFilter implements MockObject {
 		}
 	}
 
-	/**
-	 * @deprecated 1.0.0 Why is this here? Move this to constructor
-	 */
+    /**
+     * Registers filter in WordPress.
+     */
 	public function addFilter() {
 		\add_filter( $this->getName(), $this, 10, 10 );
-
-		$this->testCase->registerMockObject( $this );
 	}
 
 	/**
@@ -147,7 +143,7 @@ class ExpectedFilter implements MockObject {
 	 *
 	 * @return string
 	 */
-	private function fixExceptionMessage( \Exception $e ) {
+	protected function fixExceptionMessage( \Exception $e ) {
 		return \strtr(
 			$e->getMessage(),
 			[
