@@ -14,7 +14,7 @@ trait UserAssertions {
     {
 		global $current_user;
 
-		$currentUserMock = new CurrentUserMock( $current_user, $mockedUser );
+        $currentUserMock = new CurrentUserMock($mockedUser, $current_user);
 		$currentUserMock->apply();
 
 		$this->registerMockObject( $currentUserMock );
