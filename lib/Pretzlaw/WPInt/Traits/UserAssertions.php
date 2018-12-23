@@ -7,7 +7,11 @@ namespace Pretzlaw\WPInt\Traits;
 use Pretzlaw\WPInt\Mocks\Users\CurrentUserMock;
 
 trait UserAssertions {
-	protected function mockCurrentUser( \WP_User $mockedUser ) {
+    /**
+     * @param \WP_User|null $mockedUser
+     */
+    protected function mockCurrentUser($mockedUser)
+    {
 		global $current_user;
 
 		$currentUserMock = new CurrentUserMock( $current_user, $mockedUser );
