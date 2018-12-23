@@ -15,6 +15,7 @@ env:
     # see https://codex.wordpress.org/WordPress_Versions
     - WP_VERSION=4.0
     - WP_VERSION=4.9
+    - WP_VERSION=5.0
     - WP_VERSION=nightly
 
 matrix:

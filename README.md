@@ -25,7 +25,7 @@ We do not require that much
 
 - PHP 7.0
 - phpUnit 6
-- WordPress 4
+- WordPress 4.9 - 5.0
 
 Tests expand continuously to cover a bigger range one day
 ([see Travis CI](https://travis-ci.org/pretzlaw/wp-integration-test)).
