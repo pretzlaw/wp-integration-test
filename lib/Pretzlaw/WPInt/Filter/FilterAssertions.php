@@ -59,8 +59,9 @@ trait FilterAssertions
      */
     public function mockFilter($filterName)
     {
-        $mock = new ExpectedFilter($this, $filterName);
+        $mock = new ExpectedFilter($filterName);
 
+        $this->registerMockObject($mock);
         $mock->addFilter();
 
         return $mock;

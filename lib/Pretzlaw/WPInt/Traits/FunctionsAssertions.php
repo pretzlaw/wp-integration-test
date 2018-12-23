@@ -19,8 +19,9 @@ trait FunctionsAssertions {
 	 * @return ExpectedFilter
 	 */
 	protected function _functionMockFilter( $filterName ) {
-		$mock = new ExpectedFilter( $this, $filterName );
+		$mock = new ExpectedFilter( $filterName );
 
+		$this->registerMockObject($mock);
 		$mock->addFilter();
 
 		return $mock;
