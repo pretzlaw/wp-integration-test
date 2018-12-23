@@ -22,7 +22,8 @@ class ExpectWpInsertPost extends ExpectedFilter {
 		);
 	}
 
-	public function getErrorMessage() {
-		return 'wp_insert_post has not been called.';
-	}
+    protected function fixExceptionMessage(\Exception $e)
+    {
+        return 'wp_insert_post has not been called.';
+    }
 }

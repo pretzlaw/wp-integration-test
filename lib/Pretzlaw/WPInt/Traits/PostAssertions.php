@@ -11,6 +11,8 @@ trait PostAssertions {
 
 	protected function expectWpPostCreationWithSubset( $expectedSubset ) {
         $mockObject = new ExpectWpInsertPost($expectedSubset);
+
+        $mockObject->expects($this->atLeastOnce());
         $this->registerMockObject($mockObject);
 
         $mockObject->addFilter();

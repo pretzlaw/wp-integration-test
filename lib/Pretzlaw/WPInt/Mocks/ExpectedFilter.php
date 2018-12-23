@@ -143,7 +143,7 @@ class ExpectedFilter implements MockObject {
 	 *
 	 * @return string
 	 */
-	private function fixExceptionMessage( \Exception $e ) {
+	protected function fixExceptionMessage( \Exception $e ) {
 		return \strtr(
 			$e->getMessage(),
 			[
