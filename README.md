@@ -109,9 +109,9 @@ Or other things like:
 
 This is simply a list of releases and their EOL:
 
-:grey_question: | Version   | Supported until   | Extended security support
------------     | --------- | ----------------  | --------------------------
-:no_entry_sign: | 0.1.0     | -                 | -
+:grey_question:    | Version   | Features until  | Hotfixes until
+------------------ | --------- | --------------- | --------------
+:warning:          | <= 0.1    | 2018-11-15      | (until 0.2 EOL)
 
 
 ## License
