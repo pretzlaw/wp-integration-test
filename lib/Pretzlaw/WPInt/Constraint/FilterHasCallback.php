@@ -32,11 +32,16 @@ class FilterHasCallback extends FilterExists
         }
 
         $list = $this->getWpHook($this->filterName);
-        if (false === $list instanceof \WP_Hook) {
-            return false;
-        }
 
-        if (!is_array($list->callbacks)) {
+        if (
+            !is_array($list) // WP < 4.7
+            && (
+                !class_exists('\\WP_Hook')
+                || false === $list instanceof \WP_Hook
+                || !is_array($list->callbacks)
+            )
+        ) {
+            // Invalid data type
             return false;
         }
 
