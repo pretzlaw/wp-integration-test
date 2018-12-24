@@ -12,7 +12,7 @@ use Pretzlaw\WPInt\Tests\AllTraits;
 /**
  * Class FilterDoesNotExistTest
  * @package Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks
- * @backupGlobals
+ * @backupGlobals enabled
  */
 class FilterDoesNotExistTest extends AbstractTestCase
 {

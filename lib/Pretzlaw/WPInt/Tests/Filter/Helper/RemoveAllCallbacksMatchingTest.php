@@ -10,7 +10,7 @@ use Pretzlaw\WPInt\Tests\AbstractTestCase;
 /**
  * Class RemoveAllCallbacksMatchingTest
  * @package Pretzlaw\WPInt\Tests\Filter\Helper
- * @backupGlobals
+ * @backupGlobals enabled
  */
 class RemoveAllCallbacksMatchingTest extends AbstractTestCase
 {

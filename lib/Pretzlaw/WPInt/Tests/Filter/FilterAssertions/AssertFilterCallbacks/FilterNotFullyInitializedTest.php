@@ -10,7 +10,7 @@ use Pretzlaw\WPInt\Tests\AllTraits;
 /**
  * Class FilterNotFullyInitializedTest
  * @package Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks
- * @backupGlobals
+ * @backupGlobals enabled
  * @inheritdoc
  */
 class FilterNotFullyInitializedTest extends AbstractTestCase
