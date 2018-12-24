@@ -14,7 +14,7 @@ use Pretzlaw\WPInt\Tests\AbstractTestCase;
  * So we need to scaffold a proper but simple environment for WordPress.
  *
  * @package Pretzlaw\WPInt\Tests\Functions
- * @backupGlobals
+ * @backupGlobals enabled
  */
 class PrepareEnvTest extends AbstractTestCase {
 	/**
@@ -38,14 +38,6 @@ class PrepareEnvTest extends AbstractTestCase {
 		static::assertEquals( $expected['REMOTE_ADDR'], $_SERVER['REMOTE_ADDR'] );
 
 		static::assertCount( count( $expected ), $_SERVER, 'You missed some new preparations for $_SERVER' );
-	}
-
-	/**
-	 * @group unit
-	 */
-	public function testItPreparesServerSuperglobal() {
-		// ATTENTION: When this hits then you need to double check all tests in this class!
-		static::assertCount( 4, $_SERVER, '$_SERVER lacks some tests it seems.' );
 	}
 
 	/**

@@ -10,6 +10,7 @@ abstract class AbstractTestCase extends TestCase {
      * @var AllTraits
      */
     protected $traits;
+    protected $backupGlobalsBlacklist = ['wpdb'];
 
     protected function setUp()
     {
