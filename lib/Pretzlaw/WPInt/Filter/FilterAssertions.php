@@ -24,8 +24,7 @@ trait FilterAssertions
     public static function assertFilterNotHasCallback($filter, $expectedCallback)
     {
         try {
-            $constraint = new LogicalNot(new FilterHasCallback($filter));
-            $constraint->evaluate($expectedCallback);
+            static::assertThat($expectedCallback, new LogicalNot(new FilterHasCallback($filter)));
         } catch (\Exception $e) {
             throw new AssertionFailedError($e->getMessage());
         }

@@ -26,7 +26,7 @@ class CallbackDoesExistsTest extends AbstractTestCase
 
         $this->targetFilter = uniqid('', true);
 
-        add_filter($this->targetFilter, '__return_true');
+        \add_filter($this->targetFilter, '__return_true');
     }
 
     /**

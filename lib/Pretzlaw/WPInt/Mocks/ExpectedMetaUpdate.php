@@ -3,8 +3,6 @@
 
 namespace Pretzlaw\WPInt\Mocks;
 
-use PHPUnit\Framework\TestCase;
-
 class ExpectedMetaUpdate extends ExpectedFilter {
 	/**
 	 * @var string
@@ -18,14 +16,13 @@ class ExpectedMetaUpdate extends ExpectedFilter {
 
     /**
      * ExpectedMetaUpdate constructor.
-     * @param self $testCase DEPRECATED: This will be removed in 0.2
+     *
      * @param string $type
      * @param string $metaKey
      * @param null $metaValue
      * @param null $objectId
      */
 	public function __construct(
-		$testCase,
 		string $type,
 		$metaKey,
 		$metaValue = null,
@@ -39,12 +36,12 @@ class ExpectedMetaUpdate extends ExpectedFilter {
 		// Filter sends in "null" as current value.
 		array_unshift( $args, null );
 
-		parent::__construct( $testCase, 'update_' . $type . '_metadata', true, $args );
+		parent::__construct( 'update_' . $type . '_metadata', true, $args );
 
-        $this->metaKey = (string) $metaKey;
+        $this->metaKey = $metaKey;
     }
 
-	public function getErrorMessage() {
+    protected function fixExceptionMessage(\Exception $e) {
 		return sprintf( 'Updating %s-meta "%s" did not happen.', $this->type, $this->metaKey );
 	}
 }

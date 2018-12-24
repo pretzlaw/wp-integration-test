@@ -23,6 +23,9 @@ trait MetaDataAssertions {
 	 */
 	private $wpIntegrationClutter = [];
 
+    /**
+     * @deprecated 0.2.0
+     */
 	protected function assertPostConditions() {
 		$this->mockedMetaData = [];
 		remove_filter( 'get_post_metadata', [ $this, 'overridePostMetaData' ] );
@@ -38,14 +41,15 @@ trait MetaDataAssertions {
 
 	protected function expectUpdateMeta( $type, $metaKey, $metaValue, $objectId = null ) {
 		$expectedFilter = new ExpectedMetaUpdate(
-			$this,
 			$type,
 			$metaKey,
 			$metaValue,
 			$objectId
 		);
 
+		$expectedFilter->expects($this->atLeastOnce());
 		$expectedFilter->addFilter();
+		$this->registerMockObject($expectedFilter);
 
 		$this->wpIntegrationClutter[] = $expectedFilter;
 	}
@@ -114,6 +118,14 @@ trait MetaDataAssertions {
 		return $currentValue;
 	}
 
+    /**
+     * @param $currentValue
+     * @param $objectId
+     * @param $metaKey
+     * @return mixed
+     *
+     * @deprecated 0.2.0 This will be because expectations are properly registered now.
+     */
 	public function overridePostMetaData( $currentValue, $objectId, $metaKey ) {
 		return $this->overrideMetaData( 'post', $currentValue, $objectId, $metaKey );
 	}
