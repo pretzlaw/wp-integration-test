@@ -16,7 +16,7 @@ use Pretzlaw\WPInt\Tests\AllTraits;
  *
  * @package Pretzlaw\WPInt\Tests\Filter\FilterAssertions
  *
- * @backupGlobals
+ * @backupGlobals enabled
  */
 class AssertFilterHasCallbackTest extends AbstractTestCase
 {
@@ -32,8 +32,6 @@ class AssertFilterHasCallbackTest extends AbstractTestCase
      * When the assertion has been done to early in the WP runtime,
      * then it could happen that WordPress filters are not initialized yet.
      * In that case checking for non-existance of a filter will pass.
-     *
-     * @backupGlobals
      */
     public function testTooEarly()
     {
