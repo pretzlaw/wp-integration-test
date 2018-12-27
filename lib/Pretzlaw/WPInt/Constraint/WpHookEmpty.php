@@ -30,7 +30,7 @@ abstract class WpHookEmpty extends WpHookExists
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'has callbacks registered';
     }

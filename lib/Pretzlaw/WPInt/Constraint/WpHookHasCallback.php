@@ -53,7 +53,7 @@ abstract class WpHookHasCallback extends WpHookExists
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return sprintf('does not exist in "%s" filter', $this->filterName);
     }

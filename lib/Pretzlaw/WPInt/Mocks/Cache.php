@@ -139,7 +139,7 @@ class Cache implements MockObject
      *
      * @throws ExpectationFailedException
      */
-    public function __phpunit_verify()
+    public function __phpunit_verify(bool $unsetInvocationMocker = true)
     {
         $this->reset();
 
@@ -167,5 +167,10 @@ class Cache implements MockObject
             // Only reset if we have a history ready.
             $wp_object_cache = static::$originalObjectCache;
         }
+    }
+
+    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
+    {
+
     }
 }
