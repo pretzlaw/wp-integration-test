@@ -50,7 +50,7 @@ class PluginIsActive extends Constraint
         $this->activePluginList = $activePluginList;
     }
 
-    protected function matches($other)
+    protected function matches($other): bool
     {
         foreach ($this->activePluginList as $pluginSlug) {
             if (plugin_basename($pluginSlug) === $other) {

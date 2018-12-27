@@ -25,7 +25,7 @@ abstract class WpHookHasCallback extends WpHookExists
         $this->filterName = $hookName;
     }
 
-    protected function matches($callback)
+    protected function matches($callback): bool
     {
         if (!parent::matches($this->filterName)) {
             return false;

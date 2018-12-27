@@ -9,7 +9,7 @@ namespace Pretzlaw\WPInt\Constraint;
  */
 abstract class WpHookEmpty extends WpHookExists
 {
-    protected function matches($filterName)
+    protected function matches($filterName): bool
     {
         $list = $this->getWpHook($filterName);
 

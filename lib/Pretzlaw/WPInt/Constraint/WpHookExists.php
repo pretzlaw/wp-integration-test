@@ -19,7 +19,7 @@ abstract class WpHookExists extends Constraint
         $this->list = $list;
     }
 
-    protected function matches($filterName)
+    protected function matches($filterName): bool
     {
         return (bool)$this->getWpHook($filterName);
     }
