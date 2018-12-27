@@ -54,4 +54,22 @@ trait CacheAssertions
             ->with($cacheKey, $cacheGroup)
             ->willReturn($cacheData);
     }
+
+    /**
+     * Safely reset global state
+     *
+     * PHPUnit does no verify of mock objects when an assertion failed.
+     * So we hook in the tear down process and assert the cleanup of the
+     * WordPress cache mocks.
+     *
+     * @after
+     */
+    public function tearDownWpCacheMock()
+    {
+        global $wp_object_cache;
+
+        if ($wp_object_cache instanceof Cache) {
+            $wp_object_cache->reset();
+        }
+    }
 }

@@ -159,7 +159,7 @@ class Cache implements MockObject
         $this->reset();
     }
 
-    private function reset()
+    public function reset()
     {
         global $wp_object_cache;
 

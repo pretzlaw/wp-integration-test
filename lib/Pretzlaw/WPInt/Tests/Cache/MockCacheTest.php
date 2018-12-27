@@ -99,4 +99,19 @@ class MockCacheTest extends TestCase
 
         $mockCache->__phpunit_verify();
     }
+
+    public function testTearDownAssertsRemovalOfCacheMock()
+    {
+        global $wp_object_cache;
+
+        static::assertNotInstanceOf(Cache::class, $wp_object_cache);
+
+        $this->mockCache();
+
+        static::assertInstanceOf(Cache::class, $wp_object_cache);
+
+        $this->tearDownWpCacheMock();
+
+        static::assertNotInstanceOf(Cache::class, $wp_object_cache);
+    }
 }
