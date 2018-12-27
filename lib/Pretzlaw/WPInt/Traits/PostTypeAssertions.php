@@ -30,7 +30,10 @@ trait PostTypeAssertions {
     {
 		$postTypeObject = get_post_type_object( $postType );
 
-		if ( false === $postTypeObject instanceof \WP_Post_Type ) {
+		if (
+		    false === $postTypeObject instanceof \WP_Post_Type
+            && !is_object($postTypeObject)
+        ) {
 			throw new \RuntimeException( 'Post type has no object - maybe not registered yet or typo?' );
 		}
 
