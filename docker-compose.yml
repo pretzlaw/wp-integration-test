@@ -19,6 +19,13 @@ services:
       default:
         ipv4_address: 10.213.37.70
 
+  php73:
+    <<: *php
+    image: php:7.3-apache
+    networks:
+      default:
+        ipv4_address: 10.213.37.73
+
   php56:
     <<: *php
     image: pretzlaw/php:7.0-apache
