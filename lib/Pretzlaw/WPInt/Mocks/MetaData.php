@@ -4,7 +4,6 @@
 namespace Pretzlaw\WPInt\Mocks;
 
 use PHPUnit\Framework\Constraint\IsAnything;
-use PHPUnit\Framework\MockObject\InvocationMocker;
 
 class MetaData extends ExpectedFilter
 {
@@ -19,19 +18,14 @@ class MetaData extends ExpectedFilter
     private $metaKey;
 
     /**
-     * @var InvocationMocker|null
-     */
-    private $invocationMocker;
-
-    /**
      * ExpectedMetaUpdate constructor.
      *
      * @see \get_metadata() "get_{$meta_type}_metadata" filter.
      *
      * @param string $type
      * @param string $metaKey
-     * @param null $metaValue Watch for specific meta value.
      * @param null $objectId
+     * @param null $single
      */
     public function __construct(
         string $type,

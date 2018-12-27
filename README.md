@@ -70,16 +70,23 @@ class FooTest extends \PHPUnit\Framework\TestCase {
         $this->assertActionHasCallback( 'init', 'my_own_init' );
         $this->assertPostTypeArgs( 'my-own', [ 'public' => false ] );
         
-        // Mock a post or meta-data for any post-type
+        // Mock posts or meta-data
         $this->mockGetPost( 1337, [ 'post_content' => 'foobar' ] );
         $this->mockPostMeta( 'some_key', 'Some value!' ); // For all posts
         $this->mockMetaData( 'my-own-cpt', 'another_key', 'ec', 1337 ); // Just for ID 1337
         
-        // Expect/mock actions and filter
+        // Expect/mock actions or filter
         $this->mockAction( 'my_own_action' )->expects( $this->once() );
         $this->mockFilter( 'user_has_cap' )
              ->expects( $this->any() )
              ->willReturn( true );
+        
+        // wp_cache_get( 'my-own-cache' ) shall be "yeha!"
+        $this->mockCache()
+             ->expect( $this->any() )
+             ->method( 'get' )
+             ->with( 'my-own-cache' )
+             ->willReturn( 'yeha!' );
         
         // Common shortcuts
         $this->disableWpDie();
