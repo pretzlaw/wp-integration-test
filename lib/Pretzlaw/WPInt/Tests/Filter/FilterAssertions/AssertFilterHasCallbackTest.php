@@ -3,7 +3,6 @@
 namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions;
 
 
-use PHPUnit\Framework\AssertionFailedError;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Tests\AllTraits;
 

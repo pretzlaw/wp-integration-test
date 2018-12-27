@@ -63,18 +63,16 @@ If you know PHPUnit already then this speaks for itself:
 
 ```php
 class FooTest extends \PHPUnit\Framework\TestCase {
-    use \Pretzlaw\WPInt\Traits\PostQueryAssertions;
-    use \Pretzlaw\WPInt\Traits\MetaDataAssertions;
+    use \Pretzlaw\WPInt\Traits\WordPressTests;
     
-    funciton testBar() {
+    function testBar() {
+        // Mock a post or meta-data for any post-type
         $this->mockGetPost( 1337, [ 'post_content' => 'foobar' ] );
+        $this->mockPostMeta( 'some_key', 'Some value!' ); // For all posts
+        $this->mockMetaData( 'my-own-cpt', 'another_key', 'ec', 1337 ); // Just for ID 1337
         
-        // Mock things away
-        $this->mockPostMeta( 'some_key', 'Some value!'); // For all posts
-        $this->mockPostMeta( 'another_key', 'ec', 1337); // Just for post 1337
-        
-        // Mock/expect filter and actions
-        $this->mockFilter( 'my_own_filter' )->expects($this->once());
+        // Expect/mock actions and filter
+        $this->mockAction( 'my_own_action' )->expects( $this->once() );
         $this->mockFilter( 'user_has_cap' )
              ->expects( $this->any() )
              ->willReturn( true );
@@ -82,7 +80,7 @@ class FooTest extends \PHPUnit\Framework\TestCase {
         // Common shortcuts
         $this->disableWpDie();
         
-        // Afer all this is still PHPUnit
+        // After all this is still PHPUnit
         static::assertTrue( my_own_plugin_foo_getter_thingy() );
     }
 }
@@ -98,8 +96,8 @@ This is simply a list of releases and their EOL:
 
 :grey_question:    | Version   | Features until  | Hotfixes until
 ------------------ | --------- | --------------- | --------------
-:warning:          | <= 0.1    | 2018-11-15      | (until 0.2 EOL)
-:heavy_check_mark: |    0.2    | TBA             | TBA
+:warning:          | <= 0.1    | 2018-11-15      | 2018-02-28
+:heavy_check_mark: |    0.2    | 2018-02-28      | 2018-03-31
 
 
 ## License
