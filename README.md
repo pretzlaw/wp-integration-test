@@ -66,6 +66,10 @@ class FooTest extends \PHPUnit\Framework\TestCase {
     use \Pretzlaw\WPInt\Traits\WordPressTests;
     
     function testBar() {
+        // Simple assertions
+        $this->assertActionHasCallback( 'init', 'my_own_init' );
+        $this->assertPostTypeArgs( 'my-own', [ 'public' => false ] );
+        
         // Mock a post or meta-data for any post-type
         $this->mockGetPost( 1337, [ 'post_content' => 'foobar' ] );
         $this->mockPostMeta( 'some_key', 'Some value!' ); // For all posts

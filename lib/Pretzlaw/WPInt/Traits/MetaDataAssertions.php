@@ -22,11 +22,6 @@ trait MetaDataAssertions {
      */
     private $registeredFilter = [];
 
-    /**
-     * @var ClutterInterface[]
-     */
-    private $wpIntegrationClutter = [];
-
     protected function expectUpdateMeta($type, $metaKey, $metaValue, $objectId = null)
     {
         $expectedFilter = new ExpectedMetaUpdate(
@@ -39,8 +34,6 @@ trait MetaDataAssertions {
         $expectedFilter->expects($this->atLeastOnce());
         $expectedFilter->addFilter();
         $this->registerMockObject($expectedFilter);
-
-        $this->wpIntegrationClutter[] = $expectedFilter;
     }
 
     protected function expectUpdatePostMeta($metaKey, $metaValue = null, $objectId = null)
