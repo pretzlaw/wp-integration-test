@@ -66,7 +66,7 @@ class PluginIsActive extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'is active';
     }

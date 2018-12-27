@@ -76,7 +76,7 @@ class CurrentUserMock implements MockObject {
 	 *
 	 * @throws ExpectationFailedException
 	 */
-	public function __phpunit_verify() {
+	public function __phpunit_verify(bool $unsetInvocationMocker = true) {
 		global $current_user;
 
 		$current_user = $this->originalUser;
@@ -92,4 +92,8 @@ class CurrentUserMock implements MockObject {
 	public function __call( $name, $arguments ) {
 
 	}
+
+    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
+    {
+    }
 }

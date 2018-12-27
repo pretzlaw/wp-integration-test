@@ -4,6 +4,7 @@ namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\MockFilter;
 
 
 use Pretzlaw\WPInt\Filter\FilterAssertions;
+use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 
 class GoneAfterTest extends AbstractTestCase
@@ -24,11 +25,13 @@ class GoneAfterTest extends AbstractTestCase
 
         static::assertFalse(has_filter(static::$filterName));
 
-        $this->mockFilter(static::$filterName)->expects($this->any());
+        $mock = new ExpectedFilter(static::$filterName);
+        $mock->expects($this->any());
+        $mock->addFilter();
 
         static::assertTrue(has_filter(static::$filterName));
 
-        $this->verifyMockObjects();
+        $mock->__phpunit_verify();
 
         static::assertFalse(has_filter(static::$filterName));
     }

@@ -24,7 +24,7 @@ We do not require that much
 ([see Packagist.org for more details](https://packagist.org/packages/pretzlaw/wp-integration-test)):
 
 - PHP 7.0 - 7.3
-- phpUnit 6
+- phpUnit 6.5 - 7.5
 - WordPress 4.9 - 5.0
 
 Tests expand continuously to cover a bigger range one day

@@ -95,7 +95,8 @@ class MockCacheTest extends TestCase
         wp_cache_set('foo', 1337);
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Expectation failed for method name is equal to "set" when invoked 1 time(s).');
+        // Quotes change somewhere between phpUnit 7.3 and 7.5
+        $this->expectExceptionMessageRegExp('/Expectation failed for method name is equal to ["\']set["\'] when invoked 1 time\(s\)\./');
 
         $mockCache->__phpunit_verify();
     }

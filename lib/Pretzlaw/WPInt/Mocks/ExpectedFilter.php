@@ -79,7 +79,7 @@ class ExpectedFilter implements MockObject {
 	 *
 	 * @throws ExpectationFailedException
 	 */
-	public function __phpunit_verify() {
+	public function __phpunit_verify(bool $unsetInvocationMocker = true) {
 		$this->removeFilter();
 
 		try {
@@ -132,7 +132,7 @@ class ExpectedFilter implements MockObject {
 	 */
 	public function __phpunit_getInvocationMocker() {
 		if ( null === $this->invocationMocker ) {
-			$this->invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker( [ $this->name ] );
+			$this->invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker( [ $this->name ], true );
 		}
 
 		return $this->invocationMocker;
@@ -159,4 +159,9 @@ class ExpectedFilter implements MockObject {
     {
         return $this->args;
 	}
+
+    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
+    {
+
+    }
 }
