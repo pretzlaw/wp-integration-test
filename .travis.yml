@@ -10,7 +10,6 @@ php:
 env:
   global:
     - PHPUNIT_VERSION=6.5.*
-    - PHPUNIT_MOCK_VERSION=~5
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
@@ -37,7 +36,7 @@ matrix:
   - php: '7.1'
     env: PHPUNIT_VERSION="7.4.*" WP_VERSION=4.9
   - php: '7.2'
-    env: PHPUNIT_VERSION="7.5.*"WP_VERSION=4.9
+    env: PHPUNIT_VERSION="7.5.*" WP_VERSION=4.9
 
 services:
   - mysql
