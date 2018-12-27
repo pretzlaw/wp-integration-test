@@ -2,10 +2,10 @@
 
 > Mocking return value of functions/filters and more for testing WordPress with PHPUnit.
 
-Writing tests with WordPress is a pain as
+Writing tests with WordPress is a pain as the very old
 [the official WordPress Unit Tests](https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/)
 always require a lot of hands on for custom projects
-and other UnitTest-Frameworks try to mock the hell out of WordPress.
+and other Testing-Frameworks try to mock the hell out of WordPress.
 The solution is to have a nice integration tests package that ...
 
 - ... can be integrated into your already existing tests (using Traits).
@@ -59,50 +59,37 @@ then you may want to have a look at the
 
 ### Examples
 
-Mock that a post exists:
+If you know PHPUnit already then this speaks for itself:
 
 ```php
 class FooTest extends \PHPUnit\Framework\TestCase {
     use \Pretzlaw\WPInt\Traits\PostQueryAssertions;
-    
-    protected function setUp() {
-        static::mockGetPost(
-            1337,
-            new \WP_Post(
-                (object) [
-                    'post_type'    => 'page',
-                    'ID'           => 1337,
-                    'post_content' => 'foobar',
-                ]
-            )
-        );
-    }
+    use \Pretzlaw\WPInt\Traits\MetaDataAssertions;
     
     funciton testBar() {
-        $post = get_post(1337);
+        $this->mockGetPost( 1337, [ 'post_content' => 'foobar' ] );
+        
+        // Mock things away
+        $this->mockPostMeta( 'some_key', 'Some value!'); // For all posts
+        $this->mockPostMeta( 'another_key', 'ec', 1337); // Just for post 1337
+        
+        // Mock/expect filter and actions
+        $this->mockFilter( 'my_own_filter' )->expects($this->once());
+        $this->mockFilter( 'user_has_cap' )
+             ->expects( $this->any() )
+             ->willReturn( true );
+        
+        // Common shortcuts
+        $this->disableWpDie();
+        
+        // Afer all this is still PHPUnit
+        static::assertTrue( my_own_plugin_foo_getter_thingy() );
     }
 }
 ```
 
-Or its meta data via `use \Pretzlaw\WPInt\Traits\MetaDataAssertions`:
-
-```php
-static::mockPostMeta(
-    'some_meta_key',
-    [
-        'think_of' => 'any value you like',
-    ],
-    1337 // optional: remove the ID if all objects shall have the above meta value
-);
-```
-
-Or other things like:
-
-- Specific filter
-- Specific actions
-- Disable `wp_die`
-
-... and more.
+Feel free to request for additional features or point out more common shortcuts
+by [opening an issue](https://github.com/pretzlaw/wp-integration-test/issues).
 
 
 ## Support and Migration

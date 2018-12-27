@@ -13,6 +13,7 @@ env:
     - PHPUNIT_MOCK_VERSION=~5
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
+    # see https://phpunit.de/supported-versions.html
     - WP_VERSION=4.0
     - WP_VERSION=4.9
     - WP_VERSION=5.0
