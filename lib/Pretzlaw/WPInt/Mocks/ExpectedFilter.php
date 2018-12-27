@@ -154,4 +154,9 @@ class ExpectedFilter implements MockObject {
 			]
 		);
 	}
+
+    public function getArgs()
+    {
+        return $this->args;
+	}
 }

@@ -4,8 +4,10 @@
 namespace Pretzlaw\WPInt\Mocks;
 
 use PHPUnit\Framework\Constraint\IsAnything;
+use PHPUnit\Framework\MockObject\InvocationMocker;
 
-class ExpectedMetaUpdate extends ExpectedFilter {
+class MetaData extends ExpectedFilter
+{
     /**
      * @var string
      */
@@ -17,7 +19,14 @@ class ExpectedMetaUpdate extends ExpectedFilter {
     private $metaKey;
 
     /**
+     * @var InvocationMocker|null
+     */
+    private $invocationMocker;
+
+    /**
      * ExpectedMetaUpdate constructor.
+     *
+     * @see \get_metadata() "get_{$meta_type}_metadata" filter.
      *
      * @param string $type
      * @param string $metaKey
@@ -27,26 +36,31 @@ class ExpectedMetaUpdate extends ExpectedFilter {
     public function __construct(
         string $type,
         $metaKey,
-        $metaValue = null,
-        $objectId = null
+        $objectId = null,
+        $single = null
     )
     {
         if (null === $objectId) {
             $objectId = new IsAnything();
         }
 
+        if (null === $single) {
+            $single = new IsAnything();
+        }
+
         parent::__construct(
-            'update_' . $type . '_metadata',
+            'get_' . $type . '_metadata',
             true,
             // Filter sends in "null" as current value.
-            [null, $objectId, $metaKey, $metaValue]
+            [null, $objectId, $metaKey, $single]
         );
 
         $this->type = $type;
         $this->metaKey = $metaKey;
     }
 
-    protected function fixExceptionMessage(\Exception $e) {
-        return sprintf('Updating %s-meta "%s" did not happen.', $this->type, $this->metaKey);
+    protected function fixExceptionMessage(\Exception $e)
+    {
+        return sprintf('%s-meta "%s" was not read.', $this->type, $this->metaKey);
     }
 }
