@@ -63,7 +63,8 @@ If you know PHPUnit already then this speaks for itself:
 
 ```php
 class FooTest extends \PHPUnit\Framework\TestCase {
-    use \Pretzlaw\WPInt\Traits\WordPressTests;
+
+    use \Pretzlaw\WPInt\Traits\WordPressTests; // Yes, it's that easy.
     
     function testBar() {
         // Simple assertions
@@ -75,20 +76,15 @@ class FooTest extends \PHPUnit\Framework\TestCase {
         $this->mockPostMeta( 'some_key', 'Some value!' ); // For all posts
         $this->mockMetaData( 'my-own-cpt', 'another_key', 'ec', 1337 ); // Just for ID 1337
         
-        // Expect/mock actions or filter
+        // Expect/mock actions, filter or the cache
         $this->mockAction( 'my_own_action' )->expects( $this->once() );
         $this->mockFilter( 'user_has_cap' )
              ->expects( $this->any() )
              ->willReturn( true );
+        // $this->mockCache()->...
         
-        // wp_cache_get( 'my-own-cache' ) shall be "yeha!"
-        $this->mockCache()
-             ->expect( $this->any() )
-             ->method( 'get' )
-             ->with( 'my-own-cache' )
-             ->willReturn( 'yeha!' );
-        
-        // Common shortcuts
+        // Or make use of the shortcuts
+        $this->mockCacheGet( 'my-own-cache', 'yeah!' );
         $this->disableWpDie();
         
         // After all this is still PHPUnit

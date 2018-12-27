@@ -45,4 +45,13 @@ trait CacheAssertions
 
         return $cache;
     }
+
+    protected function mockCacheGet($cacheKey, $cacheData, $cacheGroup = '')
+    {
+        $this->mockCache()
+            ->expects($this->any())
+            ->method('get')
+            ->with($cacheKey, $cacheGroup)
+            ->willReturn($cacheData);
+    }
 }

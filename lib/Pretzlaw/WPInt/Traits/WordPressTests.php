@@ -33,6 +33,7 @@ namespace Pretzlaw\WPInt\Traits;
 trait WordPressTests
 {
     use ActionAssertions;
+    use CacheAssertions;
     use \Pretzlaw\WPInt\Filter\FilterAssertions;
     use FunctionsAssertions;
     use MetaDataAssertions;

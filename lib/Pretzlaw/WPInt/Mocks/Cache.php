@@ -53,10 +53,10 @@ class Cache implements MockObject
     private $proxyTarget;
 
     /**
-     * Due to fifo-stack in PHPUnit we would destroy the global so we build our own stack.
+     * Due to fifo-stack in PHPUnit we would destroy the global so we only store the very first one.
      * @var array
      */
-    private static $objectCacheHistoryLifo = [];
+    protected static $originalObjectCache;
 
     public function __construct($proxyTarget = null)
     {
@@ -72,7 +72,10 @@ class Cache implements MockObject
     {
         global $wp_object_cache;
 
-        static::$objectCacheHistoryLifo[] = $wp_object_cache;
+        if (!static::$originalObjectCache) {
+            static::$originalObjectCache = $wp_object_cache;
+        }
+
         $wp_object_cache = $this;
 
         $testCase->registerMockObject($this);
@@ -138,12 +141,7 @@ class Cache implements MockObject
      */
     public function __phpunit_verify()
     {
-        global $wp_object_cache;
-
-        if (static::$objectCacheHistoryLifo) {
-            // Only reset if we have a history ready.
-            $wp_object_cache = array_pop(static::$objectCacheHistoryLifo);
-        }
+        $this->reset();
 
         return $this->__phpunit_getInvocationMocker()->verify();
     }
@@ -154,5 +152,20 @@ class Cache implements MockObject
     public function __phpunit_hasMatchers()
     {
         return $this->__phpunit_getInvocationMocker()->hasMatchers();
+    }
+
+    public function __destruct()
+    {
+        $this->reset();
+    }
+
+    private function reset()
+    {
+        global $wp_object_cache;
+
+        if (static::$originalObjectCache) {
+            // Only reset if we have a history ready.
+            $wp_object_cache = static::$originalObjectCache;
+        }
     }
 }
