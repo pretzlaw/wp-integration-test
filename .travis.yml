@@ -23,7 +23,6 @@ matrix:
   # in the process to achieve support
   allow_failures:
   - php: '5.6'
-  - php: '7.3'
   - env: WP_VERSION=nightly
   - env: PHPUNIT_VERSION=~7 PHPUNIT_MOCK_VERSION=~6 WP_VERSION=4.9
   include:
