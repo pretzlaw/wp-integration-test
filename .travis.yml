@@ -2,7 +2,7 @@ language: php
 
 php:
   # see http://php.net/supported-versions.php
-  - '7.0' # Until 3 Dec 2018
+  # '7.0' # Until 3 Dec 2018
   - '7.1' # Until 1 Dec 2019
   - '7.2' # Until 30 Nov 2020
   - '7.3' # RC
@@ -11,24 +11,31 @@ env:
   global:
     - PHPUNIT_VERSION=~7
   matrix:
-    # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
+    # We check all of them because it once broke from one minor to another.
+    - WP_VERSION=5.0 PHPUNIT_VERSION=6.5.*
+    - WP_VERSION=5.0 PHPUNIT_VERSION=7.1.*
+    - WP_VERSION=5.0 PHPUNIT_VERSION=7.2.*
+    - WP_VERSION=5.0 PHPUNIT_VERSION=7.3.*
+    - WP_VERSION=5.0 PHPUNIT_VERSION=7.4.*
+    - WP_VERSION=5.0 PHPUNIT_VERSION=7.5.*
+    # see https://codex.wordpress.org/WordPress_Versions
+    # We check some versions because WP does not follow SemVer.
     - WP_VERSION=4.0
     - WP_VERSION=4.2
     - WP_VERSION=4.4
     - WP_VERSION=4.6
     - WP_VERSION=4.8
     - WP_VERSION=5.0
-    - PHPUNIT_VERSION=6.5
-    - PHPUNIT_VERSION=7.1
-    - PHPUNIT_VERSION=7.2
-    - PHPUNIT_VERSION=7.3
-    - PHPUNIT_VERSION=7.4
-    - PHPUNIT_VERSION=7.5
 
 matrix:
-  # in the process to achieve support
+  fast_finish: true
   include:
+  # Still supported edges
+  - php: '7.0'
+    env: WP_VERSION=4.0 PHPUNIT_VERSION=6.5.*
+  - php: '7.0'
+    env: WP_VERSION=5.0 PHPUNIT_VERSION=6.5.*
   # Far-seeing test of bleeding edge
   - php: '7.3'
     env: WP_VERSION=nightly
