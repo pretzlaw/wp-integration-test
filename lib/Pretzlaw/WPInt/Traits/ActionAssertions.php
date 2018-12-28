@@ -4,28 +4,34 @@
 namespace Pretzlaw\WPInt\Traits;
 
 
-use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint\LogicalNot;
+use Pretzlaw\WPInt\Constraint\ActionEmpty;
+use Pretzlaw\WPInt\Constraint\ActionHasCallback;
 
 trait ActionAssertions {
-	public static function assertActionHasCallback( $action, $expectedCallback ) {
-		global $wp_filter;
+    public static function assertActionHasCallback($action, $expectedCallback, $message = '')
+    {
+        static::assertThat($expectedCallback, new ActionHasCallback($action), $message);
+    }
 
-		static::assertActionNotEmpty( $action );
+    public function assertActionNotHasCallback($action, $expectedCallback, $message = '')
+    {
+        static::assertThat($expectedCallback, new LogicalNot(new ActionHasCallback($action)), $message);
+    }
 
-		/** @var \WP_Hook $hook */
-		$hook = $wp_filter[ $action ];
+    public static function assertActionNotEmpty($action, string $message = '')
+    {
+        static::assertThat($action, new LogicalNot(new ActionEmpty()), $message);
+    }
 
-		static::assertNotFalse(
-			$hook->has_filter( $expectedCallback ),
-			sprintf( 'Expected callback not registered for "%s" action.', $action )
-		);
-	}
-
-	public static function assertActionNotEmpty( $action ) {
-		global $wp_filter;
-
-		if ( ! array_key_exists( $action, $wp_filter ) || ! $wp_filter[ $action ]->has_filters() ) {
-			throw new AssertionFailedError( sprintf( 'Action "%s" has no registered callbacks.', $action ) );
-		}
-	}
+    /**
+     * @since 0.2.0
+     *
+     * @param string $action The action name to check.
+     * @param string $message Message in case of error.
+     */
+    public function assertActionEmpty(string $action, string $message = '')
+    {
+        static::assertThat($action, new ActionEmpty(), $message);
+    }
 }

@@ -4,14 +4,18 @@
 namespace Pretzlaw\WPInt\Traits;
 
 
-trait FunctionsAssertions {
-	use FilterAssertions {
-		mockFilter as _mockFilter;
-	}
+use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 
+trait FunctionsAssertions {
 	protected function disableWpDie() {
-		$this->_mockFilter( 'wp_die_handler' )->expects( $this->any() )->willReturn( 'time' );
-		$this->_mockFilter( 'wp_die_xmlrpc_handler' )->expects( $this->any() )->willReturn( 'time' );
-		$this->_mockFilter( 'wp_die_ajax_handler' )->expects( $this->any() )->willReturn( 'time' );
+        $wpDieFilter = ['wp_die_handler', 'wp_die_xmlrpc_handler', 'wp_die_ajax_handler'];
+        foreach ($wpDieFilter as $item) {
+            // Override functions with php internal function.
+            $mock = new ExpectedFilter($item, 'time');
+
+            $mock->expects($this->any())->willReturn(time());
+            $this->registerMockObject($mock);
+            $mock->addFilter();
+        }
 	}
 }

@@ -2,15 +2,15 @@
 
 > Mocking return value of functions/filters and more for testing WordPress with PHPUnit.
 
-Writing tests with WordPress is a pain as
+Writing tests with WordPress is a pain as the very old
 [the official WordPress Unit Tests](https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/)
 always require a lot of hands on for custom projects
-and other UnitTest-Frameworks need to mock the hell out of WordPress because ... well, WordPress.
-This project aims for having a set of helper that ...
+and other Testing-Frameworks try to mock the hell out of WordPress.
+The solution is to have a nice integration tests package that ...
 
-- ... can be integrated in your already existing tests (using Traits).
+- ... can be integrated into your already existing tests (using Traits).
+- ... enabled you to test your package against other Plugins or Themes.
 - ... ease testing down to the common PHPUnit style.
-- ... allows you can test your package against other Plugins or Themes.
 
 Overall the goal is **simplicity** and **no time wasting crap** (for me and you).
 
@@ -20,11 +20,16 @@ Download or just
 
     composer install --dev pretzlaw/wp-integration-test
 
-We do not require that much:
+We do not require that much
+([see Packagist.org for more details](https://packagist.org/packages/pretzlaw/wp-integration-test)):
 
-- PHP 7.0 (once CI runs it 5 & 7)
-- phpUnit 6 (once CI runs it covers 5-7)
-- WordPress 4 (once CI runs we know a complete range)
+- PHP 7.0 - 7.3
+- phpUnit 6.5 - 7.5
+- WordPress 4.9 - 5.0
+
+Tests expand continuously to cover a bigger range one day
+([see Travis CI](https://travis-ci.org/pretzlaw/wp-integration-test)).
+
 
 ## Usage
 
@@ -42,70 +47,64 @@ in the phpunit.xml or phpunit.dist.xml like this:
 </phpunit>
 ```
 
-*Hint: If you write tests and want to have a customer-readable test evidence to give away
-then you may want to have a look at the
-[PHPUnit Test- and Documentation-Generator](https://github.com/pretzlaw/phpunit-docgen).*
-
 The bootstrapping just loads WordPress
 [as the wp-cli would do](https://github.com/wp-cli/wp-cli/blob/master/php/wp-cli.php)
 using the `\Pretzlaw\WP_Int\run_wp()` function.
-There is a mixed snake-case alias `\Pretzlaw\WPInt\runWp()` that does the same -
-for all Premium-WP-Advance-Pro-Expert-Shizzle-Developers that don't comply the WordPress Standards.
+
+
+*Hint: If you write tests and want to have a customer-readable test evidence
+then you may want to have a look at the
+[PHPUnit Test- and Documentation-Generator](https://github.com/pretzlaw/phpunit-docgen).*
+
 
 ### Examples
 
-Mock that a post exists:
+If you know PHPUnit already then this speaks for itself:
 
 ```php
 class FooTest extends \PHPUnit\Framework\TestCase {
-    use \Pretzlaw\WPInt\Traits\PostQueryAssertions;
+
+    use \Pretzlaw\WPInt\Traits\WordPressTests; // Yes, it's that easy.
     
-    protected function setUp() {
-        static::mockGetPost(
-            1337,
-            new \WP_Post(
-                (object) [
-                    'post_type'    => 'page',
-                    'ID'           => 1337,
-                    'post_content' => 'foobar',
-                ]
-            )
-        );
-    }
-    
-    funciton testBar() {
-        $post = get_post(1337);
+    function testBar() {
+        // Simple assertions
+        $this->assertActionHasCallback( 'init', 'my_own_init' );
+        $this->assertPostTypeArgs( 'my-own', [ 'public' => false ] );
+        
+        // Mock posts or meta-data
+        $this->mockGetPost( 1337, [ 'post_content' => 'foobar' ] );
+        $this->mockPostMeta( 'some_key', 'Some value!' ); // For all posts
+        $this->mockMetaData( 'my-own-cpt', 'another_key', 'ec', 1337 ); // Just for ID 1337
+        
+        // Expect/mock actions, filter or the cache
+        $this->mockAction( 'my_own_action' )->expects( $this->once() );
+        $this->mockFilter( 'user_has_cap' )
+             ->expects( $this->any() )
+             ->willReturn( true );
+        // $this->mockCache()->...
+        
+        // Or make use of the shortcuts
+        $this->mockCacheGet( 'my-own-cache', 'yeah!' );
+        $this->disableWpDie();
+        
+        // After all this is still PHPUnit
+        static::assertTrue( my_own_plugin_foo_getter_thingy() );
     }
 }
 ```
 
-Or its meta data via `use \Pretzlaw\WPInt\Traits\MetaDataAssertions`:
+Feel free to request for additional features or point out more common shortcuts
+by [opening an issue](https://github.com/pretzlaw/wp-integration-test/issues).
 
-```php
-static::mockPostMeta(
-    'some_meta_key',
-    [
-        'think_of' => 'any value you like',
-    ],
-    1337 // optional: remove the ID if all objects shall have the above meta value
-);
-```
-
-Or other things like:
-
-- Specific filter
-- Specific actions
-- Disable `wp_die`
-
-... and more.
 
 ## Support and Migration
 
 This is simply a list of releases and their EOL:
 
-:grey_question: | Version   | Supported until   | Extended security support
------------     | --------- | ----------------  | --------------------------
-:no_entry_sign: | 0.1.0     | -                 | -
+:grey_question:    | Version   | Features until  | Hotfixes until
+------------------ | --------- | --------------- | --------------
+:warning:          | <= 0.1    | 2018-11-15      | 2018-02-28
+:heavy_check_mark: |    0.2    | 2018-02-28      | 2018-03-31
 
 
 ## License

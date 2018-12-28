@@ -5,20 +5,18 @@ namespace Pretzlaw\WPInt\Traits;
 
 
 trait PostTypeAssertions {
-	protected static function assertPostTypeArgs( $postType, $exptectedArgs ) {
-		if ( isset( $exptectedArgs['supports'] ) ) {
-			// Supports is stored a bit different like `[$feature => true]` which we fix here.
-			$exptectedArgs['supports'] = array_fill_keys( $exptectedArgs['supports'], true );
-		}
-
+    protected static function assertPostTypeArgs(string $postType, array $exptectedArgs)
+    {
 		static::assertArraySubset( $exptectedArgs, (array) static::getPostTypeObject( $postType ) );
 	}
 
 	protected static function assertPostTypeLabels( $postType, $expectedLabels ) {
-		$postTypeObject = static::getPostTypeObject( $postType );
-		$labels         = (array) get_post_type_labels( $postTypeObject );
-
-		static::assertArraySubset( $expectedLabels, $labels );
+        static::assertArraySubset(
+            $expectedLabels,
+            (array)get_post_type_labels(
+                static::getPostTypeObject($postType)
+            )
+        );
 	}
 
 	protected static function assertPostTypeRegistered( $postType ) {
@@ -28,10 +26,14 @@ trait PostTypeAssertions {
 		);
 	}
 
-	private static function getPostTypeObject( $postType ) {
+    private static function getPostTypeObject(string $postType)
+    {
 		$postTypeObject = get_post_type_object( $postType );
 
-		if ( false === $postTypeObject instanceof \WP_Post_Type ) {
+		if (
+		    false === $postTypeObject instanceof \WP_Post_Type
+            && !is_object($postTypeObject)
+        ) {
 			throw new \RuntimeException( 'Post type has no object - maybe not registered yet or typo?' );
 		}
 

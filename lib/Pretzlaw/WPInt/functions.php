@@ -14,10 +14,7 @@ function prepare_env() {
 		$_SERVER = [];
 	}
 
-	$_SERVER = array_merge(
-		$serverVars,
-		$_SERVER
-	);
+	$_SERVER = array_merge( $serverVars, $_SERVER );
 }
 
 /**
@@ -56,7 +53,11 @@ function run_wp( $path = null ) {
 function locate_wordpress() {
 	// Locate downwards.
 	$directory     = new \RecursiveDirectoryIterator( getcwd() );
-	$iterator      = new \RecursiveIteratorIterator( $directory );
+	$iterator      = new \RecursiveIteratorIterator(
+		$directory,
+		\RecursiveIteratorIterator::LEAVES_ONLY,
+		\RecursiveIteratorIterator::CATCH_GET_CHILD
+	);
 	$regex         = new \RegexIterator( $iterator, '/.*\/wp-load\.php$/', \RecursiveRegexIterator::GET_MATCH );
 	$possibleFiles = \iterator_to_array( $regex );
 

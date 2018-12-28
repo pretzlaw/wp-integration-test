@@ -3,30 +3,21 @@
 
 namespace Pretzlaw\WPInt\Mocks;
 
-use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
-use PHPUnit\Framework\MockObject\Invocation\ObjectInvocation;
 use PHPUnit\Framework\MockObject\InvocationMocker;
-use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use PHPUnit\Framework\MockObject\MockObject;
-use Pretzlaw\WPInt\ClutterInterface;
+use Pretzlaw\WPInt\FilterInvocation;
 
 /**
  * @method InvocationMocker method( $constraint )
  */
-class ExpectedFilter implements MockObject, ClutterInterface {
+class ExpectedFilter implements MockObject {
 	/**
 	 * @var array
 	 */
 	protected $args;
-
-	/**
-	 * @var bool
-	 */
-	private $hasRun = false;
 
 	/**
 	 * @var string
@@ -49,19 +40,13 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	private $invocationMocker;
 
 	public function __construct(
-		\PHPUnit\Framework\TestCase $testCase,
 		string $name,
 		$return = true,
 		array $args = []
 	) {
-		$this->testCase = $testCase;
 		$this->name     = $name;
 		$this->return   = $return;
 		$this->args     = array_values( $args );
-	}
-
-	public function __call( $name, $arguments ) {
-		// TODO: Implement @method InvocationMocker method($constraint)
 	}
 
 	/**
@@ -69,16 +54,9 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	 * @throws \Exception
 	 */
 	public function __invoke() {
-		$returnValue = $this->__phpunit_getInvocationMocker()->invoke(
-			new ObjectInvocation( 'WordPress Filter ', $this->name, \func_get_args(), '', $this )
+		return $this->__phpunit_getInvocationMocker()->invoke(
+			new FilterInvocation( 'WordPress Filter ', $this->name, \func_get_args(), '', $this )
 		);
-
-		$this->validateParameters( \func_get_args() );
-
-		/// @deprecated This should be determined using `atLeastOnce` and similar mock methods.
-		$this->hasRun = true;
-
-		return $returnValue;
 	}
 
 	/**
@@ -101,7 +79,7 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	 *
 	 * @throws ExpectationFailedException
 	 */
-	public function __phpunit_verify() {
+	public function __phpunit_verify(bool $unsetInvocationMocker = true) {
 		$this->removeFilter();
 
 		try {
@@ -111,13 +89,11 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 		}
 	}
 
-	/**
-	 * @deprecated 1.0.0 Why is this here? Move this to constructor
-	 */
+    /**
+     * Registers filter in WordPress.
+     */
 	public function addFilter() {
 		\add_filter( $this->getName(), $this, 10, 10 );
-
-		$this->testCase->registerMockObject( $this );
 	}
 
 	/**
@@ -137,44 +113,18 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 		return $invocationMocker;
 	}
 
-	public function getArgs() {
-		return $this->args;
-	}
-
-	public function getErrorMessage() {
-		$message = sprintf( 'Filter "%s" did not run', $this->getName() );
-
-		if ( $this->getArgs() ) {
-			$message .= ' with arguments:';
-			$message .= PHP_EOL . '- ' . implode( PHP_EOL . '- ', $this->getArgs() );
-		}
-
-		return $message;
-	}
-
 	/**
 	 * @return string
 	 */
-	public function getName(): string {
+	public function getName() {
 		return $this->name;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function hasRun(): bool {
-		return $this->hasRun;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function removeFilter(): bool {
+	public function removeFilter() {
 		return \remove_filter( $this->getName(), $this );
-	}
-
-	public function tearDown() {
-		$this->removeFilter();
 	}
 
 	/**
@@ -182,7 +132,7 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	 */
 	public function __phpunit_getInvocationMocker() {
 		if ( null === $this->invocationMocker ) {
-			$this->invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker( [ $this->name ] );
+			$this->invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker( [ $this->name ], true );
 		}
 
 		return $this->invocationMocker;
@@ -191,9 +141,9 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 	/**
 	 * @param \Exception $e
 	 *
-	 * @return ExpectationFailedException
+	 * @return string
 	 */
-	private function fixExceptionMessage( \Exception $e ): string {
+	protected function fixExceptionMessage( \Exception $e ) {
 		return \strtr(
 			$e->getMessage(),
 			[
@@ -205,28 +155,13 @@ class ExpectedFilter implements MockObject, ClutterInterface {
 		);
 	}
 
-	/**
-	 * @deprecated This should be done using proper mock methods like `withAnyParameter` etc.
-	 *
-	 * @param $parameters
-	 */
-	private function validateParameters( $parameters ) {
-		foreach ( $parameters as $num => $value ) {
-			if ( ! array_key_exists( $num, $this->args ) ) {
-				break;
-			}
-
-			$expectedValue = $this->args[ $num ];
-
-			if ( $expectedValue instanceof AnyParameters ) {
-				continue;
-			}
-
-			if ( false === $expectedValue instanceof Constraint ) {
-				$expectedValue = new IsEqual( $expectedValue );
-			}
-
-			$expectedValue->evaluate( $value );
-		}
+    public function getArgs()
+    {
+        return $this->args;
 	}
+
+    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
+    {
+
+    }
 }

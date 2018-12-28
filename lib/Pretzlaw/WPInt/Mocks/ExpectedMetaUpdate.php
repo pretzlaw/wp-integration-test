@@ -3,33 +3,50 @@
 
 namespace Pretzlaw\WPInt\Mocks;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Constraint\IsAnything;
 
 class ExpectedMetaUpdate extends ExpectedFilter {
-	/**
-	 * @var string
-	 */
-	private $type;
+    /**
+     * @var string
+     */
+    private $type;
 
-	public function __construct(
-		$testCase,
-		string $type,
-		$metaKey,
-		$metaValue = null,
-		$objectId = null
-	) {
-		$this->type = $type;
+    /**
+     * @var string
+     */
+    private $metaKey;
 
-		// Only check what is defined.
-		$args = array_filter( [ $objectId, $metaKey, $metaValue ] );
+    /**
+     * ExpectedMetaUpdate constructor.
+     *
+     * @param string $type
+     * @param string $metaKey
+     * @param null $metaValue Watch for specific meta value.
+     * @param null $objectId
+     */
+    public function __construct(
+        string $type,
+        $metaKey,
+        $metaValue = null,
+        $objectId = null
+    )
+    {
+        if (null === $objectId) {
+            $objectId = new IsAnything();
+        }
 
-		// Filter sends in "null" as current value.
-		array_unshift( $args, null );
+        parent::__construct(
+            'update_' . $type . '_metadata',
+            true,
+            // Filter sends in "null" as current value.
+            [null, $objectId, $metaKey, $metaValue]
+        );
 
-		parent::__construct( $testCase, 'update_' . $type . '_metadata', true, $args );
-	}
+        $this->type = $type;
+        $this->metaKey = $metaKey;
+    }
 
-	public function getErrorMessage() {
-		return sprintf( 'Updating %s-meta "%s" did not happen.', $this->type, $this->args[1] );
-	}
+    protected function fixExceptionMessage(\Exception $e) {
+        return sprintf('Updating %s-meta "%s" did not happen.', $this->type, $this->metaKey);
+    }
 }

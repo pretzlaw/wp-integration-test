@@ -4,9 +4,8 @@
 namespace Pretzlaw\WPInt\Filter;
 
 
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\Constraint\IsIdentical;
 
 /**
  * Helper for working with filters
@@ -51,7 +50,7 @@ class FilterHelper {
 
 		foreach ( $pattern as $key => $value ) {
 			if ( false === $value instanceof Constraint ) {
-				$pattern[ $key ] = new IsEqual( $value );
+				$pattern[ $key ] = new IsIdentical( $value );
 			}
 		}
 
@@ -68,13 +67,13 @@ class FilterHelper {
 						continue;
 					}
 
-					try {
-						foreach ( $pattern as $key => $constaint ) {
-							Assert::assertThat( $func[ $key ], $constaint );
-						}
-					} catch ( \Exception $e ) {
-						continue;
-					}
+                    foreach ( $pattern as $key => $constaint ) {
+                        /** @var Constraint $constaint */
+                        if (!$constaint->evaluate($func[ $key ], '', true)) {
+                            // Not our callback
+                            continue 2;
+                        }
+                    }
 
 					// Delegate to WordPress for a clean environment.
 					\remove_filter( $filterName, $callback['function'], $priority );
@@ -82,4 +81,6 @@ class FilterHelper {
 			}
 		}
 	}
+
+
 }

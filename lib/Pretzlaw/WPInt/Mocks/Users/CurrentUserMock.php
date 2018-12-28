@@ -11,11 +11,30 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @method InvocationMocker method( $constraint )
  */
 class CurrentUserMock implements MockObject {
+    /**
+     * @var \WP_User|null
+     */
 	private $originalUser;
+
+    /**
+     * @var \WP_User|null
+     */
 	private $mockedUser;
 
-	public function __construct( $originalUser, \WP_User $mockedUser ) {
-		$this->originalUser = $originalUser;
+    /**
+     * CurrentUserMock constructor.
+     *
+     * @param \WP_User|null $mockedUser
+     * @param null $originalUser
+     */
+    public function __construct($mockedUser, $originalUser = null)
+    {
+        if (null === $originalUser) {
+            global $current_user;
+            $originalUser = $current_user;
+        }
+
+        $this->originalUser = $originalUser;
 		$this->mockedUser   = $mockedUser;
 	}
 
@@ -57,7 +76,7 @@ class CurrentUserMock implements MockObject {
 	 *
 	 * @throws ExpectationFailedException
 	 */
-	public function __phpunit_verify() {
+	public function __phpunit_verify(bool $unsetInvocationMocker = true) {
 		global $current_user;
 
 		$current_user = $this->originalUser;
@@ -73,4 +92,8 @@ class CurrentUserMock implements MockObject {
 	public function __call( $name, $arguments ) {
 
 	}
+
+    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
+    {
+    }
 }

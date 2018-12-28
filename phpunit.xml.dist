@@ -1,0 +1,28 @@
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.5/phpunit.xsd"
+        colors="true"
+        convertNoticesToExceptions="false"
+        convertDeprecationsToExceptions="false"
+        bootstrap="lib/Pretzlaw/WPInt/bootstrap.php"
+>
+    <testsuite name="default">
+        <directory>lib/Pretzlaw/WPInt/Tests</directory>
+    </testsuite>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">lib/Pretzlaw/WPInt</directory>
+            <exclude>
+                <directory>lib/Pretzlaw/WPInt/Tests</directory>
+                <file>lib/Pretzlaw/WPInt/bootstrap.php</file>
+                <file>lib/Pretzlaw/WPInt/autoloader.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="var/phpunit" lowUpperBound="50" highLowerBound="80" />
+        <log type="coverage-text" target="php://stdout" showOnlySummary="true" />
+    </logging>
+</phpunit>
