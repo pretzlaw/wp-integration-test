@@ -9,37 +9,45 @@ php:
 
 env:
   global:
-    - PHPUNIT_VERSION=6.5.*
+    - PHPUNIT_VERSION=~7
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
     - WP_VERSION=4.0
-    - WP_VERSION=4.9
+    - WP_VERSION=4.2
+    - WP_VERSION=4.4
+    - WP_VERSION=4.6
+    - WP_VERSION=4.8
     - WP_VERSION=5.0
-    - WP_VERSION=nightly
+    - PHPUNIT_VERSION=6.5
+    - PHPUNIT_VERSION=7.1
+    - PHPUNIT_VERSION=7.2
+    - PHPUNIT_VERSION=7.3
+    - PHPUNIT_VERSION=7.4
+    - PHPUNIT_VERSION=7.5
 
 matrix:
   # in the process to achieve support
-  allow_failures:
-  - php: '5.6'
-  - env: WP_VERSION=nightly
-  - env: PHPUNIT_VERSION=~7 WP_VERSION=4.9
-  - env: PHPUNIT_VERSION="7.2.*" WP_VERSION=4.9
-  - env: PHPUNIT_VERSION="7.4.*" WP_VERSION=4.9
-  - env: PHPUNIT_VERSION="7.5.*" WP_VERSION=4.9
   include:
-  # additional combination among env (as above)
+  # Far-seeing test of bleeding edge
+  - php: '7.3'
+    env: WP_VERSION=nightly
+  - php: hhvm
+    env: WP_VERSION=5.0
+  - php: nightly
+    env: WP_VERSION=5.0
+  # Introducing upcoming support
   - php: '5.6'
     env: PHPUNIT_VERSION=~5 WP_VERSION=4.9
-  - php: '7.1'
-    env: PHPUNIT_VERSION=~7 WP_VERSION=4.9
-  # Introducing intermediate version tests
-  - php: '7.3'
-    env: PHPUNIT_VERSION="7.2.*" WP_VERSION=4.9
-  - php: '7.2'
-    env: PHPUNIT_VERSION="7.4.*" WP_VERSION=4.9
-  - php: '7.1'
-    env: PHPUNIT_VERSION="7.5.*" WP_VERSION=4.9
+  allow_failures:
+  - php: '5.6'
+  - php: hhvm
+  - php: nightly
+  - env: WP_VERSION=nightly
+  - env: PHPUNIT_VERSION=~7 WP_VERSION=4.9
+  - env: PHPUNIT_VERSION="7.2.*"
+  - env: PHPUNIT_VERSION="7.4.*"
+  - env: PHPUNIT_VERSION="7.5.*"
 
 services:
   - mysql
