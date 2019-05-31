@@ -51,6 +51,12 @@ function run_wp( $path = null ) {
  * @throws \Exception
  */
 function locate_wordpress() {
+    $env = getenv( 'WP_DIR' );
+    if ( $env && is_dir( $env ) ) {
+        // Got it from environment:
+        return $env;
+    }
+
 	// Locate downwards.
 	$directory     = new \RecursiveDirectoryIterator( getcwd() );
 	$iterator      = new \RecursiveIteratorIterator(
@@ -59,17 +65,10 @@ function locate_wordpress() {
 		\RecursiveIteratorIterator::CATCH_GET_CHILD
 	);
 	$regex         = new \RegexIterator( $iterator, '/.*\/wp-load\.php$/', \RecursiveRegexIterator::GET_MATCH );
-	$possibleFiles = \iterator_to_array( $regex );
 
-	if ( count( $possibleFiles ) > 1 ) {
-		throw new \Exception( 'Could not determine which wp-load.php should be used.' );
+	foreach ( $regex as $wpLoadPath ) {
+		return dirname( current( $wpLoadPath ) );
 	}
 
-	if ( \count( $possibleFiles ) !== 1 ) {
-		throw new \Exception( 'Could not find wp-load.php automatically.' );
-	}
-
-	$match = current( $possibleFiles );
-
-	return dirname( \current( $match ) );
+	throw new \RuntimeException( 'Could not find wp-load.php automatically.' );
 }
