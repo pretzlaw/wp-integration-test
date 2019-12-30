@@ -132,7 +132,10 @@ class ExpectedFilter implements MockObject {
 	 */
 	public function __phpunit_getInvocationMocker() {
 		if ( null === $this->invocationMocker ) {
-			$this->invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker( [ $this->name ], true );
+			$this->invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker(
+			    [ $this->name, strtolower( $this->name ) ],
+                true
+            );
 		}
 
 		return $this->invocationMocker;
