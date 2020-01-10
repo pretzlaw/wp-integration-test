@@ -2,6 +2,7 @@
 
 /.docker
 /.env
+/html
 /srv
 /var
 /composer.lock
