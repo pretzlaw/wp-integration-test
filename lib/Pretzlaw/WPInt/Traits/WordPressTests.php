@@ -41,5 +41,6 @@ trait WordPressTests
     use PostAssertions;
     // use PostQueryAssertions; this is in PostAssertions already
     use PostTypeAssertions;
+    use ShortcodeAssertions;
     use UserAssertions;
 }
