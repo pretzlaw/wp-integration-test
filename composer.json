@@ -19,7 +19,7 @@
     }
   },
   "require": {
-    "phpunit/phpunit": "~6.5 || <= 7.5"
+    "phpunit/phpunit": "~6.5 || <= 7.5 || ~8"
   },
   "require-dev": {
     "wp-cli/wp-cli-bundle": "~2"

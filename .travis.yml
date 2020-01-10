@@ -22,36 +22,28 @@ matrix:
   allow_failures:
   - php: '5.6'
   - env: WP_VERSION=nightly
-  - env: PHPUNIT_VERSION=~7 WP_VERSION=4.9
-  - env: PHPUNIT_VERSION="7.2.*" WP_VERSION=4.9
-  - env: PHPUNIT_VERSION="7.4.*" WP_VERSION=4.9
-  - env: PHPUNIT_VERSION="7.5.*" WP_VERSION=4.9
   include:
   # see https://codex.wordpress.org/WordPress_Versions
   # see https://phpunit.de/upported-versions.html
   - php: '7.3'
-    env: WP_VERSION=5.1
+    env: PHPUNIT_VERSION="8.5.*" WP_VERSION=5.1
   - php: '7.2'
-    env: WP_VERSION=4.9
-  - php: '7.1'
-    env: WP_VERSION=4.8
-  - php: '7.0'
-    env: WP_VERSION=4.6
-  - php: '7.0'
-    env: WP_VERSION=4.0
+    env: PHPUNIT_VERSION="8.0.*" WP_VERSION=4.9
 
-  # additional combination among env (as above)
+  - php: '7.1'
+    env: PHPUNIT_VERSION="7.5.*" WP_VERSION=4.8
+  - php: '7.1'
+    env: PHPUNIT_VERSION="7.0.*" WP_VERSION=4.8
+
+  - php: '7.0'
+    env: PHPUNIT_VERSION="6.5.*" WP_VERSION=4.6
+  - php: '7.0'
+    env: PHPUNIT_VERSION="6.0.*" WP_VERSION=4.0
+
+  # Trying to support ...
   - php: '5.6'
     env: PHPUNIT_VERSION=~5 WP_VERSION=4.9
-  - php: '7.1'
-    env: PHPUNIT_VERSION=~7 WP_VERSION=4.9
-  # Introducing intermediate version tests
-  - php: '7.3'
-    env: PHPUNIT_VERSION="7.2.*" WP_VERSION=4.9
-  - php: '7.2'
-    env: PHPUNIT_VERSION="7.4.*" WP_VERSION=4.9
-  - php: '7.1'
-    env: PHPUNIT_VERSION="7.5.*" WP_VERSION=4.9
+
 
 services:
   - mysql
