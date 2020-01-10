@@ -64,7 +64,8 @@ If you know PHPUnit already then this speaks for itself:
 ```php
 class FooTest extends \PHPUnit\Framework\TestCase {
 
-    use \Pretzlaw\WPInt\Traits\WordPressTests; // Yes, it's that easy.
+    use \Pretzlaw\WPInt\Traits\WordPressTests;
+    // or use the WPAssert::assert...() methods 
     
     function testBar() {
         // Simple assertions
