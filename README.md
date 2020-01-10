@@ -25,7 +25,7 @@ We do not require that much
 
 - PHP 7.0 - 7.3
 - phpUnit 6.5 - 7.5
-- WordPress 4.9 - 5.0
+- WordPress 4.9 - 5.3
 
 Tests expand continuously to cover a bigger range one day
 ([see Travis CI](https://travis-ci.org/pretzlaw/wp-integration-test)).
@@ -72,6 +72,9 @@ class FooTest extends \PHPUnit\Framework\TestCase {
         $this->assertActionHasCallback( 'init', 'my_own_init' );
         $this->assertPostTypeArgs( 'my-own', [ 'public' => false ] );
         
+        // Assertions using constraints
+        $this->assertShortcodeHasCallback( [ new IsInstanceOf( MyOwn::class ), 'some_method' ], 'my_shortcode_here' );
+        
         // Mock posts or meta-data
         $this->mockGetPost( 1337, [ 'post_content' => 'foobar' ] );
         $this->mockPostMeta( 'some_key', 'Some value!' ); // For all posts
@@ -98,19 +101,9 @@ Feel free to request for additional features or point out more common shortcuts
 by [opening an issue](https://github.com/pretzlaw/wp-integration-test/issues).
 
 
-## Support and Migration
-
-This is simply a list of releases and their EOL:
-
-:grey_question:    | Version   | Features until  | Hotfixes until
------------------- | --------- | --------------- | --------------
-:warning:          | <= 0.1    | 2018-11-15      | 2018-02-28
-:heavy_check_mark: |    0.2    | 2018-02-28      | 2018-03-31
-
-
 ## License
 
-Copyright 2018 Mike Pretzlaw (mike-pretzlaw.de)
+Copyright 2020 Pretzlaw (rmp-up.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,

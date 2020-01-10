@@ -5,7 +5,8 @@ php:
   - '7.0' # Until 3 Dec 2018
   - '7.1' # Until 1 Dec 2019
   - '7.2' # Until 30 Nov 2020
-  - '7.3' # RC
+  - '7.3' # Until 6 Dec 2021
+  - '7.4' # Until 28 Nov 2022
 
 env:
   global:
@@ -15,7 +16,8 @@ env:
     # see https://phpunit.de/supported-versions.html
     - WP_VERSION=4.0
     - WP_VERSION=4.9
-    - WP_VERSION=5.0
+    - WP_VERSION=5.1
+    - WP_VERSION=5.3
     - WP_VERSION=nightly
 
 matrix:
