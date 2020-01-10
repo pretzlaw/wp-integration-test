@@ -14,9 +14,6 @@ env:
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
-    - WP_VERSION=4.0
-    - WP_VERSION=4.9
-    - WP_VERSION=5.1
     - WP_VERSION=5.3
     - WP_VERSION=nightly
 
@@ -30,6 +27,19 @@ matrix:
   - env: PHPUNIT_VERSION="7.4.*" WP_VERSION=4.9
   - env: PHPUNIT_VERSION="7.5.*" WP_VERSION=4.9
   include:
+  # see https://codex.wordpress.org/WordPress_Versions
+  # see https://phpunit.de/upported-versions.html
+  - php: '7.3'
+    env: WP_VERSION=5.1
+  - php: '7.2'
+    env: WP_VERSION=4.9
+  - php: '7.1'
+    env: WP_VERSION=4.8
+  - php: '7.0'
+    env: WP_VERSION=4.6
+  - php: '7.0'
+    env: WP_VERSION=4.0
+
   # additional combination among env (as above)
   - php: '5.6'
     env: PHPUNIT_VERSION=~5 WP_VERSION=4.9
