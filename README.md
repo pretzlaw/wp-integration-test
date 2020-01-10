@@ -52,11 +52,6 @@ The bootstrapping just loads WordPress
 using the `\Pretzlaw\WP_Int\run_wp()` function.
 
 
-*Hint: If you write tests and want to have a customer-readable test evidence
-then you may want to have a look at the
-[PHPUnit Test- and Documentation-Generator](https://github.com/pretzlaw/phpunit-docgen).*
-
-
 ### Examples
 
 If you know PHPUnit already then this speaks for itself:
@@ -65,37 +60,66 @@ If you know PHPUnit already then this speaks for itself:
 class FooTest extends \PHPUnit\Framework\TestCase {
 
     use \Pretzlaw\WPInt\Traits\WordPressTests;
-    // or use the WPAssert::assert...() methods 
+    // or via WPAssert::assert...() methods 
     
     function testBar() {
-        // Simple assertions
+        // Assertions (simple or with special constraints)
         $this->assertActionHasCallback( 'init', 'my_own_init' );
-        $this->assertPostTypeArgs( 'my-own', [ 'public' => false ] );
-        
-        // Assertions using constraints
-        $this->assertShortcodeHasCallback( [ new IsInstanceOf( MyOwn::class ), 'some_method' ], 'my_shortcode_here' );
+        $this->assertShortcodeHasCallback(
+            [ new IsInstanceOf( MyOwn::class ), 'some_method' ],
+            'my_shortcode'
+        );
         
         // Mock posts or meta-data
         $this->mockGetPost( 1337, [ 'post_content' => 'foobar' ] );
         $this->mockPostMeta( 'some_key', 'Some value!' ); // For all posts
         $this->mockMetaData( 'my-own-cpt', 'another_key', 'ec', 1337 ); // Just for ID 1337
         
-        // Expect/mock actions, filter or the cache
-        $this->mockAction( 'my_own_action' )->expects( $this->once() );
+        // Mock actions, mockFilter, mockCache, ...
         $this->mockFilter( 'user_has_cap' )
              ->expects( $this->any() )
              ->willReturn( true );
-        // $this->mockCache()->...
         
         // Or make use of the shortcuts
         $this->mockCacheGet( 'my-own-cache', 'yeah!' );
         $this->disableWpDie();
-        
-        // After all this is still PHPUnit
-        static::assertTrue( my_own_plugin_foo_getter_thingy() );
     }
 }
 ```
+
+And many more helper:
+
+* assertActionHasCallback
+* assertActionNotEmpty
+* assertActionNotHasCallback
+* assertFilterEmpty
+* assertFilterHasCallback
+* assertFilterNotEmpty
+* assertFilterNotHasCallback
+* assertPluginIsActive
+* assertPluginIsNotActive
+* assertPostTypeArgs
+* assertPostTypeLabels
+* assertPostTypeRegistered
+* assertShortcodeExists
+* assertShortcodeHasCallback
+* assertShortcodeNotExists
+* disableWpDie
+* expectUpdateMeta
+* expectUpdatePostMeta
+* expectWpPostCreationWithSubset
+* getAllShortcodes
+* getShortcodeCallback
+* mockCache
+* mockCacheGet
+* mockCurrentUser
+* mockFilter
+* mockGetPost
+* mockMetaData
+* mockPostMeta
+* mockShortcode
+* mockUserMeta
+* overridePostMetaData
 
 Feel free to request for additional features or point out more common shortcuts
 by [opening an issue](https://github.com/pretzlaw/wp-integration-test/issues).
