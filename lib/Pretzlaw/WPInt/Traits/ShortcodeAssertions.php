@@ -28,6 +28,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use Pretzlaw\WPInt\Constraint\MatchesConstraint;
 use Pretzlaw\WPInt\Constraint\Shortcode\ShortcodeExists;
+use Pretzlaw\WPInt\Mocks\Shortcode;
 
 trait ShortcodeAssertions
 {
@@ -73,5 +74,20 @@ trait ShortcodeAssertions
         $all = static::getAllShortcodes();
 
         return $all[$shortcode] ?? null;
+    }
+
+    /**
+     * @param string $shortcodeName
+     *
+     * @return Shortcode
+     */
+    public function mockShortcode(string $shortcodeName)
+    {
+        $mock = new Shortcode($shortcodeName);
+
+        $this->registerMockObject($mock);
+        $mock->register();
+
+        return $mock;
     }
 }

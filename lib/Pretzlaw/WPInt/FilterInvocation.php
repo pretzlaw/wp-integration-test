@@ -24,5 +24,4 @@ class FilterInvocation extends ObjectInvocation {
 
 		return parent::generateReturnValue();
 	}
-
 }
