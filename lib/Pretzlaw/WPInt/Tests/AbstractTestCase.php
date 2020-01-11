@@ -26,7 +26,7 @@ abstract class AbstractTestCase extends TestCase
         $this->traits = new AllTraits();
     }
 
-    protected function assertUnregisterFilterAfterTest(string $filter, ExpectedFilter $mock, string $message = '')
+    protected function assertUnregisterFilterAfterTest(string $filter, ExpectedFilter $mock, string $message = null)
     {
         $hasFilter = new FilterHasCallback($filter);
         $hasNotFilter = new LogicalNot($hasFilter);
@@ -43,7 +43,7 @@ abstract class AbstractTestCase extends TestCase
             // Whatever, we are testing other things here.
         }
 
-        static::assertThat($mock, $hasNotFilter, $message);
+        static::assertThat($mock, $hasNotFilter, (string) $message);
     }
 
     protected function showAllMethods()

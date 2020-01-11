@@ -14,12 +14,10 @@
  * note to mail@rmp-up.de so we can mail you a copy.
  *
  * @package    wp-integration-test
- * @copyright  2020 Pretzlaw
+ * @copyright  2020 M. Pretzlaw
  * @license    https://rmp-up.de/license-generic.txt
  * @since      2020-01-09
  */
-
-declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Traits;
 

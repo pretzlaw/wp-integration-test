@@ -19,9 +19,9 @@ trait ActionAssertions {
         static::assertThat($expectedCallback, new LogicalNot(new ActionHasCallback($action)), $message);
     }
 
-    public static function assertActionNotEmpty($action, string $message = '')
+    public static function assertActionNotEmpty($action, string $message = null)
     {
-        static::assertThat($action, new LogicalNot(new ActionEmpty()), $message);
+        static::assertThat($action, new LogicalNot(new ActionEmpty()), (string) $message);
     }
 
     /**
@@ -30,8 +30,8 @@ trait ActionAssertions {
      * @param string $action The action name to check.
      * @param string $message Message in case of error.
      */
-    public function assertActionEmpty(string $action, string $message = '')
+    public function assertActionEmpty(string $action, string $message = null)
     {
-        static::assertThat($action, new ActionEmpty(), $message);
+        static::assertThat($action, new ActionEmpty(), (string) $message);
     }
 }

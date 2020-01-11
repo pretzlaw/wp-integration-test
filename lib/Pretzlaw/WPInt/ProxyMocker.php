@@ -19,7 +19,7 @@ use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
  * So we ask each matcher for a return value
  * and suppress the warnings until the end of the test.
  *
- * @copyright  2018 Mike Pretzlaw (https://mike-pretzlaw.de)
+ * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
  * @since      2018-12-27
  */
 class ProxyMocker implements MatcherCollection, Invokable
