@@ -104,12 +104,18 @@ And many more helper:
 * assertShortcodeExists
 * assertShortcodeHasCallback
 * assertShortcodeNotExists
+* assertWidgetExists
+* assertWidgetIsInstanceOf
+* assertWidgetIsNotInstanceOf
+* assertWidgetNotExists
+* backupWidgets
 * disableWpDie
 * expectUpdateMeta
 * expectUpdatePostMeta
 * expectWpPostCreationWithSubset
 * getAllShortcodes
 * getShortcodeCallback
+* getWidgetFactory
 * mockCache
 * mockCacheGet
 * mockCurrentUser
@@ -119,7 +125,10 @@ And many more helper:
 * mockPostMeta
 * mockShortcode
 * mockUserMeta
+* mockWidget
 * overridePostMetaData
+* unregisterAllWidgets
+* unregisterWidgetsById
 
 Feel free to request for additional features or point out more common shortcuts
 by [opening an issue](https://github.com/pretzlaw/wp-integration-test/issues).

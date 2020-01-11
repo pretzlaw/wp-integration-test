@@ -33,7 +33,7 @@ matrix:
   - php: '7.1'
     env: PHPUNIT_VERSION="6.5.*" WP_VERSION=4.8
   - php: '7.0'
-    env: PHPUNIT_VERSION="6.5.*" WP_VERSION=4.0
+    env: PHPUNIT_VERSION="6.5.*" WP_VERSION=4.6
 
   # Trying to support ...
   - php: '5.6'
@@ -63,3 +63,7 @@ script:
 
 after_failure:
   - cat srv/wp-content/debug.log || true
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files

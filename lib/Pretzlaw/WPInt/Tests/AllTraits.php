@@ -5,6 +5,7 @@ namespace Pretzlaw\WPInt\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Pretzlaw\WPInt\Traits\WordPressTests;
+use Pretzlaw\WPInt\WPAssert;
 
 /**
  * Containing all tested traits.
@@ -13,7 +14,8 @@ use Pretzlaw\WPInt\Traits\WordPressTests;
  * We also use the deprecated as long as they are there to keep up the support.
  *
  * @package Pretzlaw\WPInt\Tests
+ *
+ * @deprecated 1.0.0 Use WPAssert instead
  */
-class AllTraits extends TestCase {
-	use WordPressTests;
+class AllTraits extends WPAssert {
 }

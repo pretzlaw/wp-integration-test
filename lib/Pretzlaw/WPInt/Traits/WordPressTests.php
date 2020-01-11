@@ -43,4 +43,5 @@ trait WordPressTests
     use PostTypeAssertions;
     use ShortcodeAssertions;
     use UserAssertions;
+    use WidgetAssertions;
 }

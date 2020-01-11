@@ -133,9 +133,11 @@ abstract class AbstractMockObject implements MockObject
         return $this->__phpunit_getInvocationMocker()->expects($matcher)->method($this->name);
     }
 
-    abstract protected function fixExceptionMessage(\Exception $e);
+    protected function fixExceptionMessage(\Exception $e) {
+        return $e->getMessage();
+    }
 
-    abstract protected function register();
+    abstract public function register();
 
     abstract protected function remove();
 }
