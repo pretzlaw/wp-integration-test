@@ -90,4 +90,8 @@ class BackupVariable implements MockObject
     public function expects(Invocation $matcher)
     {
     }
+
+    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
+    {
+    }
 }

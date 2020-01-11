@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Recovery.php
+ * Widget.php
  *
  * LICENSE: This source file is created by the company around Mike Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -24,66 +24,37 @@ declare(strict_types=1);
 namespace Pretzlaw\WPInt\Mocks;
 
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
-use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Recovery
+ * Widget
  *
- * @copyright 2020 Pretzlaw (https://rmp-up.de)
+ * @copyright  2020 Pretzlaw (https://rmp-up.de)
  * @method InvocationMocker method($constraint)
  */
-class Recovery implements MockObject
+class Widget extends AbstractMockObject
 {
-    protected $invocationMocker;
-    private $recovery;
-
-    public function __construct($recovery)
-    {
-        $this->recovery = $recovery;
-    }
+    private $target;
 
     /**
-     * @inheritDoc
+     * Widget constructor.
+     *
+     * @param \WP_Widget|MockObject $widgetOrMock
      */
-    public function __phpunit_getInvocationMocker()
+    public function __construct($widgetOrMock)
     {
+        $this->target = $widgetOrMock;
+
+        parent::__construct($widgetOrMock->id_base);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function __phpunit_hasMatchers(): bool
+    public function register()
     {
-        return false;
+        register_widget($this->target);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function __phpunit_setOriginalObject($originalObject)
+    protected function remove()
     {
-    }
-
-    public function __phpunit_verify(bool $unsetInvocationMocker = null)
-    {
-        if (null === $unsetInvocationMocker) {
-            $unsetInvocationMocker = true;
-        }
-
-        if ($unsetInvocationMocker) {
-            ($this->recovery)();
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function expects(Invocation $matcher)
-    {
-    }
-
-    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
-    {
+        unregister_widget($this->target);
     }
 }

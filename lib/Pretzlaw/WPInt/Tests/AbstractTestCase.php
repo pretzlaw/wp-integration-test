@@ -7,8 +7,12 @@ use PHPUnit\Framework\TestCase;
 use Pretzlaw\WPInt\Constraint\FilterHasCallback;
 use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 use Pretzlaw\WPInt\Tests\Mocks\MockFilter;
+use Pretzlaw\WPInt\Traits\WordPressTests;
+use ReflectionClass;
+use ReflectionMethod;
 
-abstract class AbstractTestCase extends TestCase {
+abstract class AbstractTestCase extends TestCase
+{
     /**
      * @var AllTraits
      */
@@ -40,5 +44,19 @@ abstract class AbstractTestCase extends TestCase {
         }
 
         static::assertThat($mock, $hasNotFilter, $message);
+    }
+
+    protected function showAllMethods()
+    {
+        $trait = new ReflectionClass(WordPressTests::class);
+
+        $methods = [];
+        foreach ($trait->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method) {
+            $methods[] = $method->getName();
+        }
+
+        sort($methods);
+
+        echo implode(PHP_EOL, $methods) . PHP_EOL;
     }
 }

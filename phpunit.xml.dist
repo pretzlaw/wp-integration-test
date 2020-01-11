@@ -4,7 +4,7 @@
         colors="true"
         convertNoticesToExceptions="false"
         convertDeprecationsToExceptions="false"
-        bootstrap="lib/Pretzlaw/WPInt/bootstrap.php"
+        bootstrap="bootstrap.php"
 >
     <testsuite name="default">
         <directory>lib/Pretzlaw/WPInt/Tests</directory>
