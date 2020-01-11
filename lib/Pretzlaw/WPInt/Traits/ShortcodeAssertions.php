@@ -49,7 +49,7 @@ trait ShortcodeAssertions
             throw new AssertionFailedError(sprintf('Shortcode "%s" does not exist', $shortcode));
         }
 
-        static::assertThat($expectedCallback, new MatchesConstraint($callback), $message);
+        static::assertThat($callback, new MatchesConstraint($expectedCallback), $message);
     }
 
     public static function assertShortcodeNotExists(string $shortcode, $message = '')

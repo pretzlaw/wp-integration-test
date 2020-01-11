@@ -35,7 +35,7 @@ use Pretzlaw\WPInt\FilterInvocation;
 /**
  * Shortcode
  *
- * @copyright  2020 Pretzlaw (https://rmp-up.de)
+ * @copyright 2020 Pretzlaw (https://rmp-up.de)
  */
 class Shortcode extends AbstractMockObject
 {

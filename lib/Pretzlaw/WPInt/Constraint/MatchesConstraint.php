@@ -34,49 +34,47 @@ use PHPUnit\Framework\Constraint\IsInstanceOf;
  */
 class MatchesConstraint extends Constraint
 {
-    private $value;
+    protected $constraint;
 
-    public function __construct($value)
+    public function __construct($constraint)
     {
         parent::__construct();
 
-        $this->value = $value;
+        $this->constraint = $constraint;
     }
 
-    protected function compare($expected, $actual): bool
+    protected function compare($actual, $constraint): bool
     {
-        if ($expected == $actual) {
+        if ($constraint == $actual) {
             return true;
         }
 
-        if ($expected instanceof Constraint) {
-            return $expected->matches($actual);
+        if ($constraint instanceof Constraint) {
+            return $constraint->matches($actual);
         }
 
-        if (is_object($expected) && is_object($actual)) {
-            return spl_object_hash($expected) == spl_object_hash($actual);
+        if (is_object($constraint) && is_object($actual)) {
+            return spl_object_hash($constraint) == spl_object_hash($actual);
         }
 
-        if (!is_array($expected) || !is_array($actual)) {
+        if (!is_array($constraint) || !is_array($actual)) {
             return false;
         }
 
-        // Renumbering on both sides so that keys can be iterated and compared easier.
-        $expected = $this->normalizeArray($expected);
-        $actual = $this->normalizeArray($actual);
+        return $this->compareArray(
+            $this->normalizeArray($actual),
+            $this->normalizeArray($constraint)
+        );
+    }
 
+    protected function compareArray($actual, $expected)
+    {
         foreach ($expected as $key => $item) {
-            if (is_array($item)) {
-                if (false === array_key_exists($key, $actual)) {
-                    return false;
-                }
-            }
-
-            if ($item instanceof Constraint && false === $item->matches($actual[$key])) {
+            if (is_array($item) && false === array_key_exists($key, $actual)) {
                 return false;
             }
 
-            if (false === $this->compare($item, $actual[$key])) {
+            if (false === $this->compare($actual[$key], $item)) {
                 return false;
             }
         }
@@ -85,16 +83,18 @@ class MatchesConstraint extends Constraint
     }
 
     /**
-     * @param mixed|mixed[]|Constraint[] $constraint
+     * @param array|\Traversable $value
      *
      * @return bool
      */
-    protected function matches($constraint): bool
+    protected function matches($value): bool
     {
-        return $this->compare($constraint, $this->value);
+        return $this->compare($value, $this->constraint);
     }
 
     /**
+     * Renumbering on both sides so that comparison is easier
+     *
      * @param $value
      *
      * @return array
