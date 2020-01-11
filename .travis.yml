@@ -63,3 +63,7 @@ script:
 
 after_failure:
   - cat srv/wp-content/debug.log || true
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
