@@ -24,16 +24,26 @@ trait FilterAssertions
     public static function assertFilterNotHasCallback($filter, $expectedCallback)
     {
         try {
-            static::assertThat($expectedCallback, new LogicalNot(new FilterHasCallback($filter)));
+            static::assertThat(static::getWpHooks(), new LogicalNot(new FilterHasCallback($expectedCallback, $filter)));
         } catch (\Exception $e) {
             throw new AssertionFailedError($e->getMessage());
         }
     }
 
+    /**
+     * @return \WP_Hook[]|array[]
+     */
+    protected static function getWpHooks()
+    {
+        global $wp_filter;
+
+        return (array) $wp_filter;
+    }
+
     public static function assertFilterHasCallback($filter, $expectedCallback)
     {
         try {
-            static::assertThat($expectedCallback, new FilterHasCallback($filter));
+            static::assertThat(static::getWpHooks(), new FilterHasCallback($expectedCallback, $filter));
         } catch (\Exception $e) {
             throw new AssertionFailedError($e->getMessage());
         }

@@ -46,16 +46,34 @@ abstract class AbstractTestCase extends TestCase
         static::assertThat($mock, $hasNotFilter, (string) $message);
     }
 
+    /**
+     * Helper for documentation
+     *
+     * Gives a list of all possible methods
+     * except those marked as internal.
+     *
+     * @throws \ReflectionException
+     */
     protected function showAllMethods()
     {
         $trait = new ReflectionClass(WordPressTests::class);
 
         $methods = [];
         foreach ($trait->getMethods(ReflectionMethod::IS_PUBLIC | ReflectionMethod::IS_PROTECTED) as $method) {
-            $methods[] = $method->getName();
+            if (false !== strpos($method->getDocComment(), ' * @internal')) {
+                continue;
+            }
+
+            $name = $method->getName();
+            $prefix = '::';
+            if (!$method->isStatic()) {
+                $prefix = '->';
+            }
+
+            $methods[$method->getName()] = '* ' . $prefix . $name;
         }
 
-        sort($methods);
+        ksort($methods);
 
         echo implode(PHP_EOL, $methods) . PHP_EOL;
     }

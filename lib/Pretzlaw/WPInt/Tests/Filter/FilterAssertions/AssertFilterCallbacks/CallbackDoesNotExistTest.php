@@ -4,7 +4,7 @@ namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
 
 
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
-use Pretzlaw\WPInt\Tests\AllTraits;
+use Pretzlaw\WPInt\WPAssert;
 
 /**
  * Class CallbackDoesNotExistTest
@@ -37,12 +37,12 @@ class CallbackDoesNotExistTest extends AbstractTestCase
      */
     public function testAssertFilterNotHasCallbackSucceeds()
     {
-        static::assertNull(AllTraits::assertFilterNotHasCallback($this->targetFilter, 'foo'));
+        static::assertNull(WPAssert::assertFilterNotHasCallback($this->targetFilter, 'foo'));
     }
 
     public function testFilterHasCallbackFails()
     {
         $this->markTestIncomplete('This did not fail for some reason');
-        AllTraits::assertFilterHasCallback($this->targetFilter, 'foo');
+        WPAssert::assertFilterHasCallback($this->targetFilter, 'foo');
     }
 }

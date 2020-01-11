@@ -3,49 +3,42 @@
 namespace Pretzlaw\WPInt\Constraint;
 
 
-use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsEqual;
+use ArrayAccess;
 
-abstract class WpHookHasCallback extends WpHookExists
+abstract class WpHookHasCallback extends MatchesConstraint
 {
     /**
      * @var string
      */
-    private $filterName;
+    private $hookName;
 
-    /**
-     * FilterHasCallback constructor.
-     * @param string $hookName Name of the action / filter / hook.
-     * @param null $list
-     */
-    public function __construct($hookName, $list = null)
+    public function __construct($constraint, string $hookName)
     {
-        parent::__construct($list);
+        parent::__construct($constraint);
 
-        $this->filterName = $hookName;
+        $this->hookName = $hookName;
     }
 
-    protected function matches($callback): bool
+    protected function matches($hooks): bool
     {
-        if (!parent::matches($this->filterName)) {
-            return false;
-        }
-
-        $list = $this->getWpHook($this->filterName);
-
-        if (
-            !is_array($list) // WP < 4.7
-            && (
-                !class_exists('\\WP_Hook')
-                || false === $list instanceof \WP_Hook
-                || !is_array($list->callbacks)
+        if (!$hooks
+            || false === array_key_exists($this->hookName, $hooks)
+            || (!is_array($hooks[$this->hookName])
+                && false === $hooks[$this->hookName] instanceof ArrayAccess
             )
         ) {
-            // Invalid data type
             return false;
         }
 
-        return $this->searchCallback($callback);
+        foreach ($hooks[$this->hookName] as $priority => $registered) {
+            foreach ($registered as $listener) {
+                if (parent::matches($listener['function'])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -55,31 +48,11 @@ abstract class WpHookHasCallback extends WpHookExists
      */
     public function toString(): string
     {
-        return sprintf('does not exist in "%s" filter', $this->filterName);
+        return 'contains a constraint';
     }
 
-    /**
-     * Search in array
-     *
-     * Compatibility for WordPress 4.0 and other that do not use \WP_Hook .
-     *
-     * @param $callback
-     * @return bool
-     */
-    private function searchCallback($callback)
+    protected function failureDescription($other): string
     {
-        if (false === $callback instanceof Constraint) {
-            $callback = new IsEqual($callback);
-        }
-
-        foreach ($this->getWpHook($this->filterName) as $perPriority) {
-            foreach ($perPriority as $filter) {
-                if ($callback->evaluate($filter['function'], '', true)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return sprintf('Failed asserting that the "%s" hook', $this->hookName) . ' ' . $this->toString();
     }
 }

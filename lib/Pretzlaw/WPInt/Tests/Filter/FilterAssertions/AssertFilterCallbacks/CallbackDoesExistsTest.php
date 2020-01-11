@@ -4,8 +4,10 @@ namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
 
 
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint\IsInstanceOf;
+use PHPUnit\Framework\Constraint\StringContains;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
-use Pretzlaw\WPInt\Tests\AllTraits;
+use Pretzlaw\WPInt\WPAssert;
 
 /**
  * CallbackDoesExistTest
@@ -27,6 +29,7 @@ class CallbackDoesExistsTest extends AbstractTestCase
         $this->targetFilter = uniqid('', true);
 
         \add_filter($this->targetFilter, '__return_true');
+        \add_filter($this->targetFilter, [$this, 'toString']);
     }
 
     /**
@@ -40,10 +43,10 @@ class CallbackDoesExistsTest extends AbstractTestCase
     {
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage(
-            sprintf('Failed asserting that \'__return_true\' does not exist in "%s" filter.', $this->targetFilter)
+            sprintf('Failed asserting that the "%s" hook does not contain a constraint.', $this->targetFilter)
         );
 
-        AllTraits::assertFilterNotHasCallback($this->targetFilter, '__return_true');
+        WPAssert::assertFilterNotHasCallback($this->targetFilter, '__return_true');
     }
 
     /**
@@ -54,6 +57,14 @@ class CallbackDoesExistsTest extends AbstractTestCase
      */
     public function testFilterHasCallbackSucceeds()
     {
-        AllTraits::assertFilterHasCallback($this->targetFilter, '__return_true');
+        WPAssert::assertFilterHasCallback($this->targetFilter, '__return_true');
+    }
+
+    public function testFilterHasConstraint()
+    {
+        WPAssert::assertFilterHasCallback(
+            $this->targetFilter,
+            [new IsInstanceOf(__CLASS__), new StringContains('oStrin')]
+        );
     }
 }

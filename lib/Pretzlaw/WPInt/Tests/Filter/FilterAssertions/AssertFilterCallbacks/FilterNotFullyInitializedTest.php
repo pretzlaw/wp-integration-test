@@ -6,6 +6,7 @@ namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
 use PHPUnit\Framework\AssertionFailedError;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Tests\AllTraits;
+use Pretzlaw\WPInt\WPAssert;
 
 /**
  * Class FilterNotFullyInitializedTest
@@ -51,12 +52,17 @@ class FilterNotFullyInitializedTest extends AbstractTestCase
      */
     public function testFilterEmptySucceeds()
     {
-        static::assertNull(AllTraits::assertFilterEmpty($this->targetFilter));
+        static::assertNull(WPAssert::assertFilterEmpty($this->targetFilter));
     }
 
     public function testFilterNotEmptyFails()
     {
         $this->expectException(AssertionFailedError::class);
-        AllTraits::assertFilterNotEmpty($this->targetFilter);
+        WPAssert::assertFilterNotEmpty($this->targetFilter);
+    }
+
+    public function testFitlerNotEmptySucceeds()
+    {
+        WPAssert::assertFilterNotEmpty('init');
     }
 }
