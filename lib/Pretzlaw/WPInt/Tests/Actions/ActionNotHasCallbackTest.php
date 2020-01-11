@@ -63,7 +63,7 @@ class ActionNotHasCallbackTest extends AbstractTestCase
 
         $this->actionName = 'my-own-action';
         $this->actionCallback = '__return_true';
-        $this->actionConstraint = new ActionHasCallback($this->actionName);
+        $this->actionConstraint = new ActionHasCallback($this->actionCallback, $this->actionName);
 
         add_action($this->actionName, $this->actionCallback);
     }
@@ -71,7 +71,7 @@ class ActionNotHasCallbackTest extends AbstractTestCase
     public function testFailsForRegisteredCallbacks()
     {
         static::assertNotFalse(has_action($this->actionName, $this->actionCallback));
-        static::assertTrue($this->actionConstraint->evaluate($this->actionCallback, '', true));
+        static::assertTrue($this->actionConstraint->evaluate(static::getActionHooks(), '', true));
 
         $this->expectException(AssertionFailedError::class);
         $this->assertActionNotHasCallback($this->actionName, $this->actionCallback);

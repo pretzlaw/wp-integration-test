@@ -23,5 +23,8 @@
   },
   "require-dev": {
     "wp-cli/wp-cli-bundle": "~2"
+  },
+  "conflict": {
+    "johnpbloch/wordpress-core": "< 4.6"
   }
 }

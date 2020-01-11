@@ -64,8 +64,8 @@ class FooTest extends \PHPUnit\Framework\TestCase {
     
     function testBar() {
         // Assertions (simple or with special constraints)
-        $this->assertActionHasCallback( 'init', 'my_own_init' );
-        $this->assertShortcodeHasCallback(
+        static::assertActionHasCallback( 'init', 'my_own_init' );
+        static::assertShortcodeHasCallback(
             [ new IsInstanceOf( MyOwn::class ), 'some_method' ],
             'my_shortcode'
         );
@@ -89,46 +89,47 @@ class FooTest extends \PHPUnit\Framework\TestCase {
 
 And many more helper:
 
-* assertActionHasCallback
-* assertActionNotEmpty
-* assertActionNotHasCallback
-* assertFilterEmpty
-* assertFilterHasCallback
-* assertFilterNotEmpty
-* assertFilterNotHasCallback
-* assertPluginIsActive
-* assertPluginIsNotActive
-* assertPostTypeArgs
-* assertPostTypeLabels
-* assertPostTypeRegistered
-* assertShortcodeExists
-* assertShortcodeHasCallback
-* assertShortcodeNotExists
-* assertWidgetExists
-* assertWidgetIsInstanceOf
-* assertWidgetIsNotInstanceOf
-* assertWidgetNotExists
-* backupWidgets
-* disableWpDie
-* expectUpdateMeta
-* expectUpdatePostMeta
-* expectWpPostCreationWithSubset
-* getAllShortcodes
-* getShortcodeCallback
-* getWidgetFactory
-* mockCache
-* mockCacheGet
-* mockCurrentUser
-* mockFilter
-* mockGetPost
-* mockMetaData
-* mockPostMeta
-* mockShortcode
-* mockUserMeta
-* mockWidget
-* overridePostMetaData
-* unregisterAllWidgets
-* unregisterWidgetsById
+* ::assertActionHasCallback
+* ::assertActionNotEmpty
+* ->assertActionNotHasCallback
+* ::assertFilterEmpty
+* ::assertFilterHasCallback
+* ::assertFilterNotEmpty
+* ::assertFilterNotHasCallback
+* ->assertPluginIsActive
+* ->assertPluginIsNotActive
+* ::assertPostTypeArgs
+* ::assertPostTypeLabels
+* ::assertPostTypeRegistered
+* ::assertShortcodeExists
+* ::assertShortcodeHasCallback
+* ::assertShortcodeNotExists
+* ::assertWidgetExists
+* ::assertWidgetIsInstanceOf
+* ::assertWidgetIsNotInstanceOf
+* ::assertWidgetNotExists
+* ->backupWidgets
+* ->disableWpDie
+* ->expectUpdateMeta
+* ->expectUpdatePostMeta
+* ->expectWpPostCreationWithSubset
+* ::getAllShortcodes
+* ::getShortcodeCallback
+* ::getWidgetFactory
+* ::getWpHooks
+* ->mockCache
+* ->mockCacheGet
+* ->mockCurrentUser
+* ->mockFilter
+* ::mockGetPost
+* ->mockMetaData
+* ->mockPostMeta
+* ->mockShortcode
+* ->mockUserMeta
+* ->mockWidget
+* ->overridePostMetaData
+* ->unregisterAllWidgets
+* ->unregisterWidgetsById
 
 Feel free to request for additional features or point out more common shortcuts
 by [opening an issue](https://github.com/pretzlaw/wp-integration-test/issues).

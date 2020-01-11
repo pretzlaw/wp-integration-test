@@ -9,14 +9,14 @@ use Pretzlaw\WPInt\Constraint\ActionEmpty;
 use Pretzlaw\WPInt\Constraint\ActionHasCallback;
 
 trait ActionAssertions {
-    public static function assertActionHasCallback($action, $expectedCallback, $message = '')
+    public static function assertActionHasCallback($action, $constraint, $message = '')
     {
-        static::assertThat($expectedCallback, new ActionHasCallback($action), $message);
+        static::assertThat(static::getActionHooks(), new ActionHasCallback($constraint, $action), $message);
     }
 
-    public function assertActionNotHasCallback($action, $expectedCallback, $message = '')
+    public function assertActionNotHasCallback($action, $constraint, $message = '')
     {
-        static::assertThat($expectedCallback, new LogicalNot(new ActionHasCallback($action)), $message);
+        static::assertThat(static::getActionHooks(), new LogicalNot(new ActionHasCallback($constraint, $action)), $message);
     }
 
     public static function assertActionNotEmpty($action, string $message = null)
@@ -33,5 +33,16 @@ trait ActionAssertions {
     public function assertActionEmpty(string $action, string $message = null)
     {
         static::assertThat($action, new ActionEmpty(), (string) $message);
+    }
+
+    /**
+     * @return \WP_Hook[]
+     * @internal
+     */
+    protected static function getActionHooks()
+    {
+        global $wp_filter;
+
+        return (array) $wp_filter;
     }
 }

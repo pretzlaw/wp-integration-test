@@ -8,6 +8,7 @@ use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\ExpectationFailedException;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Tests\AllTraits;
+use Pretzlaw\WPInt\WPAssert;
 
 /**
  * Class FilterDoesNotExistTest
@@ -33,14 +34,14 @@ class FilterDoesNotExistTest extends AbstractTestCase
     {
         $this->expectException(AssertionFailedError::class);
 
-        AllTraits::assertFilterHasCallback(uniqid('', true), new IsAnything());
+        WPAssert::assertFilterHasCallback(uniqid('', true), new IsAnything());
     }
 
     public function testFilterNotEmptyFails()
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage("Failed asserting that 'foo' does not have callbacks registered.");
-        AllTraits::assertFilterNotEmpty('foo');
+        WPAssert::assertFilterNotEmpty('foo');
     }
 
     /**
