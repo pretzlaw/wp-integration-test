@@ -87,17 +87,4 @@ trait MetaDataAssertions {
     {
         $this->mockMetaData('user', $metaKey, $metaValue, $postId);
     }
-
-    /**
-     * @param $metaValue
-     * @param $objectId
-     * @param $metaKey
-     * @return mixed
-     *
-     * @deprecated 0.3.0 This will be because expectations were properly registered with 0.2.0
-     */
-    public function overridePostMetaData($metaValue, $objectId, $metaKey)
-    {
-        $this->mockPostMeta($metaKey, $metaValue, $objectId);
-    }
 }
