@@ -6,10 +6,9 @@
   "authors": [
     {
       "name": "Pretzlaw",
-      "email": "mail@mike-pretzlaw.de"
+      "email": "mail@rmp-up.de"
     }
   ],
-  "minimum-stability": "stable",
   "autoload": {
     "files": [
       "lib/Pretzlaw/WPInt/autoloader.php"

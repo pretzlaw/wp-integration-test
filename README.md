@@ -52,7 +52,7 @@ The bootstrapping just loads WordPress
 using the `\Pretzlaw\WP_Int\run_wp()` function.
 
 
-### Examples
+### Example
 
 If you know PHPUnit already then this speaks for itself:
 
@@ -87,7 +87,9 @@ class FooTest extends \PHPUnit\Framework\TestCase {
 }
 ```
 
-And many more helper:
+Or make use of the other helper.
+
+### Assertions
 
 * ::assertActionHasCallback
 * ::assertActionNotEmpty
@@ -108,15 +110,12 @@ And many more helper:
 * ::assertWidgetIsInstanceOf
 * ::assertWidgetIsNotInstanceOf
 * ::assertWidgetNotExists
-* ->backupWidgets
-* ->disableWpDie
+
+### Expectations / Mocks
+
 * ->expectUpdateMeta
 * ->expectUpdatePostMeta
 * ->expectWpPostCreationWithSubset
-* ::getAllShortcodes
-* ::getShortcodeCallback
-* ::getWidgetFactory
-* ::getWpHooks
 * ->mockCache
 * ->mockCacheGet
 * ->mockCurrentUser
@@ -127,6 +126,16 @@ And many more helper:
 * ->mockShortcode
 * ->mockUserMeta
 * ->mockWidget
+
+
+### Other helper
+
+* ->backupWidgets
+* ->disableWpDie
+* ::getAllShortcodes
+* ::getShortcodeCallback
+* ::getWidgetFactory
+* ::getWpHooks
 * ->overridePostMetaData
 * ->unregisterAllWidgets
 * ->unregisterWidgetsById
