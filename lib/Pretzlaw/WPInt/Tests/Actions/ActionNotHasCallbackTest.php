@@ -22,6 +22,7 @@
 
 namespace Pretzlaw\WPInt\Tests\Actions;
 
+use ArrayObject;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
@@ -50,8 +51,8 @@ class ActionNotHasCallbackTest extends AbstractTestCase
     public function getSucceedingConstraints(): array
     {
         return [
-            [[new IsInstanceOf(__CLASS__), 'foo']],
-            [[$this, new IsAnything()]],
+            [[new IsInstanceOf(ArrayObject::class), 'foo']],
+            [[new ArrayObject(), new IsAnything()]],
             [[new IsAnything(), new IsAnything()]],
             [new IsType('array')]
         ];
@@ -93,10 +94,10 @@ class ActionNotHasCallbackTest extends AbstractTestCase
      */
     public function testFailsWhenConstraintsFoundOne($constraint)
     {
-        $this->markTestSkipped('Needs custom comparator. GitHub issue 8');
-        add_action($this->actionName, [$this, 'foo']);
+        add_action($this->actionName, [new ArrayObject(), 'foo']);
+        $this->expectException(AssertionFailedError::class);
 
-        self::assertActionHasCallback($this->actionName, $constraint);
+        self::assertActionNotHasCallback($this->actionName, $constraint);
     }
 
     protected function tearDown()

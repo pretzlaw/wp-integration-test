@@ -48,11 +48,11 @@ class MatchesConstraint extends Constraint
         }
 
         if ($constraint instanceof Constraint) {
-            return $constraint->matches($actual);
+            return $constraint->evaluate($actual, '', true);
         }
 
         if (is_object($constraint) && is_object($actual)) {
-            return spl_object_hash($constraint) == spl_object_hash($actual);
+            return $constraint == $actual;
         }
 
         if (!is_array($constraint) || !is_array($actual)) {

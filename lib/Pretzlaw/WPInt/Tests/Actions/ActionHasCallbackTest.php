@@ -22,6 +22,7 @@
 
 namespace Pretzlaw\WPInt\Tests\Actions;
 
+use ArrayObject;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
@@ -42,6 +43,20 @@ use Pretzlaw\WPInt\Traits\ActionAssertions;
  *      // or not
  *      $this->assertActionNotHasCallback( 'init', 'other_plugin_init' );
  *
+ * It is also possible to assert that a specific class and/or method is called:
+ *
+ * ```php
+ * use PHPUnit\Framework\Constraint\IsInstanceOf;
+ *
+ * $this->assertActionHasCallback(
+ *   'init',
+ *   [ new IsInstanceOf( MyOwnPlugin::class ), 'initHookMethod' ]
+ * );
+ * ```
+ *
+ * This checks if the method "initHookMethod"
+ * and an object of type "MyOwnPlugin"
+ * has been registered for the init action.
  *
  * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
  * @since      2018-12-27
@@ -60,10 +75,10 @@ class ActionHasCallbackTest extends AbstractTestCase
     public function getSucceedingConstraints(): array
     {
         return [
-            [[new IsInstanceOf(__CLASS__), 'foo']],
-            [[$this, new IsAnything()]],
+            [[new IsInstanceOf(ArrayObject::class), 'foo']],
+            [[new ArrayObject(), new IsAnything()]],
             [[new IsAnything(), new IsAnything()]],
-            [new IsType('array')]
+            [new IsType('array')],
         ];
     }
 
@@ -104,8 +119,7 @@ class ActionHasCallbackTest extends AbstractTestCase
      */
     public function testSucceedsWhenUsingConstraints($constraint)
     {
-        $this->markTestSkipped('Needs custom comparator. GitHub issue 8');
-        add_action($this->actionName, [$this, 'foo']);
+        add_action($this->actionName, [new ArrayObject(), 'foo']);
 
         self::assertActionHasCallback($this->actionName, $constraint);
     }

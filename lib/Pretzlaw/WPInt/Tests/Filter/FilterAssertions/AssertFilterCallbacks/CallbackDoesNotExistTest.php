@@ -3,6 +3,7 @@
 namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
 
 
+use PHPUnit\Framework\AssertionFailedError;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\WPAssert;
 
@@ -42,7 +43,11 @@ class CallbackDoesNotExistTest extends AbstractTestCase
 
     public function testFilterHasCallbackFails()
     {
-        $this->markTestIncomplete('This did not fail for some reason');
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage(
+            'Failed asserting that the "' . $this->targetFilter . '" hook contains a constraint'
+        );
+
         WPAssert::assertFilterHasCallback($this->targetFilter, 'foo');
     }
 }
