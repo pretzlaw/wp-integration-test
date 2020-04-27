@@ -45,7 +45,7 @@ class CallbackDoesNotExistTest extends AbstractTestCase
     {
         $this->expectException(AssertionFailedError::class);
         $this->expectExceptionMessage(
-            'Failed asserting that the "' . $this->targetFilter . '" hook contains a constraint'
+            'the "' . $this->targetFilter . '" hook contains a constraint'
         );
 
         WPAssert::assertFilterHasCallback($this->targetFilter, 'foo');

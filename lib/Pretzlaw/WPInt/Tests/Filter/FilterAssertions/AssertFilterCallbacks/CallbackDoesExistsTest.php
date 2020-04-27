@@ -5,6 +5,7 @@ namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
+use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\StringContains;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\WPAssert;
@@ -28,8 +29,8 @@ class CallbackDoesExistsTest extends AbstractTestCase
 
         $this->targetFilter = uniqid('', true);
 
-        \add_filter($this->targetFilter, '__return_true');
-        \add_filter($this->targetFilter, [$this, 'toString']);
+        \add_filter($this->targetFilter, '__return_true', 5);
+        \add_filter($this->targetFilter, [$this, 'toString'], 13);
     }
 
     /**
@@ -65,6 +66,27 @@ class CallbackDoesExistsTest extends AbstractTestCase
         WPAssert::assertFilterHasCallback(
             $this->targetFilter,
             [new IsInstanceOf(__CLASS__), new StringContains('oStrin')]
+        );
+    }
+
+    public function testFilterWithinPriority()
+    {
+        WPAssert::assertFilterHasCallback(
+            $this->targetFilter,
+            [new IsInstanceOf(__CLASS__), new StringContains('oStrin')],
+            13
+        );
+    }
+
+    public function testFilterInDifferentPriority()
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage('hook contains a constraint (where priority is less than 10)');
+
+        WPAssert::assertFilterHasCallback(
+            $this->targetFilter,
+            [new IsInstanceOf(__CLASS__), new StringContains('oStrin')],
+            new LessThan(10)
         );
     }
 }

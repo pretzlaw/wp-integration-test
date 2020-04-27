@@ -8,7 +8,7 @@ use Pretzlaw\WPInt\Tests\AllTraits;
 use Pretzlaw\WPInt\Traits\FilterAssertions;
 
 /**
- * FilterAssertions
+ * Filter
  *
  *
  * @package Pretzlaw\WPInt\Tests\Filter
