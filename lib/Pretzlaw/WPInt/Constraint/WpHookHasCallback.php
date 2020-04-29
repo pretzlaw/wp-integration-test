@@ -4,6 +4,8 @@ namespace Pretzlaw\WPInt\Constraint;
 
 
 use ArrayAccess;
+use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\IsEqual;
 
 abstract class WpHookHasCallback extends MatchesConstraint
 {
@@ -11,12 +13,22 @@ abstract class WpHookHasCallback extends MatchesConstraint
      * @var string
      */
     private $hookName;
+    /**
+     * @var null|Constraint
+     */
+    private $priorityLevel;
 
-    public function __construct($constraint, string $hookName)
+    public function __construct($constraint, string $hookName, $priorityLevel = null)
     {
         parent::__construct($constraint);
 
         $this->hookName = $hookName;
+
+        if (null !== $priorityLevel && false === $priorityLevel instanceof Constraint) {
+            $priorityLevel = new IsEqual($priorityLevel);
+        }
+
+        $this->priorityLevel = $priorityLevel;
     }
 
     protected function matches($hooks): bool
@@ -31,6 +43,10 @@ abstract class WpHookHasCallback extends MatchesConstraint
         }
 
         foreach ($hooks[$this->hookName] as $priority => $registered) {
+            if (null !== $this->priorityLevel && !$this->priorityLevel->evaluate($priority, '', true)) {
+                continue;
+            }
+
             foreach ($registered as $listener) {
                 if (parent::matches($listener['function'])) {
                     return true;
@@ -48,11 +64,17 @@ abstract class WpHookHasCallback extends MatchesConstraint
      */
     public function toString(): string
     {
-        return 'contains a constraint';
+        $message = 'contains a constraint';
+
+        if ($this->priorityLevel) {
+            $message .= ' (where priority ' . $this->priorityLevel->toString() . ')';
+        }
+
+        return $message;
     }
 
     protected function failureDescription($other): string
     {
-        return sprintf('Failed asserting that the "%s" hook', $this->hookName) . ' ' . $this->toString();
+        return sprintf('the "%s" hook', $this->hookName) . ' ' . $this->toString();
     }
 }

@@ -3,6 +3,7 @@
 namespace Pretzlaw\WPInt\Filter;
 
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use Pretzlaw\WPInt\Constraint\FilterHasCallback;
 use Pretzlaw\WPInt\Constraint\FilterEmpty;
@@ -16,15 +17,19 @@ use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 trait FilterAssertions
 {
     /**
-     * @param $filter
-     * @param $expectedCallback
+     * Check if a filter doesn't have a callback.
      *
-     * @throws AssertionFailedError
+     * @param string           $filter
+     * @param mixed|Constraint $expectedCallback
+     * @param null             $priority
      */
-    public static function assertFilterNotHasCallback($filter, $expectedCallback)
+    public static function assertFilterNotHasCallback($filter, $expectedCallback, $priority = null)
     {
         try {
-            static::assertThat(static::getWpHooks(), new LogicalNot(new FilterHasCallback($expectedCallback, $filter)));
+            static::assertThat(
+                static::getWpHooks(),
+                new LogicalNot(new FilterHasCallback($expectedCallback, $filter, $priority))
+            );
         } catch (\Exception $e) {
             throw new AssertionFailedError($e->getMessage());
         }
@@ -40,10 +45,10 @@ trait FilterAssertions
         return (array) $wp_filter;
     }
 
-    public static function assertFilterHasCallback($filter, $expectedCallback)
+    public static function assertFilterHasCallback($filter, $expectedCallback, $priority = null)
     {
         try {
-            static::assertThat(static::getWpHooks(), new FilterHasCallback($expectedCallback, $filter));
+            static::assertThat(static::getWpHooks(), new FilterHasCallback($expectedCallback, $filter, $priority));
         } catch (\Exception $e) {
             throw new AssertionFailedError($e->getMessage());
         }
