@@ -71,7 +71,7 @@ class FooTest extends \PHPUnit\Framework\TestCase {
         );
         
         // Mock posts or meta-data
-        $this->mockGetPost( 1337, [ 'post_content' => 'foobar' ] );
+        $this->mockPost( 1337, [ 'post_content' => 'foobar' ] );
         $this->mockPostMeta( 'some_key', 'Some value!' ); // For all posts
         $this->mockMetaData( 'my-own-cpt', 'another_key', 'ec', 1337 ); // Just for ID 1337
         
@@ -118,9 +118,10 @@ Or make use of the other helper.
 * ->expectWpPostCreationWithSubset
 * ->mockCache
 * ->mockCacheGet
+* ->mockCurrentPost
 * ->mockCurrentUser
 * ->mockFilter
-* ::mockGetPost
+* ->mockPost
 * ->mockMetaData
 * ->mockPostMeta
 * ->mockShortcode

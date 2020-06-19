@@ -8,6 +8,8 @@ trait PostQueryAssertions {
     /**
      * @param int $id Post-ID.
      * @param \WP_Post|array $returnVal Post object or it's data as array (will be transformed into post object).
+     *
+     * @deprecated 0.4.0 Use PostAssertions::mockGetPost instead
      */
     protected static function mockGetPost(int $id, $returnVal)
     {

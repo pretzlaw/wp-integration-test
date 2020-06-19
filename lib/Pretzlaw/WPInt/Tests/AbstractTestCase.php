@@ -13,6 +13,8 @@ use ReflectionMethod;
 
 abstract class AbstractTestCase extends TestCase
 {
+    use WordPressTests;
+
     /**
      * @var AllTraits
      */
