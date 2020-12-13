@@ -7,24 +7,24 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
 use PHPUnit\Framework\MockObject\InvocationMocker;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
-use PHPUnit\Framework\MockObject\MockObject;
 use Pretzlaw\WPInt\FilterInvocation;
 
 /**
  * @method InvocationMocker method( $constraint )
  */
-class ExpectedFilter implements MockObject {
-	/**
-	 * @var array
-	 */
-	protected $args;
+class ExpectedFilter implements PostCondition
+{
+    /**
+     * @var array
+     */
+    protected $args;
 
-	/**
-	 * @var string
-	 */
-	private $name;
+    /**
+     * @var string
+     */
+    private $name;
 
-	/**
+    /**
 	 * @var bool
 	 */
 	private $return;
@@ -73,21 +73,17 @@ class ExpectedFilter implements MockObject {
 
 	}
 
-	/**
-	 * Verifies that the current expectation is valid. If everything is OK the
-	 * code should just return, if not it must throw an exception.
-	 *
-	 * @throws ExpectationFailedException
-	 */
-	public function __phpunit_verify(bool $unsetInvocationMocker = true) {
-		$this->removeFilter();
-
-		try {
-			$this->__phpunit_getInvocationMocker()->verify();
-		} catch ( ExpectationFailedException $e ) {
-			throw new ExpectationFailedException( $this->fixExceptionMessage( $e ), $e->getComparisonFailure() );
-		}
-	}
+    /**
+     * Verifies that the current expectation is valid. If everything is OK the
+     * code should just return, if not it must throw an exception.
+     *
+     * @throws ExpectationFailedException
+     * @deprecated 0.4 Please use ::verifyPostCondition instead
+     */
+	public function __phpunit_verify(bool $unsetInvocationMocker = true)
+    {
+        $this->verifyPostCondition();
+    }
 
     /**
      * Registers filter in WordPress.
@@ -127,9 +123,11 @@ class ExpectedFilter implements MockObject {
 		return \remove_filter( $this->getName(), $this );
 	}
 
-	/**
-	 * @return InvocationMocker
-	 */
+    /**
+     * @return InvocationMocker
+     *
+     * @deprecated 0.4 Should be removed with a custom invoker.
+     */
 	public function __phpunit_getInvocationMocker() {
 		if ( null === $this->invocationMocker ) {
 			$this->invocationMocker = new \Pretzlaw\WPInt\Mocks\InvocationMocker(
@@ -161,10 +159,21 @@ class ExpectedFilter implements MockObject {
     public function getArgs()
     {
         return $this->args;
-	}
+    }
 
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
     {
 
+    }
+
+    public function verifyPostCondition()
+    {
+        $this->removeFilter();
+
+        try {
+            $this->__phpunit_getInvocationMocker()->verify();
+        } catch (ExpectationFailedException $e) {
+            throw new ExpectationFailedException($this->fixExceptionMessage($e), $e->getComparisonFailure());
+        }
     }
 }

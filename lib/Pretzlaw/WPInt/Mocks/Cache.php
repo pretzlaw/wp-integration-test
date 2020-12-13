@@ -26,7 +26,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Invocation\ObjectInvocation;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Pretzlaw\WPInt\ProxyInvocationBuilder;
 use Pretzlaw\WPInt\ProxyMocker;
@@ -41,7 +40,7 @@ use Pretzlaw\WPInt\ProxyMocker;
  * @since      2018-12-27
  * @method InvocationMocker method($constraint)
  */
-class Cache implements MockObject
+class Cache implements PostCondition
 {
     private $matcher = [];
     private $invocationMocker;
@@ -117,6 +116,7 @@ class Cache implements MockObject
 
     /**
      * @return InvocationMocker
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_setOriginalObject($originalObject)
     {
@@ -125,6 +125,7 @@ class Cache implements MockObject
 
     /**
      * @return ProxyMocker
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_getInvocationMocker()
     {
@@ -140,16 +141,16 @@ class Cache implements MockObject
      * code should just return, if not it must throw an exception.
      *
      * @throws ExpectationFailedException
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_verify(bool $unsetInvocationMocker = true)
     {
-        $this->reset();
-
-        return $this->__phpunit_getInvocationMocker()->verify();
+        $this->verifyPostCondition();
     }
 
     /**
      * @return bool
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_hasMatchers()
     {
@@ -171,8 +172,19 @@ class Cache implements MockObject
         }
     }
 
+    /**
+     * @param bool $returnValueGeneration
+     * @deprecated 0.4 Will be removed
+     */
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
     {
 
+    }
+
+    public function verifyPostCondition()
+    {
+        $this->reset();
+
+        $this->__phpunit_getInvocationMocker()->verify();
     }
 }

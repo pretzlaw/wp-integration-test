@@ -31,7 +31,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @copyright 2020 M. Pretzlaw (https://rmp-up.de)
  * @method InvocationMocker method($constraint)
  */
-class Recovery implements MockObject
+class Recovery implements PostCondition
 {
     protected $invocationMocker;
     private $recovery;
@@ -43,6 +43,7 @@ class Recovery implements MockObject
 
     /**
      * @inheritDoc
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_getInvocationMocker()
     {
@@ -50,6 +51,7 @@ class Recovery implements MockObject
 
     /**
      * @inheritDoc
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_hasMatchers(): bool
     {
@@ -58,19 +60,20 @@ class Recovery implements MockObject
 
     /**
      * @inheritDoc
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_setOriginalObject($originalObject)
     {
     }
 
+    /**
+     * @param bool|null $unsetInvocationMocker
+     * @deprecated 0.4 Will be removed
+     */
     public function __phpunit_verify(bool $unsetInvocationMocker = null)
     {
-        if (null === $unsetInvocationMocker) {
-            $unsetInvocationMocker = true;
-        }
-
-        if ($unsetInvocationMocker) {
-            ($this->recovery)();
+        if (true === $unsetInvocationMocker) {
+            $this->verifyPostCondition();
         }
     }
 
@@ -81,7 +84,16 @@ class Recovery implements MockObject
     {
     }
 
+    /**
+     * @param bool $returnValueGeneration
+     * @deprecated 0.4 Will be removed
+     */
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
     {
+    }
+
+    public function verifyPostCondition()
+    {
+        ($this->recovery)();
     }
 }

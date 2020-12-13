@@ -76,7 +76,8 @@ trait MetaDataAssertions {
         $metaData->expects($this->any())->willReturnCallback($switch);
 
         $metaData->addFilter();
-        $this->registerMockObject($metaData);
+
+        $this->wpIntMocks[] = $metaData;
     }
 
     protected function mockPostMeta($metaKey, $metaValue, $postId = null)

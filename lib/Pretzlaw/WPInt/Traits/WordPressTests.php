@@ -22,13 +22,9 @@
 
 namespace Pretzlaw\WPInt\Traits;
 
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\BaseTestRunner;
-use ReflectionClass;
-use ReflectionProperty;
+use Pretzlaw\WPInt\Mocks\PostCondition;
+use RuntimeException;
 
 /**
  * Simplify usage by gathering all traits in one alias
@@ -41,7 +37,7 @@ trait WordPressTests
     /**
      * @var MockObject[]
      */
-    private $wpIntMocks = [];
+    protected $wpIntMocks = [];
 
     use ActionAssertions;
     use CacheAssertions;
@@ -67,10 +63,22 @@ trait WordPressTests
         $this->wpIntMocks = [];
 
         foreach ($mocks as $mock) {
-            if ($mock instanceof MockObject) {
-                $mock->__phpunit_verify(true);
-                $this->addToAssertionCount(1);
+            switch (true) {
+                case $mock instanceof MockObject:
+                    $mock->__phpunit_verify(true);
+                    break;
+
+                case $mock instanceof PostCondition:
+                    $mock->verifyPostCondition();
+                    break;
+
+                default:
+                    throw new RuntimeException(
+                        'Unknown expectation class: ' . get_class($mock)
+                    );
             }
+
+            $this->addToAssertionCount(1);
         }
 
     }

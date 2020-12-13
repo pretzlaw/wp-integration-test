@@ -28,7 +28,6 @@ use PHPUnit\Framework\MockObject\InvocationMocker;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Pretzlaw\WPInt\FilterInvocation;
 
 /**
  * Shortcode

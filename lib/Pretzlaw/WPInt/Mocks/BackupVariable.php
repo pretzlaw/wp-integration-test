@@ -31,7 +31,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @copyright 2020 M. Pretzlaw (https://rmp-up.de)
  * @method InvocationMocker method($constraint)
  */
-class BackupVariable implements MockObject
+class BackupVariable implements PostCondition
 {
     protected $backup;
     protected $invocationMocker;
@@ -46,6 +46,7 @@ class BackupVariable implements MockObject
 
     /**
      * @inheritDoc
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_getInvocationMocker()
     {
@@ -53,6 +54,7 @@ class BackupVariable implements MockObject
 
     /**
      * @inheritDoc
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_hasMatchers(): bool
     {
@@ -61,20 +63,19 @@ class BackupVariable implements MockObject
 
     /**
      * @inheritDoc
+     * @deprecated 0.4 Will be removed
      */
     public function __phpunit_setOriginalObject($originalObject)
     {
     }
 
+    /**
+     * @param bool|null $unsetInvocationMocker
+     * @deprecated 0.4 Will be removed
+     */
     public function __phpunit_verify(bool $unsetInvocationMocker = null)
     {
-        if (null === $unsetInvocationMocker) {
-            $unsetInvocationMocker = true;
-        }
-
-        if ($unsetInvocationMocker) {
-            $this->reference = $this->backup;
-        }
+        $this->verifyPostCondition();
     }
 
     private function backup($variable)
@@ -84,6 +85,7 @@ class BackupVariable implements MockObject
 
     /**
      * @inheritDoc
+     * @deprecated 0.4 Will be removed
      */
     public function expects(Invocation $matcher)
     {
@@ -91,5 +93,10 @@ class BackupVariable implements MockObject
 
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
     {
+    }
+
+    public function verifyPostCondition()
+    {
+        $this->reference = $this->backup;
     }
 }

@@ -5,6 +5,7 @@ namespace Pretzlaw\WPInt;
 
 use PHPUnit\Framework\MockObject\Invocation\ObjectInvocation;
 
+// todo get rid of object invocation
 class FilterInvocation extends ObjectInvocation {
 	/**
 	 * Generate return

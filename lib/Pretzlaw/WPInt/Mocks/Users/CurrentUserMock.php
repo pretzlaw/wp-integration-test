@@ -6,11 +6,12 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use PHPUnit\Framework\MockObject\MockObject;
+use Pretzlaw\WPInt\Mocks\PostCondition;
 
 /**
  * @method InvocationMocker method( $constraint )
  */
-class CurrentUserMock implements MockObject {
+class CurrentUserMock implements PostCondition {
     /**
      * @var \WP_User|null
      */
@@ -58,6 +59,7 @@ class CurrentUserMock implements MockObject {
 
 	/**
 	 * @return InvocationMocker
+     * @deprecated 0.4 Will be removed
 	 */
 	public function __phpunit_setOriginalObject( $originalObject ) {
 
@@ -65,6 +67,7 @@ class CurrentUserMock implements MockObject {
 
 	/**
 	 * @return InvocationMocker
+     * @deprecated 0.4 Will be removed
 	 */
 	public function __phpunit_getInvocationMocker() {
 
@@ -75,15 +78,15 @@ class CurrentUserMock implements MockObject {
 	 * code should just return, if not it must throw an exception.
 	 *
 	 * @throws ExpectationFailedException
+     * @deprecated 0.4 Will be removed
 	 */
 	public function __phpunit_verify(bool $unsetInvocationMocker = true) {
-		global $current_user;
-
-		$current_user = $this->originalUser;
+		$this->verifyPostCondition();
 	}
 
 	/**
 	 * @return bool
+     * @deprecated 0.4 Will be removed
 	 */
 	public function __phpunit_hasMatchers() {
 		return false;
@@ -93,7 +96,18 @@ class CurrentUserMock implements MockObject {
 
 	}
 
+    /**
+     * @param bool $returnValueGeneration
+     * @deprecated 0.4 Will be removed
+     */
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
     {
+    }
+
+    public function verifyPostCondition()
+    {
+        global $current_user;
+
+        $current_user = $this->originalUser;
     }
 }
