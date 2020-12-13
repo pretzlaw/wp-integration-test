@@ -132,7 +132,7 @@ class ExpectedFilter implements MockObject {
 	 */
 	public function __phpunit_getInvocationMocker() {
 		if ( null === $this->invocationMocker ) {
-			$this->invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker(
+			$this->invocationMocker = new \Pretzlaw\WPInt\Mocks\InvocationMocker(
 			    [ $this->name, strtolower( $this->name ) ],
                 true
             );

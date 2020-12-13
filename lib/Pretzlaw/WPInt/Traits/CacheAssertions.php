@@ -41,6 +41,8 @@ trait CacheAssertions
         $cache = new Cache();
         $cache->register($this);
 
+        $this->wpIntMocks[] = $cache;
+
         return $cache;
     }
 

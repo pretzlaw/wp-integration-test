@@ -22,6 +22,14 @@
 
 namespace Pretzlaw\WPInt\Traits;
 
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\BaseTestRunner;
+use ReflectionClass;
+use ReflectionProperty;
+
 /**
  * Simplify usage by gathering all traits in one alias
  *
@@ -30,6 +38,11 @@ namespace Pretzlaw\WPInt\Traits;
  */
 trait WordPressTests
 {
+    /**
+     * @var MockObject[]
+     */
+    private $wpIntMocks = [];
+
     use ActionAssertions;
     use CacheAssertions;
     use \Pretzlaw\WPInt\Filter\FilterAssertions;
@@ -37,9 +50,28 @@ trait WordPressTests
     use MetaDataAssertions;
     use PluginAssertions;
     use PostAssertions;
-    // use PostQueryAssertions; this is in PostAssertions already
+
     use PostTypeAssertions;
     use ShortcodeAssertions;
     use UserAssertions;
     use WidgetAssertions;
+
+    /**
+     * @after
+     */
+    protected function assertPostConditions()
+    {
+        parent::assertPostConditions();
+
+        $mocks = $this->wpIntMocks;
+        $this->wpIntMocks = [];
+
+        foreach ($mocks as $mock) {
+            if ($mock instanceof MockObject) {
+                $mock->__phpunit_verify(true);
+                $this->addToAssertionCount(1);
+            }
+        }
+
+    }
 }

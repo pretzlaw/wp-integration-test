@@ -28,6 +28,7 @@ use Pretzlaw\WPInt\Filter\FilterAssertions;
 use Pretzlaw\WPInt\Mocks\ExpectedMetaUpdate;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Traits\MetaDataAssertions;
+use Pretzlaw\WPInt\Traits\WordPressTests;
 
 /**
  * Assert update_metadata
@@ -37,8 +38,7 @@ use Pretzlaw\WPInt\Traits\MetaDataAssertions;
  */
 class ExpectedMetaUpdateTest extends AbstractTestCase
 {
-    use FilterAssertions;
-    use MetaDataAssertions;
+    use WordPressTests;
     /**
      * @var string
      */

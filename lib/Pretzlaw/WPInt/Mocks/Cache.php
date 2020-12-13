@@ -66,6 +66,10 @@ class Cache implements MockObject
         $this->__phpunit_setOriginalObject($proxyTarget);
     }
 
+    /**
+     * @param TestCase $testCase
+     * @deprecated 0.4 No longer inject test case
+     */
     public function register(TestCase $testCase)
     {
         global $wp_object_cache;
@@ -76,7 +80,7 @@ class Cache implements MockObject
 
         $wp_object_cache = $this;
 
-        $testCase->registerMockObject($this);
+        // $testCase->registerMockObject($this);
     }
 
     /**

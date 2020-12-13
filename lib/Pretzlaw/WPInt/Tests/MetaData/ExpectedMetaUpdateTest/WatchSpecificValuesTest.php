@@ -26,6 +26,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use Pretzlaw\WPInt\Mocks\ExpectedMetaUpdate;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Traits\MetaDataAssertions;
+use Pretzlaw\WPInt\Traits\WordPressTests;
 
 /**
  * Watch meta-data update by value
@@ -50,7 +51,7 @@ use Pretzlaw\WPInt\Traits\MetaDataAssertions;
  */
 class WatchSpecificValuesTest extends AbstractTestCase
 {
-    use MetaDataAssertions;
+    use WordPressTests;
 
     /**
      * @var string

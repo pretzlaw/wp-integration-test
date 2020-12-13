@@ -74,7 +74,7 @@ trait FilterAssertions
     {
         $mock = new ExpectedFilter($filterName);
 
-        $this->registerMockObject($mock);
+        $this->wpIntMocks[] = $mock;
         $mock->addFilter();
 
         return $mock;

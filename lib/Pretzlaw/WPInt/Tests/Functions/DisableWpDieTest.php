@@ -27,6 +27,7 @@ use Pretzlaw\WPInt\Filter\FilterAssertions;
 use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Traits\FunctionsAssertions;
+use Pretzlaw\WPInt\Traits\WordPressTests;
 
 /**
  * DisableWpDieTest
@@ -36,8 +37,7 @@ use Pretzlaw\WPInt\Traits\FunctionsAssertions;
  */
 class DisableWpDieTest extends AbstractTestCase
 {
-    use FunctionsAssertions;
-    use FilterAssertions;
+    use WordPressTests;
 
     public function testOverridesCommonHandler()
     {

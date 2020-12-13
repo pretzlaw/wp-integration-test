@@ -82,8 +82,8 @@ trait ShortcodeAssertions
     public function mockShortcode(string $shortcodeName)
     {
         $mock = new Shortcode($shortcodeName);
+        $this->wpIntMocks[] = $mock;
 
-        $this->registerMockObject($mock);
         $mock->register();
 
         return $mock;

@@ -77,7 +77,8 @@ trait WidgetAssertions
     protected function backupWidgets()
     {
         $backup = new BackupVariable(static::getWidgetFactory()->widgets);
-        $this->registerMockObject($backup);
+
+        $this->wpIntMocks[] = $backup;
     }
 
     /**
@@ -122,7 +123,7 @@ trait WidgetAssertions
             }
         });
 
-        $this->registerMockObject($recovery);
+        $this->wpIntMocks[] = $recovery;
     }
 
     /**

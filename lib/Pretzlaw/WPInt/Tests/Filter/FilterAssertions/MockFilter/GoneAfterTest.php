@@ -6,10 +6,11 @@ namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\MockFilter;
 use Pretzlaw\WPInt\Filter\FilterAssertions;
 use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
+use Pretzlaw\WPInt\Traits\WordPressTests;
 
 class GoneAfterTest extends AbstractTestCase
 {
-    use FilterAssertions;
+    use WordPressTests;
 
     /**
      * @var string

@@ -33,7 +33,8 @@ trait MetaDataAssertions {
 
         $expectedFilter->expects($this->atLeastOnce());
         $expectedFilter->addFilter();
-        $this->registerMockObject($expectedFilter);
+
+        $this->wpIntMocks[] = $expectedFilter;
     }
 
     protected function expectUpdatePostMeta($metaKey, $metaValue = null, $objectId = null)

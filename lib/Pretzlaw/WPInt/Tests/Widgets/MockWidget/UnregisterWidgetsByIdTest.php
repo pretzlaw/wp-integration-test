@@ -23,6 +23,7 @@ namespace Pretzlaw\WPInt\Tests\Widgets\MockWidget;
 
 use Pretzlaw\WPInt\Tests\MockTestCase;
 use Pretzlaw\WPInt\Tests\WidgetsTestCase;
+use Pretzlaw\WPInt\Traits\WordPressTests;
 use Pretzlaw\WPInt\WPAssert;
 use WP_Widget;
 
@@ -33,6 +34,8 @@ use WP_Widget;
  */
 class UnregisterWidgetsByIdTest extends WidgetsTestCase implements MockTestCase
 {
+    use WordPressTests;
+
     /**
      * @var int
      */

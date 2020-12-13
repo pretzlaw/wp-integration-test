@@ -14,7 +14,8 @@ trait FunctionsAssertions {
             $mock = new ExpectedFilter($item, 'time');
 
             $mock->expects($this->any())->willReturn(time());
-            $this->registerMockObject($mock);
+            $this->wpIntMocks[] = $mock;
+
             $mock->addFilter();
         }
 	}

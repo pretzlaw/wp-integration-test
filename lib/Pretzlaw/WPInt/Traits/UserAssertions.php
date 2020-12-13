@@ -17,6 +17,6 @@ trait UserAssertions {
         $currentUserMock = new CurrentUserMock($mockedUser, $current_user);
 		$currentUserMock->apply();
 
-		$this->registerMockObject( $currentUserMock );
+		$this->wpIntMocks[] = $currentUserMock;
 	}
 }
