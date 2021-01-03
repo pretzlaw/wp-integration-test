@@ -3,18 +3,12 @@
   "type": "library",
   "description": "Mocking return value of functions/filters and more for testing WordPress with PHPUnit.",
   "license": "MIT",
-  "authors": [
-    {
-      "name": "Pretzlaw",
-      "email": "mail@rmp-up.de"
-    }
-  ],
   "autoload": {
     "files": [
-      "lib/Pretzlaw/WPInt/autoloader.php"
+      "lib/autoloader.php"
     ],
     "psr-4": {
-      "Pretzlaw\\WPInt\\": "lib/Pretzlaw/WPInt"
+      "Pretzlaw\\WPInt\\": "lib/"
     }
   },
   "require": {
