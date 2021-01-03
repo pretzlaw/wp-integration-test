@@ -1,5 +1,7 @@
 # Ignore such files
 
+/.bash_history
+/.composer
 /.docker
 /.env
 /html
