@@ -17,12 +17,12 @@ class FilterInvocation extends ObjectInvocation {
 	 * @throws \ReflectionException
 	 */
 	public function generateReturnValue() {
-		if ( $this->getParameters() ) {
-			$parameters = $this->getParameters();
+        if ( $this->getParameters() ) {
+         $parameters = $this->getParameters();
 
-			return reset( $parameters );
-		}
+         return reset( $parameters );
+              }
 
-		return parent::generateReturnValue();
+        return parent::generateReturnValue();
 	}
 }

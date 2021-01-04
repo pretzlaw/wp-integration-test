@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Project code style checker config"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/3.5.0/phpcs.xsd">
+    <!-- Activate this from time to time and add another useful rule (use report=source) -->
+
+    <!-- inherit but disable stuff to make testing easier -->
+    <rule ref="etc/phpcs.dist.xml">
+        <!-- It's okay when this is not given in tests -->
+        <exclude name="Generic.PHP.RequireStrictTypes.MissingDeclaration" />
+    </rule>
+</ruleset>

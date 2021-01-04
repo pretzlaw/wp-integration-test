@@ -51,6 +51,7 @@ class Cache implements PostCondition
 
     /**
      * Due to fifo-stack in PHPUnit we would destroy the global so we only store the very first one.
+     *
      * @var array
      */
     protected static $originalObjectCache;

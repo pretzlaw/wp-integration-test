@@ -60,6 +60,8 @@ install:
 script:
   - composer validate --strict --no-check-lock
   - vendor/bin/phpunit
+  # Run the code style test only in one PHP version to spare CI runtime
+  - "[[ $TRAVIS_PHP_VERSION != 7.3 ]] || composer pre-commit"
 
 after_failure:
   - cat srv/wp-content/debug.log || true

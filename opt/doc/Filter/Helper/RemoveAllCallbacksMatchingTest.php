@@ -9,58 +9,59 @@ use Pretzlaw\WPInt\Tests\AbstractTestCase;
 
 /**
  * Class RemoveAllCallbacksMatchingTest
+ *
  * @package Pretzlaw\WPInt\Tests\Filter\Helper
  * @backupGlobals enabled
  */
 class RemoveAllCallbacksMatchingTest extends AbstractTestCase
 {
-    private $filterName;
+	private $filterName;
 
-    private $methodName;
+	private $methodName;
 
-    protected function setUp()
-    {
-        parent::setUp();
+	protected function setUp()
+	{
+	 parent::setUp();
 
-        $this->filterName = uniqid('', true);
-        $this->methodName = 'getGroups';
-        add_filter($this->filterName, [$this, $this->methodName]);
-    }
+	 $this->filterName = uniqid('', true);
+	 $this->methodName = 'getGroups';
+	 add_filter($this->filterName, [$this, $this->methodName]);
+	}
 
-    /**
-     * @group integration
-     */
-    public function testRemovesUsingConstraintsTest()
-    {
-        static::assertEquals(10, has_filter($this->filterName, [$this, $this->methodName]));
+	/**
+	 * @group integration
+	 */
+	public function testRemovesUsingConstraintsTest()
+	{
+	 static::assertEquals(10, has_filter($this->filterName, [$this, $this->methodName]));
 
-        FilterHelper::removeAllCallbacksMatching([
-            new IsInstanceOf(static::class),
-            $this->methodName
-        ]);
+	 FilterHelper::removeAllCallbacksMatching([
+		new IsInstanceOf(static::class),
+		$this->methodName
+	 ]);
 
-        static::assertFalse(has_filter($this->filterName, [$this, $this->methodName]));
-    }
+	 static::assertFalse(has_filter($this->filterName, [$this, $this->methodName]));
+	}
 
-    /**
-     * @group integration
-     */
-    public function testRemovesUsingObjects()
-    {
-        static::assertEquals(10, has_filter($this->filterName, [$this, $this->methodName]));
+	/**
+	 * @group integration
+	 */
+	public function testRemovesUsingObjects()
+	{
+	 static::assertEquals(10, has_filter($this->filterName, [$this, $this->methodName]));
 
-        FilterHelper::removeAllCallbacksMatching([$this, $this->methodName]);
+	 FilterHelper::removeAllCallbacksMatching([$this, $this->methodName]);
 
-        static::assertFalse(has_filter($this->filterName, [$this, $this->methodName]));
-    }
+	 static::assertFalse(has_filter($this->filterName, [$this, $this->methodName]));
+	}
 
-    /**
-     * @group integration
-     */
-    public function testItDoesNotRemoveWhenArgumentCountDiffers()
-    {
-        static::assertEquals(10, has_filter($this->filterName, [$this, $this->methodName]));
-        FilterHelper::removeAllCallbacksMatching([$this]);
-        static::assertEquals(10, has_filter($this->filterName, [$this, $this->methodName]));
-    }
+	/**
+	 * @group integration
+	 */
+	public function testItDoesNotRemoveWhenArgumentCountDiffers()
+	{
+	 static::assertEquals(10, has_filter($this->filterName, [$this, $this->methodName]));
+	 FilterHelper::removeAllCallbacksMatching([$this]);
+	 static::assertEquals(10, has_filter($this->filterName, [$this, $this->methodName]));
+	}
 }

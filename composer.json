@@ -11,6 +11,18 @@
       "Pretzlaw\\WPInt\\": "lib/"
     }
   },
+  "scripts": {
+    "post-install-cmd": "vendor/bin/cghooks update",
+    "post-update-cmd": "vendor/bin/cghooks update",
+    "pre-commit": [
+      "vendor/bin/cghooks update --no-lock",
+      "vendor/bin/phpcs --standard=etc/phpcs.dist.xml -n -s etc/ $(git diff --cached --name-only lib/)",
+      "vendor/bin/phpcs --standard=etc/phpcs.test.xml -n -s etc/ $(git diff --cached --name-only opt/doc/)"
+    ],
+    "pre-push": [
+      "vendor/bin/phpunit"
+    ]
+  },
   "autoload-dev": {
     "psr-4": {
       "Pretzlaw\\WPInt\\Test\\": "opt/doc/"
@@ -22,7 +34,9 @@
   },
   "require-dev": {
     "rmp-up/phpunit-compat": "0.1.0",
-    "wp-cli/wp-cli-bundle": "~2"
+    "squizlabs/php_codesniffer": "3.5.*",
+    "wp-cli/wp-cli-bundle": "~2",
+    "brainmaestro/composer-git-hooks": "^2.8"
   },
   "conflict": {
     "johnpbloch/wordpress-core": "< 4.6"

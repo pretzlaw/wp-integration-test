@@ -31,5 +31,5 @@ use Pretzlaw\WPInt\Traits\WordPressTests;
  */
 class TestCase extends \RmpUp\PHPUnitCompat\TestCase
 {
-    use WordPressTests;
+	use WordPressTests;
 }

@@ -37,7 +37,6 @@ use Pretzlaw\WPInt\Traits\ActionAssertions;
  *      // or not
  *      $this->assertActionNotHasCallback( 'init', 'other_plugin_init' );
  *
- *
  * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
  * @since      2018-12-27
  */

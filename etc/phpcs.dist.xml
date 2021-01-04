@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="wp-integration-test rules"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/3.5.0/phpcs.xsd">
+    <rule ref="Generic">
+        <!-- those are deprecated for modern development or just not how we write code -->
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="Generic.PHP.ClosingPHPTag.NotFound" />
+        <exclude name="Generic.Files.LowercasedFilename.NotFound"/>
+
+        <!-- while using rmp-up/doc-parser we may miss short descriptions -->
+        <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+
+        <!-- We want a newline so that it does not look ugly when you `cat` a file -->
+        <exclude name="Generic.Files.EndFileNoNewline.Found" />
+
+        <!-- Need this sometimes to make stuff readable for WordPress people (its WP coding standard) -->
+        <exclude name="Generic.NamingConventions.CamelCapsFunctionName.ScopeNotCamelCaps" />
+
+        <!-- we prefer tab over spaces because they lower the size of diffs, the package-size in general and more -->
+        <!-- see https://softwareengineering.stackexchange.com/questions/57 -->
+        <exclude name="Generic.WhiteSpace.DisallowTabIndent.TabsUsed" />
+        <!-- also we do not align stuff due to heavy VCS changes / to better track changes -->
+        <exclude name="Generic.Commenting.DocComment.TagValueIndent" />
+        <!-- TODO unsure about this -->
+        <exclude name="Generic.WhiteSpace" />
+
+        <!-- Brace on new line makes more sense because it still works when commenting our the declaration -->
+        <exclude name="Generic.Classes.OpeningBraceSameLine.BraceOnNewLine" />
+        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine"/>
+
+        <!-- the following are special cases, see below -->
+        <exclude name="Generic.Arrays.ArrayIndent.KeyIncorrect" />
+        <exclude name="Generic.Files.LineLength.MaxExceeded" />
+    </rule>
+
+    <rule ref="Generic.Files.LineLength.MaxExceeded">
+        <properties>
+            <property name="lineLimit" value="120" />
+        </properties>
+    </rule>
+
+    <rule ref="Generic.Arrays.ArrayIndent.KeyIncorrect">
+        <properties>
+            <property name="indent" value="1" />
+        </properties>
+    </rule>
+
+    <!-- TODO section -->
+    <rule ref="Generic.PHP.UpperCaseConstant.Found">
+        <!-- Unsure why it would make sense to uppercase them all -->
+        <severity>0</severity>
+    </rule>
+
+    <!--    <rule ref="Squiz"/>-->
+    <!--    <rule ref="PEAR" />-->
+    <!--    <rule ref="PSR1" />-->
+    <!--    <rule ref="PSR2" />-->
+
+
+</ruleset>

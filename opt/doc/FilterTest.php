@@ -33,15 +33,15 @@ use ReflectionClass;
  */
 class FilterTest extends TestCase
 {
-    public function testHasFilterTestTrait()
-    {
-        static::assertTrue(trait_exists(FilterAssertions::class));
-    }
+	public function testHasFilterTestTrait()
+	{
+	 static::assertTrue(trait_exists(FilterAssertions::class));
+	}
 
-    public function testMainTraitHasFilterTrait()
-    {
-        $reflect = new ReflectionClass(WordPressTests::class);
+	public function testMainTraitHasFilterTrait()
+	{
+	 $reflect = new ReflectionClass(WordPressTests::class);
 
-        static::assertTrue(in_array(FilterAssertions::class, $reflect->getTraitNames(), true));
-    }
+	 static::assertTrue(in_array(FilterAssertions::class, $reflect->getTraitNames(), true));
+	}
 }

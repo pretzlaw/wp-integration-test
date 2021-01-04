@@ -40,9 +40,9 @@ class CurrentUserMock implements PostCondition {
 	}
 
 	public function apply() {
-		global $current_user;
+        global $current_user;
 
-		$current_user = $this->mockedUser;
+        $current_user = $this->mockedUser;
 	}
 
 	/**
@@ -81,7 +81,7 @@ class CurrentUserMock implements PostCondition {
      * @deprecated 0.4 Will be removed
 	 */
 	public function __phpunit_verify(bool $unsetInvocationMocker = true) {
-		$this->verifyPostCondition();
+        $this->verifyPostCondition();
 	}
 
 	/**
@@ -89,7 +89,7 @@ class CurrentUserMock implements PostCondition {
      * @deprecated 0.4 Will be removed
 	 */
 	public function __phpunit_hasMatchers() {
-		return false;
+        return false;
 	}
 
 	public function __call( $name, $arguments ) {

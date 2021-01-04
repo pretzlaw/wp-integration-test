@@ -44,27 +44,27 @@ use Prophecy\Argument;
  */
 class IgnoreUnmatchedCallsTest extends TestCase
 {
-    public function testIgnoreOtherCalls()
-    {
-        $filterName = uniqid('', true);
-        $this->mockFilter($filterName)
-            ->withArguments([Argument::exact(2)])
-            ->shouldBeCalledOnce()
-            ->willReturn(42);
+	public function testIgnoreOtherCalls()
+	{
+	 $filterName = uniqid('', true);
+	 $this->mockFilter($filterName)
+	  ->withArguments([Argument::exact(2)])
+	  ->shouldBeCalledOnce()
+	  ->willReturn(42);
 
-        static::assertSame(1, apply_filters($filterName, 1));
-        static::assertSame(42, apply_filters($filterName, 2));
-        static::assertSame(3, apply_filters($filterName, 3));
-    }
+	 static::assertSame(1, apply_filters($filterName, 1));
+	 static::assertSame(42, apply_filters($filterName, 2));
+	 static::assertSame(3, apply_filters($filterName, 3));
+	}
 
-//    public function testCanBeDescribedWithoutArguments()
-//    {
-//        $filterName = uniqid('', true);
-//        $this->mockFilter($filterName)
-//            ->willReturn(1337);
-//
-//        static::assertEquals(1337, apply_filters($filterName, 1));
-//        static::assertEquals(1337, apply_filters($filterName, ''));
-//        static::assertEquals(1337, apply_filters($filterName, 2));
-//    }
+	public function testCanBeDescribedWithoutArguments()
+	{
+	 $filterName = uniqid('', true);
+	 $this->mockFilter($filterName)
+	  ->willReturn(1337);
+
+	 static::assertEquals(1337, apply_filters($filterName, 1));
+	 static::assertEquals(1337, apply_filters($filterName, ''));
+	 static::assertEquals(1337, apply_filters($filterName, 2));
+	}
 }

@@ -46,100 +46,104 @@ use Pretzlaw\WPInt\Test\TestCase;
  */
 class TruncateTest extends TestCase
 {
-    public function testRemovesAllFilter()
-    {
-        static::assertFilterNotEmpty('the_content');
+	public function testRemovesAllFilter()
+	{
+	 static::assertFilterNotEmpty('the_content');
 
-        $this->truncateFilter('the_content');
+	 $this->truncateFilter('the_content');
 
-        static::assertFilterEmpty('the_content');
-    }
+	 static::assertFilterEmpty('the_content');
+	}
 
-    public function testRecoversAllFilterAfterwards()
-    {
-        static::assertFilterNotEmpty('the_content');
-        $beforeTruncate = self::getWpHooksCallbacks('the_content');
+	public function testRecoversAllFilterAfterwards()
+	{
+	 static::assertFilterNotEmpty('the_content');
+	 $beforeTruncate = self::getWpHooksCallbacks('the_content');
 
-        $this->truncateFilter();
+	 $this->truncateFilter();
 
-        static::assertFilterEmpty('the_content');
-        static::assertEmpty(self::getWpHooksCallbacks('the_content'));
+	 static::assertFilterEmpty('the_content');
+	 static::assertEmpty(self::getWpHooksCallbacks('the_content'));
 
-        $this->wpIntCleanUp();
+	 $this->wpIntCleanUp();
 
-        $afterRecovery = self::getWpHooksCallbacks('the_content');
-        static::assertEquals($beforeTruncate, $afterRecovery);
-    }
+	 $afterRecovery = self::getWpHooksCallbacks('the_content');
+	 static::assertEquals($beforeTruncate, $afterRecovery);
+	}
 
-    public function testRecoverSingleFilter()
-    {
-        $filterName = uniqid('', true);
-        static::assertFilterNotEmpty('the_content');
+	public function testRecoverSingleFilter()
+	{
+	 $filterName = uniqid('', true);
+	 static::assertFilterNotEmpty('the_content');
 
-        // begin backup
-        static::assertEmpty(self::getWpHooksCallbacks($filterName), 'Stub filter is not empty - very strange.');
-        $this->truncateFilter($filterName);
+	 // begin backup
+	 static::assertEmpty(
+	 	self::getWpHooksCallbacks($filterName),
+		'Stub filter is not empty - very strange.'
+	 );
 
-        static::assertFilterNotEmpty('the_content', 'the_content did not stay intact');
+	 $this->truncateFilter($filterName);
 
-        // fill filter with testing crap
-        add_filter($filterName, '__return_false');
-        static::assertFilterNotEmpty($filterName, 'Hook could not be registered');
+	 static::assertFilterNotEmpty('the_content', 'the_content did not stay intact');
 
-        // recover
-        $this->wpIntCleanUp();
-        static::assertFilterEmpty($filterName, 'Filter has not been truncated');
-    }
+	 // fill filter with testing crap
+	 add_filter($filterName, '__return_false');
+	 static::assertFilterNotEmpty($filterName, 'Hook could not be registered');
 
-    public function testCanBringBackDeletedFilter()
-    {
-        $beforeDestroyal = static::getWpHooksCallbacks('the_content');
-        static::assertFilterNotEmpty('the_content');
+	 // recover
+	 $this->wpIntCleanUp();
+	 static::assertFilterEmpty($filterName, 'Filter has not been truncated');
+	}
 
-        $this->truncateFilter(['the_content']);
-        static::assertFilterEmpty('the_content');
+	public function testCanBringBackDeletedFilter()
+	{
+	 $beforeDestroyal = static::getWpHooksCallbacks('the_content');
+	 static::assertFilterNotEmpty('the_content');
 
-        // completely destroy it
-        global $wp_filter;
-        unset($wp_filter['the_content']);
+	 $this->truncateFilter(['the_content']);
+	 static::assertFilterEmpty('the_content');
 
-        $this->wpIntCleanUp();
+	 // completely destroy it
+	 global $wp_filter;
+	 unset($wp_filter['the_content']);
 
-        static::assertArrayHasKey(
-            'the_content',
-            $wp_filter,
-            'the_content has not been recovered'
-        );
+	 $this->wpIntCleanUp();
 
-        static::assertNotEmpty(static::getWpHooksCallbacks('the_content'));
-    }
+	 static::assertArrayHasKey(
+	  'the_content',
+	  $wp_filter,
+	  'the_content has not been recovered'
+	 );
 
-    public function testCanNotBeCalledMoreThanOnce()
-    {
-        $x = [];
-        $t = new TruncateFilter([], $x);
-        $t->apply();
+	 static::assertNotEmpty(static::getWpHooksCallbacks('the_content'));
+	}
 
-        $this->expectException(CannotBeAppliedMoreThanException::class);
-        $t->apply();
-    }
+	public function testCanNotBeCalledMoreThanOnce()
+	{
+	 $x = [];
+	 $t = new TruncateFilter([], $x);
+	 $t->apply();
 
-    /**
-     * WordPress hooks were arrays back in the good old times
-     *
-     * @internal
-     */
-    public function testWorksWithDeprecatedWpHookDefinition()
-    {
-        $filter = ['the_content' => [1,2,3]];
-        $t = new TruncateFilter(['the_content'], $filter);
+	 $this->expectException(CannotBeAppliedMoreThanException::class);
+	 $t->apply();
+	}
 
-        $t->apply();
+	/**
+	 * WordPress hooks were arrays back in the good old times
+	 *
+	 * @internal
+	 */
+	public function testWorksWithDeprecatedWpHookDefinition()
+	{
+	 $filter = ['the_content' => [1,2,3]];
+	 $t = new TruncateFilter(['the_content'], $filter);
 
-        static::assertEmpty($filter['the_content']);
+	 $t->apply();
 
-        $t();
+	 static::assertEmpty($filter['the_content']);
 
-        static::assertEquals([1,2,3], $filter['the_content']);
-    }
+	 $t();
+
+	 static::assertEquals([1,2,3], $filter['the_content']);
+	}
 }

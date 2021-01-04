@@ -17,6 +17,6 @@ trait FunctionsAssertions {
             $this->wpIntMocks[] = $mock;
 
             $mock->addFilter();
-        }
+              }
 	}
 }

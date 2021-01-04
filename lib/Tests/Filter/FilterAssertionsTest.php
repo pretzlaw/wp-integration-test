@@ -10,7 +10,6 @@ use Pretzlaw\WPInt\Traits\FilterAssertions;
 /**
  * Filter
  *
- *
  * @package Pretzlaw\WPInt\Tests\Filter
  */
 class FilterAssertionsTest extends AbstractTestCase {
@@ -27,6 +26,6 @@ class FilterAssertionsTest extends AbstractTestCase {
      * @backupGlobals enabled
 	 */
 	public function testMockFilter() {
-		static::assertInstanceOf( ExpectedFilter::class, $this->mockFilter( 'some' ) );
+        static::assertInstanceOf( ExpectedFilter::class, $this->mockFilter( 'some' ) );
 	}
 }

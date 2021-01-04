@@ -11,7 +11,7 @@ function prepare_env() {
 	];
 
 	if ( ! isset( $_SERVER ) ) {
-		$_SERVER = [];
+        $_SERVER = [];
 	}
 
 	$_SERVER = array_merge( $serverVars, $_SERVER );
@@ -26,7 +26,7 @@ function load_wp( $path ) {
 	$wpLoad = $path . \DIRECTORY_SEPARATOR . 'wp-blog-header.php';
 
 	if ( ! \file_exists( $wpLoad ) ) {
-		throw new \Exception( 'Missing wp-blog-header.php to load WordPress' );
+        throw new \Exception( 'Missing wp-blog-header.php to load WordPress' );
 	}
 
 	require_once $wpLoad;
@@ -41,7 +41,7 @@ function run_wp( $path = null ) {
 	\Pretzlaw\WPInt\prepare_env();
 
 	if ( null === $path ) {
-		$path = locate_wordpress();
+        $path = locate_wordpress();
 	}
 
 	load_wp( $path );
@@ -67,7 +67,7 @@ function locate_wordpress() {
 	$regex         = new \RegexIterator( $iterator, '/.*\/wp-load\.php$/', \RecursiveRegexIterator::GET_MATCH );
 
 	foreach ( $regex as $wpLoadPath ) {
-		return dirname( current( $wpLoadPath ) );
+        return dirname( current( $wpLoadPath ) );
 	}
 
 	throw new \RuntimeException( 'Could not find wp-load.php automatically.' );

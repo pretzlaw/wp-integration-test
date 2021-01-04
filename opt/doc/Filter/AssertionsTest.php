@@ -32,8 +32,8 @@ use Pretzlaw\WPInt\Test\TestCase;
  */
 class AssertionsTest extends TestCase
 {
-    public function testCanAssertOnFilters()
-    {
-        static::assertTrue(trait_exists(FilterAssertions::class));
-    }
+	public function testCanAssertOnFilters()
+	{
+	 static::assertTrue(trait_exists(FilterAssertions::class));
+	}
 }

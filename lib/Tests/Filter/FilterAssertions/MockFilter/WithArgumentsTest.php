@@ -22,15 +22,15 @@ class WithArgumentsTest extends AbstractTestCase {
 	 * ```
 	 */
 	public function testMatchesDifferentSignatures() {
-		$name = md5( __METHOD__ );
+        $name = md5( __METHOD__ );
 
-		$this->mockFilter( $name )->expects( $this->at(3) )->with( 'c' )->willReturn( 1337 );
-		$this->mockFilter( $name )->expects( $this->at(0) )->with( 'a', 'b' )->willReturn( 42 );
-		$this->mockFilter( $name )->expects( $this->at(1) )->with( 'a', 'z' )->willReturn( 13 );
+        $this->mockFilter( $name )->expects( $this->at(3) )->with( 'c' )->willReturn( 1337 );
+        $this->mockFilter( $name )->expects( $this->at(0) )->with( 'a', 'b' )->willReturn( 42 );
+        $this->mockFilter( $name )->expects( $this->at(1) )->with( 'a', 'z' )->willReturn( 13 );
 
-		static::assertEquals( 42, apply_filters( $name, 'a', 'b' ) );
-		static::assertEquals( 13, apply_filters( $name, 'a', 'z' ) );
-		static::assertEquals( 'gg', apply_filters( $name, 'gg' ) );
-		static::assertEquals( 1337, apply_filters( $name, 'c' ) );
+        static::assertEquals( 42, apply_filters( $name, 'a', 'b' ) );
+        static::assertEquals( 13, apply_filters( $name, 'a', 'z' ) );
+        static::assertEquals( 'gg', apply_filters( $name, 'gg' ) );
+        static::assertEquals( 1337, apply_filters( $name, 'c' ) );
 	}
 }

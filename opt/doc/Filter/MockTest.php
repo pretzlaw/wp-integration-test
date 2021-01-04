@@ -34,38 +34,38 @@ use Prophecy\Argument;
  */
 class MockTest extends TestCase
 {
-    private $filterName;
+	private $filterName;
 
-    protected $wpIntCleanUp = [];
+	protected $wpIntCleanUp = [];
 
-    protected function compatSetUp()
-    {
-        $this->filterName = '_some_magic_filter_' . random_int(1, 99);
-    }
+	protected function compatSetUp()
+	{
+	 $this->filterName = '_some_magic_filter_' . random_int(1, 99);
+	}
 
-    public function testCanCountMock()
-    {
-        $this->mockFilter($this->filterName)->shouldBeCalledOnce();
+	public function testCanCountMock()
+	{
+	 $this->mockFilter($this->filterName)->shouldBeCalledOnce();
 
-        apply_filters($this->filterName, null);
-    }
+	 apply_filters($this->filterName, null);
+	}
 
-    public function testCanMockFilter()
-    {
-        $expectedReturn = uniqid('', true);
+	public function testCanMockFilter()
+	{
+	 $expectedReturn = uniqid('', true);
 
-        $this->mockFilter($this->filterName)->willReturn($expectedReturn);
+	 $this->mockFilter($this->filterName)->willReturn($expectedReturn);
 
-        static::assertSame($expectedReturn, apply_filters($this->filterName, null));
-    }
+	 static::assertSame($expectedReturn, apply_filters($this->filterName, null));
+	}
 
-    public function testFilterIsRemovedAfterwards()
-    {
-        static::assertFilterEmpty($this->filterName);
+	public function testFilterIsRemovedAfterwards()
+	{
+	 static::assertFilterEmpty($this->filterName);
 
-        $this->mockFilter($this->filterName);
-        $this->wpIntCleanUp();
+	 $this->mockFilter($this->filterName);
+	 $this->wpIntCleanUp();
 
-        static::assertFilterEmpty($this->filterName);
-    }
+	 static::assertFilterEmpty($this->filterName);
+	}
 }

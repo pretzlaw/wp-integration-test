@@ -44,7 +44,6 @@ use Prophecy\Argument\Token\AnyValueToken;
  *              // return ...;
  *           });
  *
- *
  * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
  * @since      2018-12-25
  */
