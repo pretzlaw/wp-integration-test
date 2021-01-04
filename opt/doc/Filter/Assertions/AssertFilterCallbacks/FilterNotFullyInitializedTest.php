@@ -1,9 +1,10 @@
 <?php
 
-namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
+namespace Pretzlaw\WPInt\Test\Filter\Assertions\AssertFilterCallbacks;
 
 
 use PHPUnit\Framework\AssertionFailedError;
+use Pretzlaw\WPInt\Test\TestCase;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Tests\AllTraits;
 use Pretzlaw\WPInt\WPAssert;
@@ -14,16 +15,16 @@ use Pretzlaw\WPInt\WPAssert;
  * @backupGlobals enabled
  * @inheritdoc
  */
-class FilterNotFullyInitializedTest extends AbstractTestCase
+class FilterNotFullyInitializedTest extends TestCase
 {
     /**
      * @var string
      */
     private $targetFilter;
 
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         global $wp_filter;
 

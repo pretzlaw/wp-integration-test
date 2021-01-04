@@ -1,9 +1,10 @@
 <?php
 
-namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
+namespace Pretzlaw\WPInt\Test\Filter\Assertions\AssertFilterCallbacks;
 
 
 use PHPUnit\Framework\AssertionFailedError;
+use Pretzlaw\WPInt\Test\TestCase;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\WPAssert;
 
@@ -12,16 +13,16 @@ use Pretzlaw\WPInt\WPAssert;
  * @package Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks
  * @inheritdoc
  */
-class CallbackDoesNotExistTest extends AbstractTestCase
+class CallbackDoesNotExistTest extends TestCase
 {
     /**
      * @var string
      */
     private $targetFilter;
 
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         $this->targetFilter = uniqid('', true);
 

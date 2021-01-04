@@ -1,11 +1,12 @@
 <?php
 
-namespace Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks;
+namespace Pretzlaw\WPInt\Test\Filter\Assertions\AssertFilterCallbacks;
 
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\ExpectationFailedException;
+use Pretzlaw\WPInt\Test\TestCase;
 use Pretzlaw\WPInt\Tests\AbstractTestCase;
 use Pretzlaw\WPInt\Tests\AllTraits;
 use Pretzlaw\WPInt\WPAssert;
@@ -15,11 +16,11 @@ use Pretzlaw\WPInt\WPAssert;
  * @package Pretzlaw\WPInt\Tests\Filter\FilterAssertions\AssertFilterCallbacks
  * @backupGlobals enabled
  */
-class FilterDoesNotExistTest extends AbstractTestCase
+class FilterDoesNotExistTest extends TestCase
 {
-    protected function setUp()
+    protected function compatSetUp()
     {
-        parent::setUp();
+        parent::compatSetUp();
 
         global $wp_filter;
         $wp_filter = [];

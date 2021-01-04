@@ -7,6 +7,7 @@ use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use Pretzlaw\WPInt\Constraint\FilterHasCallback;
 use Pretzlaw\WPInt\Constraint\FilterEmpty;
+use Pretzlaw\WPInt\Helper\DefaultToken;
 use Pretzlaw\WPInt\Mocks\Filter;
 use Prophecy\Argument;
 use Prophecy\Prophecy\MethodProphecy;
@@ -102,6 +103,9 @@ trait FilterAssertions
         /** @var ObjectProphecy|Filter $mock */
         $mock = $this->prophesize(Filter::class);
 
+        // Otherwise return first argument
+        $mock->apply_filters()->withArguments([Argument::cetera()])->willReturnArgument(0);
+
         $callback = [$mock->reveal(), 'apply_filters'];
         add_filter($filterName, $callback, $priority, PHP_INT_MAX);
 
@@ -109,9 +113,9 @@ trait FilterAssertions
             remove_filter($filterName, $callback);
         };
 
-        // Otherwise return first argument
-        $mock->apply_filters()->withArguments([Argument::cetera()])->willReturnArgument(0);
+        /** @var MethodProphecy $method */
+        $method = $mock->apply_filters();
 
-        return $mock->apply_filters();
+        return $method->withArguments([new DefaultToken()]);
     }
 }

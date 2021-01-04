@@ -44,7 +44,7 @@ use Prophecy\Argument;
  */
 class IgnoreUnmatchedCallsTest extends TestCase
 {
-    public function testFoo()
+    public function testIgnoreOtherCalls()
     {
         $filterName = uniqid('', true);
         $this->mockFilter($filterName)
@@ -56,4 +56,15 @@ class IgnoreUnmatchedCallsTest extends TestCase
         static::assertSame(42, apply_filters($filterName, 2));
         static::assertSame(3, apply_filters($filterName, 3));
     }
+
+//    public function testCanBeDescribedWithoutArguments()
+//    {
+//        $filterName = uniqid('', true);
+//        $this->mockFilter($filterName)
+//            ->willReturn(1337);
+//
+//        static::assertEquals(1337, apply_filters($filterName, 1));
+//        static::assertEquals(1337, apply_filters($filterName, ''));
+//        static::assertEquals(1337, apply_filters($filterName, 2));
+//    }
 }
