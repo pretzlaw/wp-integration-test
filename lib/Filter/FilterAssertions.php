@@ -7,7 +7,10 @@ use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use Pretzlaw\WPInt\Constraint\FilterHasCallback;
 use Pretzlaw\WPInt\Constraint\FilterEmpty;
-use Pretzlaw\WPInt\Mocks\ExpectedFilter;
+use Pretzlaw\WPInt\Mocks\Filter;
+use Prophecy\Argument;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Assert that filter look as expected.
@@ -66,21 +69,6 @@ trait FilterAssertions
     }
 
     /**
-     * @param string $filterName
-     *
-     * @return ExpectedFilter
-     */
-    public function mockFilter($filterName)
-    {
-        $mock = new ExpectedFilter($filterName);
-
-        $this->wpIntMocks[] = $mock;
-        $mock->addFilter();
-
-        return $mock;
-    }
-
-    /**
      * Removes all registered filter
      *
      * @todo This should not truncate them forever. Recover after each test.
@@ -103,4 +91,27 @@ trait FilterAssertions
         $wp_filter[$filterName] = [];
     }
 
+    /**
+     * @param string $filterName
+     * @param int    $priority
+     *
+     * @return MethodProphecy
+     */
+    protected function mockFilter(string $filterName, int $priority = 10)
+    {
+        /** @var ObjectProphecy|Filter $mock */
+        $mock = $this->prophesize(Filter::class);
+
+        $callback = [$mock->reveal(), 'apply_filters'];
+        add_filter($filterName, $callback, $priority, PHP_INT_MAX);
+
+        $this->wpIntCleanUp[] = static function () use ($filterName, $callback) {
+            remove_filter($filterName, $callback);
+        };
+
+        // Otherwise return first argument
+        $mock->apply_filters()->withArguments([Argument::cetera()])->willReturnArgument(0);
+
+        return $mock->apply_filters();
+    }
 }

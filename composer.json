@@ -11,10 +11,17 @@
       "Pretzlaw\\WPInt\\": "lib/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Pretzlaw\\WPInt\\Test\\": "opt/doc/"
+    }
+  },
   "require": {
-    "phpunit/phpunit": "~6.5 || <= 7.5"
+    "phpunit/phpunit": "~6.5 || <= 7.5",
+    "phpspec/prophecy": "^1.7"
   },
   "require-dev": {
+    "rmp-up/phpunit-compat": "0.1.0",
     "wp-cli/wp-cli-bundle": "~2"
   },
   "conflict": {

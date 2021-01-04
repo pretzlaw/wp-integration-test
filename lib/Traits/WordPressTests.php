@@ -35,9 +35,9 @@ use RuntimeException;
 trait WordPressTests
 {
     /**
-     * @var MockObject[]
+     * @var callable[]
      */
-    protected $wpIntMocks = [];
+    protected $wpIntCleanUp = [];
 
     use ActionAssertions;
     use CacheAssertions;
@@ -55,31 +55,12 @@ trait WordPressTests
     /**
      * @after
      */
-    protected function assertPostConditions()
+    public function wpIntCleanUp()
     {
-        parent::assertPostConditions();
-
-        $mocks = $this->wpIntMocks;
-        $this->wpIntMocks = [];
-
-        foreach ($mocks as $mock) {
-            switch (true) {
-                case $mock instanceof MockObject:
-                    $mock->__phpunit_verify(true);
-                    break;
-
-                case $mock instanceof PostCondition:
-                    $mock->verifyPostCondition();
-                    break;
-
-                default:
-                    throw new RuntimeException(
-                        'Unknown expectation class: ' . get_class($mock)
-                    );
-            }
-
-            $this->addToAssertionCount(1);
+        foreach ($this->wpIntCleanUp as $callback) {
+            $callback();
         }
 
+        $this->wpIntCleanUp = [];
     }
 }

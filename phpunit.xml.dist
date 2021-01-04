@@ -7,12 +7,12 @@
         bootstrap="bootstrap.php"
 >
     <testsuite name="default">
-        <directory>lib/Pretzlaw/WPInt/Tests</directory>
+        <directory>opt/doc</directory>
     </testsuite>
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">lib/Pretzlaw/WPInt</directory>
+            <directory suffix=".php">lib</directory>
             <exclude>
                 <directory>lib/Pretzlaw/WPInt/Tests</directory>
                 <file>lib/Pretzlaw/WPInt/bootstrap.php</file>
