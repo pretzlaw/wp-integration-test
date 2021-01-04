@@ -1,6 +1,6 @@
 <?php
 
-namespace Pretzlaw\WPInt\Tests\Filter\Helper;
+namespace Pretzlaw\WPInt\Test\Filter\Helper;
 
 
 use PHPUnit\Framework\Constraint\IsInstanceOf;
