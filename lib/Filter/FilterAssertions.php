@@ -12,6 +12,9 @@ use Pretzlaw\WPInt\Mocks\Filter;
 use Prophecy\Argument;
 use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Prophecy\ObjectProphecy;
+use WP_Hook;
+
+const FILTER_WAS_EMPTY = -1;
 
 /**
  * Assert that filter look as expected.
@@ -49,6 +52,22 @@ trait FilterAssertions
         return (array) $wp_filter;
     }
 
+    protected static function getWpHooksCallbacks(string $name): array
+    {
+        $hooks = self::getWpHooks();
+
+        if (false === array_key_exists($name, $hooks)) {
+            return [];
+        }
+
+        $callbacks = $hooks[$name];
+        if (class_exists(WP_Hook::class) && $callbacks  instanceof WP_Hook) {
+            $callbacks = $callbacks->callbacks;
+        }
+
+        return (array) $callbacks;
+    }
+
     public static function assertFilterHasCallback($filter, $expectedCallback, $priority = null)
     {
         try {
@@ -72,24 +91,23 @@ trait FilterAssertions
     /**
      * Removes all registered filter
      *
-     * @todo This should not truncate them forever. Recover after each test.
-     *
-     * @param string $filterName
+     * @param string|array|null $filterName
      */
-    public function truncateFilter($filterName)
+    public function truncateFilter($filterNames = null)
     {
+        if (null === $filterNames) {
+            global $wp_filter;
+
+            $filterNames = array_keys($wp_filter);
+        }
+
+        if (is_scalar($filterNames)) {
+            $filterNames = [$filterNames];
+        }
+
+        // todo ::backupFilter
         global $wp_filter;
-
-        if (!isset($wp_filter[$filterName])) {
-            return;
-        }
-
-        if (class_exists('WP_Hook') && $wp_filter[$filterName] instanceof \WP_Hook) {
-            $wp_filter[$filterName]->callbacks = [];
-            return;
-        }
-
-        $wp_filter[$filterName] = [];
+        $this->wpIntCleanUp[] = (new Filter\TruncateFilter($filterNames, $wp_filter))->apply();
     }
 
     /**
