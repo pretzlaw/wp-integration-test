@@ -22,10 +22,7 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Test\Filter;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use Pretzlaw\WPInt\Mocks\Filter;
 use Pretzlaw\WPInt\Test\TestCase;
-use Prophecy\Argument;
 
 /**
  * Mocking filter

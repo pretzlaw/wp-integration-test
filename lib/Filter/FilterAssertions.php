@@ -104,23 +104,31 @@ trait FilterAssertions
             $filterNames = [$filterNames];
         }
 
-        // todo ::backupFilter
-        global $wp_filter;
-        $this->wpIntCleanUp[] = (new Filter\TruncateFilter($filterNames, $wp_filter))->apply();
-    }
+		// todo ::backupFilter
+		global $wp_filter;
+		$this->wpIntCleanUp[] = (new Filter\TruncateFilter($filterNames, $wp_filter))->apply();
+	}
 
-    /**
+	/**
 	 * Mock or assert the execution of a filter
 	 *
-     * @param string $filterName
-     * @param int    $priority
-     *
-     * @return MethodProphecy
-     */
-    protected function mockFilter(string $filterName, int $priority = 10): MethodProphecy
+	 * @param string $filterName
+	 * @param int $priority
+	 *
+	 * @return MethodProphecy
+	 */
+	protected function mockFilter(string $filterName, int $priority = 10): MethodProphecy
 	{
 		return $this->wpIntApply(
 			new Filter($this->prophesize(Filter::class), $filterName, $priority)
+		);
+	}
+
+	protected function disableAllCallbacksMatching($pattern)
+	{
+		global $wp_filter;
+		$this->wpIntApply(
+			new DisableAllCallbacksMatching($pattern, $wp_filter)
 		);
 	}
 }

@@ -38,6 +38,8 @@
 
         <!-- Space before a cast just looks strange when it's a parameter: foo( (string) $x) -->
         <exclude name="Generic.Formatting.SpaceBeforeCast.NoSpace" />
+        <!-- Same for space after NOT operator -->
+        <exclude name="Generic.Formatting.SpaceAfterNot.Incorrect" />
 
         <!-- the following are special cases, see below -->
         <exclude name="Generic.Arrays.ArrayIndent.KeyIncorrect" />

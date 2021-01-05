@@ -41,45 +41,6 @@ class FilterHelper {
 	 *
 	 * @throws \PHPUnit\Framework\Exception
 	 */
-	public static function removeAllCallbacksMatching( $pattern ) {
-        global $wp_filter;
-
-        // Ensure arrays starting at zero.
-        $pattern = \array_values( (array) $pattern );
-
-        foreach ( $pattern as $key => $value ) {
-         if ( false === $value instanceof Constraint ) {
-                $pattern[ $key ] = new IsIdentical( $value );
-         }
-              }
-
-        $patternCount = \count( $pattern );
-
-        foreach ( $wp_filter as $filterName => $hook ) {
-         /** @var \WP_Hook $hook */
-         foreach ( $hook as $priority => $callbacks ) {
-                foreach ( $callbacks as $callback ) {
-                    // Ensure array keys starting at zero.
-                    $func = \array_values( (array) $callback['function'] );
-
-                    if ( \count( $func ) !== $patternCount ) {
-                  continue;
-                       }
-
-                    foreach ( $pattern as $key => $constaint ) {
-               /** @var Constraint $constaint */
-               if (!$constaint->evaluate($func[ $key ], '', true)) {
-                               // Not our callback
-                               continue 2;
-               }
-                          }
-
-                    // Delegate to WordPress for a clean environment.
-                    \remove_filter( $filterName, $callback['function'], $priority );
-                      }
-         }
-              }
-	}
 
 
 }
