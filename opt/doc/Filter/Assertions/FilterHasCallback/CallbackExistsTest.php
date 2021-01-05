@@ -51,21 +51,27 @@ class CallbackExistsTest extends FilterHasCallbackTestCase
 	}
 
 	/**
+	 * @covers \Pretzlaw\WPInt\Traits\ActionAssertions::assertActionHasCallback()
+	 * @covers \Pretzlaw\WPInt\Traits\ActionAssertions::getActionHooks()
 	 * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::assertFilterHasCallback()
 	 */
 	public function testAssertionFindsCallback()
 	{
 		static::assertFilterHasCallback($this->filterName, new IsEqual($this->getCallback()));
+		self::assertActionHasCallback($this->filterName, new IsEqual($this->getCallback()));
 	}
 
 	/**
 	 *
+	 * @covers \Pretzlaw\WPInt\Traits\ActionAssertions::assertActionNotHasCallback()
+	 * @covers \Pretzlaw\WPInt\Traits\ActionAssertions::getActionHooks()
 	 * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::assertFilterNotHasCallback()
 	 */
 	public function testAssertionInvertedNotFindsCallback()
 	{
 		// This should succeed
 		static::assertFilterNotHasCallback($this->filterName, new ArrayObject());
+		$this->assertActionNotHasCallback($this->filterName, new ArrayObject());
 
 		$this->expectException(AssertionFailedError::class);
 

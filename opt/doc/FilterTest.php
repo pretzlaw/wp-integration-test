@@ -27,7 +27,7 @@ use Pretzlaw\WPInt\Traits\WordPressTests;
 use ReflectionClass;
 
 /**
- * Filters
+ * Filters and actions
  *
  * @copyright 2021 Pretzlaw (https://rmp-up.de)
  * @covers \Pretzlaw\WPInt\Filter\FilterAssertions

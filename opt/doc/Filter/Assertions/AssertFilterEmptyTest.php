@@ -34,6 +34,8 @@ use WP_Hook;
  * @covers \Pretzlaw\WPInt\Constraint\FilterEmpty
  * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::assertFilterEmpty
  * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::assertFilterNotEmpty
+ * @covers \Pretzlaw\WPInt\Traits\ActionAssertions::assertActionEmpty
+ * @covers \Pretzlaw\WPInt\Traits\ActionAssertions::assertActionNotEmpty
  */
 class AssertFilterEmptyTest extends TestCase
 {
@@ -74,6 +76,7 @@ class AssertFilterEmptyTest extends TestCase
 		static::assertTrue($assertion->evaluate($this->emptyFilterName, '', true));
 
 		static::assertFilterEmpty($this->emptyFilterName);
+		$this->assertActionEmpty($this->emptyFilterName);
 
 		$this->expectException(AssertionFailedError::class);
 		static::assertFilterNotEmpty($this->emptyFilterName);
@@ -87,6 +90,7 @@ class AssertFilterEmptyTest extends TestCase
 		static::assertFalse($assertion->evaluate($this->nonEmptyFilterName, '', true));
 
 		static::assertFilterNotEmpty($this->nonEmptyFilterName);
+		self::assertActionNotEmpty($this->nonEmptyFilterName);
 
 		$this->expectException(ExpectationFailedException::class);
 		static::assertFilterEmpty($this->nonEmptyFilterName);

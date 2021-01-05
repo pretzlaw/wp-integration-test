@@ -8,6 +8,11 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use Pretzlaw\WPInt\Constraint\ActionEmpty;
 use Pretzlaw\WPInt\Constraint\ActionHasCallback;
 
+/**
+ * Trait ActionAssertions
+ *
+ * @package Pretzlaw\WPInt\Traits
+ */
 trait ActionAssertions {
     public static function assertActionHasCallback($action, $constraint, $message = '')
     {
@@ -39,8 +44,8 @@ trait ActionAssertions {
      * @return \WP_Hook[]
      * @internal
      */
-    protected static function getActionHooks()
-    {
+    protected static function getActionHooks(): array
+	{
         global $wp_filter;
 
         return (array) $wp_filter;
