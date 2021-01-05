@@ -34,7 +34,7 @@ services:
         ipv4_address: 10.213.37.56
 
   db:
-    image: mysql:5.7
+    image: mariadb:10.5
     volumes:
       - ".docker/db:/var/lib/mysql"
     environment:

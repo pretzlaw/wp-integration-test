@@ -25,6 +25,7 @@ namespace Pretzlaw\WPInt\Test\Filter\Mock;
 use Pretzlaw\WPInt\Mocks\CannotBeAppliedMoreThanException;
 use Pretzlaw\WPInt\Mocks\Filter\TruncateFilter;
 use Pretzlaw\WPInt\Test\TestCase;
+use Pretzlaw\WPInt\Filter\FilterAssertions;
 
 /**
  * Truncate filter
@@ -43,6 +44,8 @@ use Pretzlaw\WPInt\Test\TestCase;
  * But don't worry the callbacks will be recovered after the test.
  *
  * @copyright 2021 Pretzlaw (https://rmp-up.de)
+ * @covers \Pretzlaw\WPInt\Mocks\Filter\TruncateFilter
+ * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::truncateFilter
  */
 class TruncateTest extends TestCase
 {

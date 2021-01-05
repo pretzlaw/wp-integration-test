@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * AssertionsTest.php
+ * CleanUpInterface.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,20 +20,14 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Test\Filter;
+namespace Pretzlaw\WPInt;
 
-use Pretzlaw\WPInt\Filter\FilterAssertions;
-use Pretzlaw\WPInt\Test\TestCase;
-
-/**
- * Assertions
- *
- * @covers \Pretzlaw\WPInt\Filter\FilterAssertions
- */
-class AssertionsTest extends TestCase
+interface CleanUpInterface
 {
-	public function testCanAssertOnFilters()
-	{
-	 static::assertTrue(trait_exists(FilterAssertions::class));
-	}
+	/**
+	 * Cleans up an assertion or mocked stuff
+	 *
+	 * @return mixed
+	 */
+	public function __invoke();
 }

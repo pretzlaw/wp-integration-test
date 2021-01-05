@@ -23,6 +23,8 @@ declare(strict_types=1);
 namespace Pretzlaw\WPInt\Test;
 
 use Pretzlaw\WPInt\Traits\WordPressTests;
+use ReflectionMethod;
+use ReflectionObject;
 
 /**
  * TestCase
@@ -32,4 +34,64 @@ use Pretzlaw\WPInt\Traits\WordPressTests;
 class TestCase extends \RmpUp\PHPUnitCompat\TestCase
 {
 	use WordPressTests;
+
+	public function compatTearDown()
+	{
+		global $wpdb;
+
+		static::assertTrue($wpdb->check_connection());
+	}
+
+	/**
+	 * Assert that each test has test-coverage configured
+	 *
+	 * For a more stable system thanks to higher code-coverage
+	 * each test has to define which part it tests.
+	 * This must be done in the class comment
+	 * or on test-methods.
+	 *
+	 * @internal
+	 */
+	public function testCoverageIsDefined()
+	{
+		// Does class have "@covers" comment?
+		$docComment = (new ReflectionObject($this))->getDocComment();
+
+		if ($this->hasCoversTag($docComment)) {
+			static::assertTrue($this->hasCoversTag($docComment));
+
+			return;
+		}
+
+		$className = get_class($this);
+		foreach (get_class_methods($className) as $methodName) {
+			/** @noinspection NotOptimalIfConditionsInspection */
+			if (
+				0 !== strpos($methodName, 'test')
+				|| 'testCoverageIsDefined' === $methodName
+			) {
+				continue;
+			}
+
+			$method = new ReflectionMethod($this, $methodName);
+
+			if (false === $method->isPublic()) {
+				continue;
+			}
+
+			static::assertTrue(
+				$this->hasCoversTag((string) $method->getDocComment()),
+				sprintf(
+					'Please specify @covers for "%s" or "%s".',
+					$className,
+					$methodName
+				)
+			);
+		}
+	}
+
+	private function hasCoversTag($docComment): bool
+	{
+		return (bool) preg_match('/\n\s+\\*\s+@covers\s+[\\\]?\w/mu', $docComment);
+	}
 }

@@ -20,11 +20,12 @@
  * @since      2018-12-27
  */
 
+declare(strict_types=1);
+
 namespace Pretzlaw\WPInt\Traits;
 
-use PHPUnit\Framework\MockObject\MockObject;
-use Pretzlaw\WPInt\Mocks\PostCondition;
-use RuntimeException;
+use Pretzlaw\WPInt\ApplicableInterface;
+use Pretzlaw\WPInt\CleanUpInterface;
 
 /**
  * Simplify usage by gathering all traits in one alias
@@ -34,7 +35,7 @@ use RuntimeException;
  */
 trait WordPressTests
 {
-    /**
+	/**
      * @var callable[]
      */
     protected $wpIntCleanUp = [];
@@ -52,15 +53,38 @@ trait WordPressTests
     use UserAssertions;
     use WidgetAssertions;
 
-    /**
-     * @after
-     */
-    public function wpIntCleanUp()
-    {
-        foreach ($this->wpIntCleanUp as $callback) {
-            $callback();
-        }
+	/**
+	 * Clean up previous calls
+	 *
+	 * Cleans up previous tests after the test.
+	 * Also clean up before the test just to be sure,
+	 * if previous tests failed way to hard.
+	 *
+	 * @after
+	 * @before
+	 */
+	public function wpIntCleanUp()
+	{
+		foreach ($this->wpIntCleanUp as $callback) {
+			$callback();
+		}
 
-        $this->wpIntCleanUp = [];
-    }
+		$this->wpIntCleanUp = [];
+	}
+
+	/**
+	 * @param CleanUpInterface $cleanUp
+	 *
+	 * @return mixed|null
+	 */
+	public function wpIntApply(CleanUpInterface $cleanUp)
+	{
+		$this->wpIntCleanUp[] = $cleanUp;
+
+		if ($cleanUp instanceof ApplicableInterface) {
+			return $cleanUp->apply();
+		}
+
+		return null;
+	}
 }

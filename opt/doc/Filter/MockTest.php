@@ -31,6 +31,7 @@ use Prophecy\Argument;
  * Mocking filter
  *
  * @copyright 2021 Pretzlaw (https://rmp-up.de)
+ * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::mockFilter
  */
 class MockTest extends TestCase
 {

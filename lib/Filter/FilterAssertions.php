@@ -1,17 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pretzlaw\WPInt\Filter;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
-use Pretzlaw\WPInt\Constraint\FilterHasCallback;
 use Pretzlaw\WPInt\Constraint\FilterEmpty;
-use Pretzlaw\WPInt\Helper\DefaultToken;
+use Pretzlaw\WPInt\Constraint\FilterHasCallback;
 use Pretzlaw\WPInt\Mocks\Filter;
-use Prophecy\Argument;
 use Prophecy\Prophecy\MethodProphecy;
-use Prophecy\Prophecy\ObjectProphecy;
 use WP_Hook;
 
 const FILTER_WAS_EMPTY = -1;
@@ -111,29 +110,17 @@ trait FilterAssertions
     }
 
     /**
+	 * Mock or assert the execution of a filter
+	 *
      * @param string $filterName
      * @param int    $priority
      *
      * @return MethodProphecy
      */
-    protected function mockFilter(string $filterName, int $priority = 10)
-    {
-        /** @var ObjectProphecy|Filter $mock */
-        $mock = $this->prophesize(Filter::class);
-
-        // Otherwise return first argument
-        $mock->apply_filters()->withArguments([Argument::cetera()])->willReturnArgument(0);
-
-        $callback = [$mock->reveal(), 'apply_filters'];
-        add_filter($filterName, $callback, $priority, PHP_INT_MAX);
-
-        $this->wpIntCleanUp[] = static function () use ($filterName, $callback) {
-            remove_filter($filterName, $callback);
-        };
-
-        /** @var MethodProphecy $method */
-        $method = $mock->apply_filters();
-
-        return $method->withArguments([new DefaultToken()]);
-    }
+    protected function mockFilter(string $filterName, int $priority = 10): MethodProphecy
+	{
+		return $this->wpIntApply(
+			new Filter($this->prophesize(Filter::class), $filterName, $priority)
+		);
+	}
 }

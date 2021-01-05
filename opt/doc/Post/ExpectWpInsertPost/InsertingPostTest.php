@@ -31,6 +31,8 @@ use Pretzlaw\WPInt\Test\TestCase;
  * InsertingPostTest
  *
  * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
+ * @covers \Pretzlaw\WPInt\Mocks\Post\ExpectWpInsertPost
+ * @covers \Pretzlaw\WPInt\Traits\PostAssertions::expectWpPostCreationWithSubset
  */
 class InsertingPostTest extends TestCase
 {
@@ -57,15 +59,15 @@ class InsertingPostTest extends TestCase
 
 	public function testFailsIfFilterDidNotRun()
 	{
-	 $mock = new ExpectWpInsertPost([]);
+		$mock = new ExpectWpInsertPost([]);
 
-	 $this->expectException(ExpectationFailedException::class);
-	 $this->expectExceptionMessage('wp_insert_post has not been called.');
+		$this->expectException(ExpectationFailedException::class);
+		$this->expectExceptionMessage('wp_insert_post has not been called.');
 
-	 $mock->expects($this->once());
-	 $mock->addFilter();
+		$mock->expects($this->once());
+		$mock->addFilter();
 
-	 $mock->__phpunit_verify();
+		$mock->__phpunit_verify();
 	}
 
 	/**

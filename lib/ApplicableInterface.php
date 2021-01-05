@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * AssertionsTest.php
+ * ApplicableInterface.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,20 +20,12 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Test\Filter;
+namespace Pretzlaw\WPInt;
 
-use Pretzlaw\WPInt\Filter\FilterAssertions;
-use Pretzlaw\WPInt\Test\TestCase;
-
-/**
- * Assertions
- *
- * @covers \Pretzlaw\WPInt\Filter\FilterAssertions
- */
-class AssertionsTest extends TestCase
+interface ApplicableInterface
 {
-	public function testCanAssertOnFilters()
-	{
-	 static::assertTrue(trait_exists(FilterAssertions::class));
-	}
+	/**
+	 * @return mixed
+	 */
+	public function apply();
 }

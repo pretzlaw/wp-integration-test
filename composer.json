@@ -15,12 +15,9 @@
     "post-install-cmd": "vendor/bin/cghooks update",
     "post-update-cmd": "vendor/bin/cghooks update",
     "pre-commit": [
-      "vendor/bin/cghooks update --no-lock",
-      "vendor/bin/phpcs --standard=etc/phpcs.dist.xml -n -s etc/ $(git diff --cached --name-only lib/)",
-      "vendor/bin/phpcs --standard=etc/phpcs.test.xml -n -s etc/ $(git diff --cached --name-only opt/doc/)"
-    ],
-    "pre-push": [
-      "vendor/bin/phpunit"
+      "vendor/bin/cghooks update",
+      "vendor/bin/phpcs --standard=etc/phpcs.dist.xml -n -s etc/ $(git diff --cached --name-only --diff-filter=ACM lib/)",
+      "vendor/bin/phpcs --standard=etc/phpcs.test.xml -n -s etc/ $(git diff --cached --name-only --diff-filter=ACM opt/doc/)"
     ]
   },
   "autoload-dev": {

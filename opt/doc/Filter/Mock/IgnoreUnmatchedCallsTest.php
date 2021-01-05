@@ -40,7 +40,8 @@ use Prophecy\Argument;
  * When making assertions on apply_filters then we want to make match only specific calls
  * and ignore all others.
  *
- * @copyright 2021 Pretzlaw (https://rmp-up.de)
+ * @covers \Pretzlaw\WPInt\Mocks\Filter
+ * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::mockFilter
  */
 class IgnoreUnmatchedCallsTest extends TestCase
 {

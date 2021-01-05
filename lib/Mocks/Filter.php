@@ -22,6 +22,13 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Mocks;
 
+use Pretzlaw\WPInt\ApplicableInterface;
+use Pretzlaw\WPInt\CleanUpInterface;
+use Pretzlaw\WPInt\Helper\DefaultToken;
+use Prophecy\Argument;
+use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
+
 /**
  * Filter
  *
@@ -29,10 +36,64 @@ namespace Pretzlaw\WPInt\Mocks;
  *
  * @copyright 2021 Pretzlaw (https://rmp-up.de)
  */
-class Filter
+class Filter implements CleanUpInterface, ApplicableInterface
 {
-    public function apply_filters($first = null)
+	/**
+	 * @var callable
+	 */
+	private $callback;
+	/**
+	 * @var string
+	 */
+	private $filterName;
+	/**
+	 * @var ObjectProphecy|self
+	 */
+	private $objectProphecy;
+	/**
+	 * @var int|null
+	 */
+	private $priority;
+
+	/**
+	 * Filter constructor.
+	 */
+	public function __construct(ObjectProphecy $objectProphecy, string $filterName, int $priority = null)
+	{
+		$this->objectProphecy = $objectProphecy;
+		$this->filterName = $filterName;
+
+		if (null === $priority) {
+			$priority = 10;
+		}
+
+		$this->priority = $priority;
+		$this->callback = [$objectProphecy->reveal(), 'apply_filters'];
+	}
+
+	public function apply()
+	{
+		// Otherwise return first argument
+		$this->objectProphecy
+			->apply_filters()
+			->withArguments([Argument::cetera()])
+			->willReturnArgument(0);
+
+		add_filter($this->filterName, $this->callback, $this->priority, PHP_INT_MAX);
+
+		/** @var MethodProphecy $method */
+		$method = $this->objectProphecy->apply_filters();
+
+		return $method->withArguments([new DefaultToken()]);
+	}
+
+	public function apply_filters($first = null)
     {
         return $first;
     }
+
+    public function __invoke()
+	{
+		remove_filter($this->filterName, $this->callback);
+	}
 }

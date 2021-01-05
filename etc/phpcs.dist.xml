@@ -7,6 +7,10 @@
         <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
         <exclude name="Generic.PHP.ClosingPHPTag.NotFound" />
         <exclude name="Generic.Files.LowercasedFilename.NotFound"/>
+        <exclude name="Generic.Commenting.DocComment.ContentBeforeClose" />
+        <exclude name="Generic.Commenting.DocComment.ContentAfterOpen" />
+        <exclude name="Generic.ControlStructures.DisallowYodaConditions" />
+        <exclude name="Generic.Formatting.NoSpaceAfterCast" />
 
         <!-- while using rmp-up/doc-parser we may miss short descriptions -->
         <exclude name="Generic.Commenting.DocComment.MissingShort"/>
@@ -25,24 +29,30 @@
         <!-- TODO unsure about this -->
         <exclude name="Generic.WhiteSpace" />
 
+        <!-- would be nice but seems to assume space for indentation -->
+        <exclude name="Generic.Functions.OpeningFunctionBraceBsdAllman.BraceIndent" />
+
         <!-- Brace on new line makes more sense because it still works when commenting our the declaration -->
         <exclude name="Generic.Classes.OpeningBraceSameLine.BraceOnNewLine" />
         <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine"/>
+
+        <!-- Space before a cast just looks strange when it's a parameter: foo( (string) $x) -->
+        <exclude name="Generic.Formatting.SpaceBeforeCast.NoSpace" />
 
         <!-- the following are special cases, see below -->
         <exclude name="Generic.Arrays.ArrayIndent.KeyIncorrect" />
         <exclude name="Generic.Files.LineLength.MaxExceeded" />
     </rule>
 
-    <rule ref="Generic.Files.LineLength.MaxExceeded">
-        <properties>
-            <property name="lineLimit" value="120" />
-        </properties>
-    </rule>
-
     <rule ref="Generic.Arrays.ArrayIndent.KeyIncorrect">
         <properties>
             <property name="indent" value="1" />
+        </properties>
+    </rule>
+
+    <rule ref="Generic.Files.LineLength.MaxExceeded">
+        <properties>
+            <property name="lineLimit" value="120" />
         </properties>
     </rule>
 
