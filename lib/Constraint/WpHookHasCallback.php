@@ -43,7 +43,7 @@ abstract class WpHookHasCallback extends MatchesConstraint
         }
 
         foreach ($hooks[$this->hookName] as $priority => $registered) {
-            if (null !== $this->priorityLevel && !$this->priorityLevel->evaluate($priority, '', true)) {
+            if (null !== $this->priorityLevel && false === $this->priorityLevel->evaluate($priority, '', true)) {
                 continue;
             }
 

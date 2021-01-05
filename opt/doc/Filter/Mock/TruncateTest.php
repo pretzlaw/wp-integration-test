@@ -58,6 +58,9 @@ class TruncateTest extends TestCase
 	 static::assertFilterEmpty('the_content');
 	}
 
+	/**
+	 * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::getWpHooksCallbacks
+	 */
 	public function testRecoversAllFilterAfterwards()
 	{
 	 static::assertFilterNotEmpty('the_content');
@@ -74,6 +77,9 @@ class TruncateTest extends TestCase
 	 static::assertEquals($beforeTruncate, $afterRecovery);
 	}
 
+	/**
+	 * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::getWpHooksCallbacks
+	 */
 	public function testRecoverSingleFilter()
 	{
 	 $filterName = uniqid('', true);

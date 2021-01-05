@@ -94,4 +94,23 @@ class TestCase extends \RmpUp\PHPUnitCompat\TestCase
 	{
 		return (bool) preg_match('/\n\s+\\*\s+@covers\s+[\\\]?\w/mu', $docComment);
 	}
+
+	/**
+	 * Asserting that the callback has an exception of given type
+	 *
+	 * @param string $expectedClass
+	 * @param $callback
+	 */
+	protected function assertException(string $expectedClass, $callback)
+	{
+		try {
+			$callback();
+		} catch (\Exception $e) {
+			static::assertInstanceOf($expectedClass, $e);
+
+			return;
+		}
+
+		self::fail('No exception has been thrown');
+	}
 }

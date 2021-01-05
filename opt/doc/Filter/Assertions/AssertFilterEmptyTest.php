@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Test\Filter\Assertions;
 
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
 use Pretzlaw\WPInt\Constraint\FilterEmpty;
 use Pretzlaw\WPInt\Test\TestCase;
@@ -32,6 +33,7 @@ use WP_Hook;
  *
  * @covers \Pretzlaw\WPInt\Constraint\FilterEmpty
  * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::assertFilterEmpty
+ * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::assertFilterNotEmpty
  */
 class AssertFilterEmptyTest extends TestCase
 {
@@ -73,7 +75,7 @@ class AssertFilterEmptyTest extends TestCase
 
 		static::assertFilterEmpty($this->emptyFilterName);
 
-		$this->expectException(ExpectationFailedException::class);
+		$this->expectException(AssertionFailedError::class);
 		static::assertFilterNotEmpty($this->emptyFilterName);
 	}
 
