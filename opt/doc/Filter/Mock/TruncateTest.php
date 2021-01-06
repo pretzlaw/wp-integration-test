@@ -127,6 +127,9 @@ class TruncateTest extends TestCase
 	 static::assertNotEmpty(static::getWpHooksCallbacks('the_content'));
 	}
 
+	/**
+	 * @covers \Pretzlaw\WPInt\Mocks\CannotBeAppliedMoreThanException
+	 */
 	public function testCanNotBeCalledMoreThanOnce()
 	{
 	 $x = [];

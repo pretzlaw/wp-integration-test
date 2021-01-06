@@ -5,7 +5,7 @@ namespace Pretzlaw\WPInt\Mocks;
 
 use PHPUnit\Framework\Constraint\IsAnything;
 
-class MetaData extends ExpectedFilter
+class MetaData
 {
     /**
      * @var string

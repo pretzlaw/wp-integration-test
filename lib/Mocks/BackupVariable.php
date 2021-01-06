@@ -29,9 +29,8 @@ use PHPUnit\Framework\MockObject\MockObject;
  * BackupVariable
  *
  * @copyright 2020 M. Pretzlaw (https://rmp-up.de)
- * @method InvocationMocker method($constraint)
  */
-class BackupVariable implements PostCondition
+class BackupVariable
 {
     protected $backup;
     protected $invocationMocker;

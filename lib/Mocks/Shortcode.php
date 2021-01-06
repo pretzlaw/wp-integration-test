@@ -34,7 +34,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @copyright 2020 M. Pretzlaw (https://rmp-up.de)
  */
-class Shortcode extends AbstractMockObject
+class Shortcode
 {
     /**
      * @return bool

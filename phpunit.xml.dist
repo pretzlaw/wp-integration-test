@@ -15,8 +15,9 @@
             <directory suffix=".php">lib</directory>
             <exclude>
                 <directory>lib/Pretzlaw/WPInt/Tests</directory>
-                <file>lib/Pretzlaw/WPInt/bootstrap.php</file>
-                <file>lib/Pretzlaw/WPInt/autoloader.php</file>
+                <file>lib/autoloader.php</file>
+                <file>lib/bootstrap.php</file>
+                <file>lib/functions.php</file>
             </exclude>
         </whitelist>
     </filter>

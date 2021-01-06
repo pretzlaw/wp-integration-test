@@ -5,7 +5,7 @@ namespace Pretzlaw\WPInt\Mocks;
 
 use PHPUnit\Framework\Constraint\IsAnything;
 
-class ExpectedMetaUpdate extends ExpectedFilter {
+class ExpectedMetaUpdate {
     /**
      * @var string
      */

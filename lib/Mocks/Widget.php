@@ -30,7 +30,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
  * @method InvocationMocker method($constraint)
  */
-class Widget extends AbstractMockObject
+class Widget
 {
     private $target;
 

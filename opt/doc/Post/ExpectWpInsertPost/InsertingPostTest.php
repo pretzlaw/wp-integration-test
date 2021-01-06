@@ -41,6 +41,7 @@ class InsertingPostTest extends TestCase
 	 */
 	public function testNoDataIsWrittenToDatabase()
 	{
+		$this->markTestSkipped('Not yet migrated to mockery');
 	 $pageTitle = uniqid(__METHOD__, true);
 
 	 static::assertNull(get_page_by_title($pageTitle));
@@ -59,6 +60,8 @@ class InsertingPostTest extends TestCase
 
 	public function testFailsIfFilterDidNotRun()
 	{
+		$this->markTestSkipped('Not yet migrated to mockery');
+
 		$mock = new ExpectWpInsertPost([]);
 
 		$this->expectException(ExpectationFailedException::class);
@@ -75,6 +78,7 @@ class InsertingPostTest extends TestCase
 	 */
 	public function testRegistersFilter()
 	{
+		$this->markTestSkipped('Not yet migrated to mockery');
 	 self::assertFilterNotHasCallback(
 	  'wp_insert_post_empty_content',
 	  new IsInstanceOf(ExpectWpInsertPost::class)

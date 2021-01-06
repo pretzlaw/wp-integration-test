@@ -8,7 +8,7 @@ use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
 use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 
-class ExpectWpInsertPost extends ExpectedFilter {
+class ExpectWpInsertPost {
     /**
      * ExpectWpInsertPost constructor.
      *
