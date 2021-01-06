@@ -1,113 +1,54 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pretzlaw\WPInt\Mocks\Users;
 
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
-use PHPUnit\Framework\MockObject\Matcher\Invocation;
-use PHPUnit\Framework\MockObject\MockObject;
-use Pretzlaw\WPInt\Mocks\PostCondition;
+use Pretzlaw\WPInt\ApplicableInterface;
+use Pretzlaw\WPInt\CleanUpInterface;
 
 /**
- * @method InvocationMocker method( $constraint )
+ * @method InvocationMocker method($constraint)
  */
-class CurrentUserMock implements PostCondition {
-    /**
-     * @var \WP_User|null
-     */
-	private $originalUser;
+class CurrentUserMock implements ApplicableInterface, CleanUpInterface
+{
+	/**
+	 * @var \WP_User
+	 */
+	private $backup;
+	/**
+	 * @var \WP_User|null
+	 */
+	private $currentUser;
 
-    /**
-     * @var \WP_User|null
-     */
+	/**
+	 * @var \WP_User|null
+	 */
 	private $mockedUser;
 
-    /**
-     * CurrentUserMock constructor.
-     *
-     * @param \WP_User|null $mockedUser
-     * @param null $originalUser
-     */
-    public function __construct($mockedUser, $originalUser = null)
-    {
-        if (null === $originalUser) {
-            global $current_user;
-            $originalUser = $current_user;
-        }
-
-        $this->originalUser = $originalUser;
-		$this->mockedUser   = $mockedUser;
-	}
-
-	public function apply() {
-        global $current_user;
-
-        $current_user = $this->mockedUser;
-	}
+	private $mock;
 
 	/**
-	 * Registers a new expectation in the mock object and returns the match
-	 * object which can be infused with further details.
+	 * CurrentUserMock constructor.
 	 *
-	 * @param Invocation $matcher
-	 *
-	 * @return InvocationMocker
+	 * @param \WP_User $currentUser
+	 * @param \WP_User|null|string $mockedUser
 	 */
-	public function expects( Invocation $matcher ) {
-
+	public function __construct(&$currentUser, $mockedUser = null)
+	{
+		$this->currentUser =& $currentUser;
+		$this->mockedUser = $mockedUser;
+		$this->backup = $currentUser;
 	}
 
-	/**
-	 * @return InvocationMocker
-     * @deprecated 0.4 Will be removed
-	 */
-	public function __phpunit_setOriginalObject( $originalObject ) {
-
+	public function apply()
+	{
+		$this->currentUser = $this->mockedUser;
 	}
 
-	/**
-	 * @return InvocationMocker
-     * @deprecated 0.4 Will be removed
-	 */
-	public function __phpunit_getInvocationMocker() {
-
+	public function __invoke()
+	{
+		$this->currentUser = $this->backup;
 	}
-
-	/**
-	 * Verifies that the current expectation is valid. If everything is OK the
-	 * code should just return, if not it must throw an exception.
-	 *
-	 * @throws ExpectationFailedException
-     * @deprecated 0.4 Will be removed
-	 */
-	public function __phpunit_verify(bool $unsetInvocationMocker = true) {
-        $this->verifyPostCondition();
-	}
-
-	/**
-	 * @return bool
-     * @deprecated 0.4 Will be removed
-	 */
-	public function __phpunit_hasMatchers() {
-        return false;
-	}
-
-	public function __call( $name, $arguments ) {
-
-	}
-
-    /**
-     * @param bool $returnValueGeneration
-     * @deprecated 0.4 Will be removed
-     */
-    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
-    {
-    }
-
-    public function verifyPostCondition()
-    {
-        global $current_user;
-
-        $current_user = $this->originalUser;
-    }
 }

@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Traits;
-
 
 use Pretzlaw\WPInt\Mocks\Users\CurrentUserMock;
 
@@ -12,11 +12,8 @@ trait UserAssertions {
      */
     protected function mockCurrentUser($mockedUser)
     {
-		global $current_user;
+        $currentUserMock = new CurrentUserMock($GLOBALS['current_user'], $mockedUser);
 
-        $currentUserMock = new CurrentUserMock($mockedUser, $current_user);
-		$currentUserMock->apply();
-
-		$this->wpIntMocks[] = $currentUserMock;
+        $this->wpIntApply($currentUserMock);
 	}
 }

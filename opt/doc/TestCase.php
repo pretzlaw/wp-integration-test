@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Test;
 
+use PHPUnit\Framework\Constraint\IsFalse;
+use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Error\Warning;
 use Pretzlaw\WPInt\Traits\WordPressTests;
 use ReflectionClass;
@@ -92,5 +94,28 @@ class TestCase extends \RmpUp\PHPUnitCompat\TestCase
 	private static function hasCoversTag($docComment): bool
 	{
 		return (bool) preg_match('/\n\s+\\*\s+@covers\s+[\\\]?\w/mu', $docComment);
+	}
+
+	protected function assertIsMockOf($expectedClass, $mockObject)
+	{
+		static::assertInstanceOf($expectedClass, $mockObject);
+
+		// todo create constraint
+		static::assertThat(
+			method_exists($mockObject, 'mockery_verify'),
+			new IsTrue(),
+			sprintf('Object "%s" is not a mock', get_class($mockObject))
+		);
+	}
+
+	protected function assertIsNotMockOf($expectedClass, $object)
+	{
+		static::assertInstanceOf($expectedClass, $object);
+
+		static::assertThat(
+			method_exists($object, 'mockery_verify'),
+			new IsFalse(),
+			sprintf('Expected object "%s" to not be a mock but it is one.', get_class($object))
+		);
 	}
 }
