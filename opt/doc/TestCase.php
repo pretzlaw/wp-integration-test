@@ -22,9 +22,9 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Test;
 
+use PHPUnit\Framework\Error\Warning;
 use Pretzlaw\WPInt\Traits\WordPressTests;
-use ReflectionMethod;
-use ReflectionObject;
+use ReflectionClass;
 
 /**
  * TestCase
@@ -51,66 +51,46 @@ class TestCase extends \RmpUp\PHPUnitCompat\TestCase
 	 * or on test-methods.
 	 *
 	 * @internal
+	 * @beforeClass
 	 */
-	public function testCoverageIsDefined()
+	public static function checkForCoverageDocComments()
 	{
 		// Does class have "@covers" comment?
-		$docComment = (new ReflectionObject($this))->getDocComment();
+		$reflection = new ReflectionClass(static::class);
+		$docComment = $reflection->getDocComment();
 
-		if ($this->hasCoversTag($docComment)) {
-			static::assertTrue($this->hasCoversTag($docComment));
-
+		if (self::hasCoversTag($docComment)) {
 			return;
 		}
 
-		$className = get_class($this);
+		$className = $reflection->getName();
 		foreach (get_class_methods($className) as $methodName) {
-			/** @noinspection NotOptimalIfConditionsInspection */
-			if (
-				0 !== strpos($methodName, 'test')
-				|| 'testCoverageIsDefined' === $methodName
-			) {
+			if (0 !== strpos($methodName, 'test')) {
 				continue;
 			}
 
-			$method = new ReflectionMethod($this, $methodName);
+			$method = $reflection->getMethod($methodName);
 
 			if (false === $method->isPublic()) {
 				continue;
 			}
 
-			static::assertTrue(
-				$this->hasCoversTag((string) $method->getDocComment()),
-				sprintf(
-					'Please specify @covers for "%s" or "%s".',
-					$className,
-					$methodName
-				)
-			);
+			if (false === self::hasCoversTag((string) $method->getDocComment())) {
+				// Found one without @covers doc-comment tag.
+				throw new Warning(
+					sprintf('Please specify @covers for "%s" or all its methods.', $className),
+					0,
+					__FILE__,
+					0
+				);
+			}
 		}
+
+		// All methods checked so all have a @covers tag
 	}
 
-	private function hasCoversTag($docComment): bool
+	private static function hasCoversTag($docComment): bool
 	{
 		return (bool) preg_match('/\n\s+\\*\s+@covers\s+[\\\]?\w/mu', $docComment);
-	}
-
-	/**
-	 * Asserting that the callback has an exception of given type
-	 *
-	 * @param string $expectedClass
-	 * @param $callback
-	 */
-	protected function assertException(string $expectedClass, $callback)
-	{
-		try {
-			$callback();
-		} catch (\Exception $e) {
-			static::assertInstanceOf($expectedClass, $e);
-
-			return;
-		}
-
-		self::fail('No exception has been thrown');
 	}
 }

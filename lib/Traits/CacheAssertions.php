@@ -20,9 +20,13 @@
  * @since      2018-12-27
  */
 
+declare(strict_types=1);
+
 namespace Pretzlaw\WPInt\Traits;
 
+use Mockery\Mock;
 use Pretzlaw\WPInt\Mocks\Cache;
+use WP_Object_Cache;
 
 /**
  * CacheAssertions
@@ -32,44 +36,22 @@ use Pretzlaw\WPInt\Mocks\Cache;
  */
 trait CacheAssertions
 {
-    private $wpCacheMock;
-    /**
-     * @return Cache
-     */
-    protected function mockCache(): Cache
-    {
-        $cache = new Cache();
-        $cache->register($this);
-
-        $this->wpIntMocks[] = $cache;
-
-        return $cache;
-    }
-
-    protected function mockCacheGet($cacheKey, $cacheData, $cacheGroup = '')
-    {
-        $this->mockCache()
-            ->expects($this->any())
-            ->method('get')
-            ->with($cacheKey, $cacheGroup)
-            ->willReturn($cacheData);
-    }
+	private $wpIntObjectCaches = [];
 
     /**
-     * Safely reset global state
-     *
-     * PHPUnit does no verify of mock objects when an assertion failed.
-     * So we hook in the tear down process and assert the cleanup of the
-     * WordPress cache mocks.
-     *
-     * @after
+     * @return Mock|WP_Object_Cache
      */
-    public function tearDownWpCacheMock()
+    protected function mockCache(&$objectCache = null)
     {
-        global $wp_object_cache;
+		if (null === $objectCache) {
+			$objectCache =& $GLOBALS['wp_object_cache'];
+		}
 
-        if ($wp_object_cache instanceof Cache) {
-            $wp_object_cache->reset();
-        }
+		if (method_exists($objectCache, 'mockery_verify')) {
+			// Already a mock which we will reuse.
+			return $objectCache;
+		}
+
+		return $this->wpIntApply(new Cache($objectCache));
     }
 }

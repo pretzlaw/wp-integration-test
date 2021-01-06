@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace Pretzlaw\WPInt\Test\Filter\Mock;
 
 use Pretzlaw\WPInt\Test\TestCase;
-use Prophecy\Argument;
 
 /**
  * Matching specific calls
@@ -47,25 +46,23 @@ class IgnoreUnmatchedCallsTest extends TestCase
 {
 	public function testIgnoreOtherCalls()
 	{
-	 $filterName = uniqid('', true);
-	 $this->mockFilter($filterName)
-	  ->withArguments([Argument::exact(2)])
-	  ->shouldBeCalledOnce()
-	  ->willReturn(42);
+		$filterName = uniqid('', true);
+		$this->mockFilter($filterName)
+			->with(2)
+			->andReturn(42);
 
-	 static::assertSame(1, apply_filters($filterName, 1));
-	 static::assertSame(42, apply_filters($filterName, 2));
-	 static::assertSame(3, apply_filters($filterName, 3));
+		static::assertSame(1, apply_filters($filterName, 1));
+		static::assertSame(42, apply_filters($filterName, 2));
+		static::assertSame(3, apply_filters($filterName, 3));
 	}
 
 	public function testCanBeDescribedWithoutArguments()
 	{
-	 $filterName = uniqid('', true);
-	 $this->mockFilter($filterName)
-	  ->willReturn(1337);
+		$filterName = uniqid('', true);
+		$this->mockFilter($filterName)->andReturn(1337);
 
-	 static::assertEquals(1337, apply_filters($filterName, 1));
-	 static::assertEquals(1337, apply_filters($filterName, ''));
-	 static::assertEquals(1337, apply_filters($filterName, 2));
+		static::assertEquals(1337, apply_filters($filterName, 1));
+		static::assertEquals(1337, apply_filters($filterName, ''));
+		static::assertEquals(1337, apply_filters($filterName, 2));
 	}
 }

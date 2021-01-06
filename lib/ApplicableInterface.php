@@ -25,7 +25,14 @@ namespace Pretzlaw\WPInt;
 interface ApplicableInterface
 {
 	/**
+	 * Apply mock or assertion to environment
+	 *
+	 * Registers mocks, expectations, actions, filter
+	 * or similar in the system to enable testing for it.
+	 *
 	 * @return mixed
+	 *
+	 * @deprecated 0.4.0 Rename to wpIntApply();
 	 */
 	public function apply();
 }

@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Test\Filter;
 
+use PHPUnit\Framework\AssertionFailedError;
 use Pretzlaw\WPInt\Test\TestCase;
 
 /**
@@ -38,32 +39,55 @@ class MockTest extends TestCase
 
 	protected function compatSetUp()
 	{
-	 $this->filterName = '_some_magic_filter_' . random_int(1, 99);
+		$this->filterName = '_some_magic_filter_' . random_int(1, 99);
 	}
 
 	public function testCanCountMock()
 	{
-	 $this->mockFilter($this->filterName)->shouldBeCalledOnce();
+		$this->mockFilter($this->filterName)->once();
 
-	 apply_filters($this->filterName, null);
+		apply_filters($this->filterName, null);
+	}
+
+	public function testWouldFailOnInvalidCount()
+	{
+		$this->expectException(AssertionFailedError::class);
+
+		$this->mockFilter($this->filterName)->once();
+
+		apply_filters($this->filterName, null);
+		apply_filters($this->filterName, null);
+
+		$this->wpIntCleanUp();
 	}
 
 	public function testCanMockFilter()
 	{
-	 $expectedReturn = uniqid('', true);
+		$expectedReturn = uniqid('', true);
 
-	 $this->mockFilter($this->filterName)->willReturn($expectedReturn);
+		$this->mockFilter($this->filterName)->andReturn($expectedReturn);
 
-	 static::assertSame($expectedReturn, apply_filters($this->filterName, null));
+		static::assertSame($expectedReturn, apply_filters($this->filterName, null));
+	}
+
+	public function testIgnoresOtherCalls()
+	{
+		$expectedReturn = uniqid('', true);
+
+		$this->mockFilter($this->filterName)->with('bar')->andReturn($expectedReturn);
+
+		static::assertNull(apply_filters($this->filterName, null));
+		static::assertEquals($expectedReturn, apply_filters($this->filterName, 'bar'));
+		static::assertEquals('untouched', apply_filters($this->filterName, 'untouched'));
 	}
 
 	public function testFilterIsRemovedAfterwards()
 	{
-	 static::assertFilterEmpty($this->filterName);
+		static::assertFilterEmpty($this->filterName);
 
-	 $this->mockFilter($this->filterName);
-	 $this->wpIntCleanUp();
+		$this->mockFilter($this->filterName);
+		$this->wpIntCleanUp();
 
-	 static::assertFilterEmpty($this->filterName);
+		static::assertFilterEmpty($this->filterName);
 	}
 }

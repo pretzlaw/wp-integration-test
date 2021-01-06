@@ -22,12 +22,10 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Mocks;
 
+use Mockery;
+use PHPUnit\Framework\AssertionFailedError;
 use Pretzlaw\WPInt\ApplicableInterface;
 use Pretzlaw\WPInt\CleanUpInterface;
-use Pretzlaw\WPInt\Helper\DefaultToken;
-use Prophecy\Argument;
-use Prophecy\Prophecy\MethodProphecy;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Filter
@@ -46,10 +44,7 @@ class Filter implements CleanUpInterface, ApplicableInterface
 	 * @var string
 	 */
 	private $filterName;
-	/**
-	 * @var ObjectProphecy|self
-	 */
-	private $objectProphecy;
+	private $mock;
 	/**
 	 * @var int|null
 	 */
@@ -58,9 +53,8 @@ class Filter implements CleanUpInterface, ApplicableInterface
 	/**
 	 * Filter constructor.
 	 */
-	public function __construct(ObjectProphecy $objectProphecy, string $filterName, int $priority = null)
+	public function __construct(string $filterName, int $priority = null)
 	{
-		$this->objectProphecy = $objectProphecy;
 		$this->filterName = $filterName;
 
 		if (null === $priority) {
@@ -68,32 +62,52 @@ class Filter implements CleanUpInterface, ApplicableInterface
 		}
 
 		$this->priority = $priority;
-		$this->callback = [$objectProphecy->reveal(), 'apply_filters'];
 	}
 
+	/**
+	 * @return mixed|Mockery\Expectation|Mockery\ExpectationInterface|Mockery\HigherOrderMessage
+	 */
 	public function apply()
 	{
-		// Otherwise return first argument
-		$this->objectProphecy
-			->apply_filters()
-			->withArguments([Argument::cetera()])
-			->willReturnArgument(0);
+		$this->mock = Mockery::mock(Filter::class);
+		$this->mock->makePartial();
+		$this->callback = [$this->mock, 'apply_filters'];
+
+		$higherOrderMessage = $this->mock->shouldReceive('apply_filters');
+
+		// in doubt
+		//$this->mock->shouldReceive('apply_filters')->withAnyArgs()->andReturnArg(0);
 
 		add_filter($this->filterName, $this->callback, $this->priority, PHP_INT_MAX);
 
-		/** @var MethodProphecy $method */
-		$method = $this->objectProphecy->apply_filters();
-
-		return $method->withArguments([new DefaultToken()]);
+		return $higherOrderMessage;
 	}
 
 	public function apply_filters($first = null)
-    {
-        return $first;
-    }
+	{
+		return $first;
+	}
 
-    public function __invoke()
+	public function __invoke()
 	{
 		remove_filter($this->filterName, $this->callback);
+
+		try {
+			$this->mock->mockery_verify();
+		} catch (Mockery\Exception\InvalidCountException $e) {
+			throw new AssertionFailedError(
+				sprintf(
+					'Expected %s to be called %d time(s) but called %d time(s).',
+					str_replace(
+						'apply_filters(',
+						'apply_filters("' . $this->filterName . '", ',
+						(string) $e->getMethodName()
+					),
+					(int) $e->getExpectedCount(),
+					(int) $e->getActualCount()
+				),
+				$e->getCode()
+			);
+		}
 	}
 }

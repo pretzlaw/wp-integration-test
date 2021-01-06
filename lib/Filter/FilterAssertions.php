@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Filter;
 
+use Exception;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
@@ -36,7 +37,7 @@ trait FilterAssertions
                 static::getWpHooks(),
                 new LogicalNot(new FilterHasCallback($expectedCallback, $filter, $priority))
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new AssertionFailedError($e->getMessage());
         }
     }
@@ -71,7 +72,7 @@ trait FilterAssertions
     {
         try {
             static::assertThat(static::getWpHooks(), new FilterHasCallback($expectedCallback, $filter, $priority));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new AssertionFailedError($e->getMessage());
         }
     }
@@ -115,12 +116,12 @@ trait FilterAssertions
 	 * @param string $filterName
 	 * @param int $priority
 	 *
-	 * @return MethodProphecy
+	 * @return \Mockery\ExpectationInterface|\Mockery\Expectation|\Mockery\HigherOrderMessage
 	 */
-	protected function mockFilter(string $filterName, int $priority = 10): MethodProphecy
+	protected function mockFilter(string $filterName, int $priority = 10)
 	{
 		return $this->wpIntApply(
-			new Filter($this->prophesize(Filter::class), $filterName, $priority)
+			new Filter($filterName, $priority)
 		);
 	}
 

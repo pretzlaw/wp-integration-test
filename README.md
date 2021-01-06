@@ -54,7 +54,8 @@ using the `\Pretzlaw\WP_Int\run_wp()` function.
 
 ### Example
 
-If you know PHPUnit already then this speaks for itself:
+If you know PHPUnit already then mocking isn't something new (I hope).
+With WPInt it can be done like this:
 
 ```php
 class FooTest extends \PHPUnit\Framework\TestCase {
@@ -77,17 +78,26 @@ class FooTest extends \PHPUnit\Framework\TestCase {
         
         // Mock actions, mockFilter, mockCache, ...
         $this->mockFilter( 'user_has_cap' )
-             ->expects( $this->any() )
-             ->willReturn( true );
+             ->andReturn( true );
         
         // Or make use of the shortcuts
-        $this->mockCacheGet( 'my-own-cache', 'yeah!' );
+        $this->mockCache()
+            ->shouldReceive('get')
+            ->with('my_own_cache')
+            ->andReturn('yeah');
+
         $this->disableWpDie();
     }
 }
 ```
 
-Or make use of the other helper.
+Unfortunately the PHPUnit Mocking system changes often,
+which made it hard to establish compatibility with it.
+We are using
+[mockery/mockery:~1](https://packagist.org/packages/mockery/mockery)
+which is easier to use than PHPUnit Mocking and more stable but uses
+different method names (e.g. `shouldReceive`, `andReturn` as seen above).
+
 
 ### Assertions
 

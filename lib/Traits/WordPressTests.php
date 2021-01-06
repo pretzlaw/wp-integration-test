@@ -79,7 +79,9 @@ trait WordPressTests
 	 */
 	public function wpIntApply(CleanUpInterface $cleanUp)
 	{
-		$this->wpIntCleanUp[] = $cleanUp;
+		// Prepend because clean-up does FIFO
+		// todo only prepend if interface is given
+		array_unshift($this->wpIntCleanUp, $cleanUp);
 
 		if ($cleanUp instanceof ApplicableInterface) {
 			return $cleanUp->apply();

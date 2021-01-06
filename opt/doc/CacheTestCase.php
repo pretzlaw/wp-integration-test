@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * CleanUpInterface.php
+ * CacheTestCase.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,15 +20,20 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt;
+namespace Pretzlaw\WPInt\Test;
 
-interface CleanUpInterface
+use WP_Object_Cache;
+
+/**
+ * CacheTestCase
+ *
+ * @copyright 2021 Pretzlaw (https://rmp-up.de)
+ */
+class CacheTestCase extends TestCase
 {
-	/**
-	 * Cleans up an assertion or mocked stuff
-	 *
-	 * @return mixed
-	 * @deprecated 0.4.0 rename to wpIntCleanUp()
-	 */
-	public function __invoke();
+	protected function assertIsMockedObjectCache($objectCache)
+	{
+		static::assertInstanceOf(WP_Object_Cache::class, $objectCache);
+		static::assertNotEquals(WP_Object_Cache::class, get_class($objectCache));
+	}
 }

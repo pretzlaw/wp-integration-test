@@ -20,15 +20,15 @@
  * @since      2018-12-27
  */
 
+declare(strict_types=1);
+
 namespace Pretzlaw\WPInt\Mocks;
 
-use PHPUnit\Framework\ExpectationFailedException;
+use Mockery;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
-use PHPUnit\Framework\MockObject\Invocation\ObjectInvocation;
-use PHPUnit\Framework\MockObject\Matcher\Invocation;
-use PHPUnit\Framework\TestCase;
-use Pretzlaw\WPInt\ProxyInvocationBuilder;
-use Pretzlaw\WPInt\ProxyMocker;
+use Pretzlaw\WPInt\ApplicableInterface;
+use Pretzlaw\WPInt\CleanUpInterface;
+use WP_Object_Cache;
 
 /**
  * Mock data in the cache
@@ -40,152 +40,45 @@ use Pretzlaw\WPInt\ProxyMocker;
  * @since      2018-12-27
  * @method InvocationMocker method($constraint)
  */
-class Cache implements PostCondition
+class Cache implements CleanUpInterface, ApplicableInterface
 {
-    private $matcher = [];
-    private $invocationMocker;
-    /**
-     * @var \WP_Object_Cache
-     */
-    private $proxyTarget;
+	/**
+	 * @var mixed|WP_Object_Cache
+	 */
+	private $backup;
+	/**
+	 * @var WP_Object_Cache
+	 */
+	private $cache;
 
-    /**
-     * Due to fifo-stack in PHPUnit we would destroy the global so we only store the very first one.
-     *
-     * @var array
-     */
-    protected static $originalObjectCache;
+	/**
+	 * Cache constructor.
+	 *
+	 * @param WP_Object_Cache|null $cache
+	 */
+	public function __construct(&$cache)
+	{
+		$this->cache =& $cache;
+		$this->backup = $cache;
+	}
 
-    public function __construct($proxyTarget = null)
-    {
-        if (null === $proxyTarget) {
-            global $wp_object_cache;
-            $proxyTarget = $wp_object_cache;
-        }
+	public function apply()
+	{
+		// Default to global object cache
+		if (false === is_object($this->cache)) {
+			$this->cache = new WP_Object_Cache();
+		}
 
-        $this->__phpunit_setOriginalObject($proxyTarget);
-    }
+		$mock = Mockery::mock($this->cache);
+		$mock->makePartial();
 
-    /**
-     * @param TestCase $testCase
-     * @deprecated 0.4 No longer inject test case
-     */
-    public function register(TestCase $testCase)
-    {
-        global $wp_object_cache;
+		$this->cache = $mock;
 
-        if (!static::$originalObjectCache) {
-            static::$originalObjectCache = $wp_object_cache;
-        }
+		return $mock;
+	}
 
-        $wp_object_cache = $this;
-
-        // $testCase->registerMockObject($this);
-    }
-
-    /**
-     * Adds a new matcher to the collection which can be used as an expectation
-     * or a stub.
-     *
-     * @param Invocation $matcher Matcher for invocations to mock objects
-     */
-    public function addMatcher(Invocation $matcher)
-    {
-        $this->matcher[] = $matcher;
-    }
-
-    /**
-     * Registers a new expectation in the mock object and returns the match
-     * object which can be infused with further details.
-     *
-     * @param Invocation $matcher
-     *
-     * @return ProxyInvocationBuilder
-     */
-    public function expects(Invocation $matcher)
-    {
-        return $this->__phpunit_getInvocationMocker()->expects($matcher);
-    }
-
-    public function __call($method, $arguments)
-    {
-        return $this->__phpunit_getInvocationMocker()->invoke(
-            new ObjectInvocation(get_class($this), $method, $arguments, 'mixed', $this),
-            $this->proxyTarget->get(...$arguments)
-        );
-    }
-
-    /**
-     * @return InvocationMocker
-     * @deprecated 0.4 Will be removed
-     */
-    public function __phpunit_setOriginalObject($originalObject)
-    {
-        $this->proxyTarget = $originalObject;
-    }
-
-    /**
-     * @return ProxyMocker
-     * @deprecated 0.4 Will be removed
-     */
-    public function __phpunit_getInvocationMocker()
-    {
-        if (!$this->invocationMocker) {
-            $this->invocationMocker = new ProxyMocker();
-        }
-
-        return $this->invocationMocker;
-    }
-
-    /**
-     * Verifies that the current expectation is valid. If everything is OK the
-     * code should just return, if not it must throw an exception.
-     *
-     * @throws ExpectationFailedException
-     * @deprecated 0.4 Will be removed
-     */
-    public function __phpunit_verify(bool $unsetInvocationMocker = true)
-    {
-        $this->verifyPostCondition();
-    }
-
-    /**
-     * @return bool
-     * @deprecated 0.4 Will be removed
-     */
-    public function __phpunit_hasMatchers()
-    {
-        return $this->__phpunit_getInvocationMocker()->hasMatchers();
-    }
-
-    public function __destruct()
-    {
-        $this->reset();
-    }
-
-    public function reset()
-    {
-        global $wp_object_cache;
-
-        if (static::$originalObjectCache) {
-            // Only reset if we have a history ready.
-            $wp_object_cache = static::$originalObjectCache;
-        }
-    }
-
-    /**
-     * @param bool $returnValueGeneration
-     * @deprecated 0.4 Will be removed
-     */
-    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
-    {
-
-    }
-
-    public function verifyPostCondition()
-    {
-        $this->reset();
-
-        $this->__phpunit_getInvocationMocker()->verify();
-    }
+	public function __invoke()
+	{
+		$this->cache = $this->backup;
+	}
 }
