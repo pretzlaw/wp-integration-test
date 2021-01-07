@@ -136,6 +136,7 @@ trait WordPressTests
 		}
 
 		if ($subject instanceof ApplicableInterface) {
+			// todo Let the caller do this
 			return $subject->apply();
 		}
 
