@@ -5,6 +5,7 @@
         convertNoticesToExceptions="false"
         convertDeprecationsToExceptions="false"
         bootstrap="bootstrap.php"
+        forceCoversAnnotation="true"
 >
     <testsuite name="default">
         <directory>opt/doc</directory>
