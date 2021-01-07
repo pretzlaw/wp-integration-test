@@ -25,7 +25,7 @@ namespace Pretzlaw\WPInt\Mocks;
 interface PostCondition
 {
     /**
-     * @return void
+     * @return int Amount of tests that have been done
      */
-    public function verifyPostCondition();
+    public function verifyPostCondition(): int;
 }

@@ -26,6 +26,7 @@ namespace Pretzlaw\WPInt\Traits;
 
 use Pretzlaw\WPInt\ApplicableInterface;
 use Pretzlaw\WPInt\CleanUpInterface;
+use Pretzlaw\WPInt\Mocks\PostCondition;
 
 /**
  * Simplify usage by gathering all traits in one alias
@@ -66,6 +67,12 @@ trait WordPressTests
 	public function wpIntCleanUp()
 	{
 		foreach ($this->wpIntCleanUp as $callback) {
+			if ($callback instanceof PostCondition) {
+				$this->addToAssertionCount(
+					$callback->verifyPostCondition()
+				);
+			}
+
 			$callback();
 		}
 

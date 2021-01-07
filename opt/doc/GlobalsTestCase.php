@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * ApplicableInterface.php
+ * GlobalsTestCase.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,17 +20,14 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt;
+namespace Pretzlaw\WPInt\Test;
 
-interface ApplicableInterface
+/**
+ * GlobalsTestCase
+ *
+ * @copyright 2021 Pretzlaw (https://rmp-up.de)
+ */
+class GlobalsTestCase extends TestCase
 {
-	/**
-	 * Apply mock or assertion to environment
-	 *
-	 * Registers mocks, expectations, actions, filter
-	 * or similar in the system to enable testing for it.
-	 *
-	 * @return mixed
-	 */
-	public function apply();
+
 }

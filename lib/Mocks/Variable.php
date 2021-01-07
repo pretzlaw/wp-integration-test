@@ -2,9 +2,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * BackupVariable.php
+ * Variable.php
  *
- * LICENSE: This source file is created by the company around Mike Pretzlaw
+ * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
  * and under german copyright law. Consider this file as closed source and/or
  * without the permission to reuse or modify its contents.
@@ -13,38 +13,33 @@
  * of the license and are unable to obtain it through the web, please send a
  * note to mail@rmp-up.de so we can mail you a copy.
  *
- * @package    wp-integration-test
- * @copyright  2020 M. Pretzlaw
- * @license    https://rmp-up.de/license-generic.txt
- * @since      2020-01-11
+ * @package   wp-integration-test
+ * @copyright 2021 Pretzlaw
+ * @license   https://rmp-up.de/license-generic.txt
  */
+
+declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Mocks;
 
 use Pretzlaw\WPInt\ApplicableInterface;
 
 /**
- * BackupVariable
+ * Variable
  */
-class BackupVariable implements PostCondition
+class Variable extends BackupVariable implements ApplicableInterface
 {
-	protected $backup;
-	private $reference;
+	private $temporaryValue;
 
-	public function __construct(&$variable)
+	public function __construct(&$variable, $temporaryValue)
 	{
-		$this->reference = &$variable;
-		$this->backup = $variable;
+		$this->temporaryValue = $temporaryValue;
+
+		parent::__construct($variable);
 	}
 
-	protected function setValue($newValue) {
-		$this->reference = $newValue;
-	}
-
-	public function verifyPostCondition(): int
+	public function apply()
 	{
-		$this->reference = $this->backup;
-
-		return 0;
+		$this->setValue($this->temporaryValue);
 	}
 }
