@@ -37,13 +37,6 @@ class TestCase extends \RmpUp\PHPUnitCompat\TestCase
 {
 	use WordPressTests;
 
-	public function compatTearDown()
-	{
-		global $wpdb;
-
-		static::assertTrue($wpdb->check_connection());
-	}
-
 	/**
 	 * Assert that each test has test-coverage configured
 	 *
