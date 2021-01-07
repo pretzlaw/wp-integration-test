@@ -34,7 +34,7 @@ use Pretzlaw\WPInt\CleanUpInterface;
  *
  * @copyright 2021 Pretzlaw (https://rmp-up.de)
  */
-class Filter implements CleanUpInterface, ApplicableInterface
+class Filter implements CleanUpInterface, ApplicableInterface, PostCondition
 {
 	/**
 	 * @var callable
@@ -91,7 +91,10 @@ class Filter implements CleanUpInterface, ApplicableInterface
 	public function __invoke()
 	{
 		remove_filter($this->filterName, $this->callback);
+	}
 
+	public function verifyPostCondition(): int
+	{
 		try {
 			$this->mock->mockery_verify();
 		} catch (Mockery\Exception\InvalidCountException $e) {
@@ -109,5 +112,7 @@ class Filter implements CleanUpInterface, ApplicableInterface
 				$e->getCode()
 			);
 		}
+
+		return (int) $this->mock->mockery_getExpectationCount();
 	}
 }
