@@ -24,6 +24,10 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Traits;
 
+use Mockery\Exception\InvalidCountException;
+use PackageVersions\Versions;
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Warning;
 use Pretzlaw\WPInt\ApplicableInterface;
 use Pretzlaw\WPInt\CleanUpInterface;
 use Pretzlaw\WPInt\Mocks\PostCondition;
@@ -37,22 +41,41 @@ use Pretzlaw\WPInt\Mocks\PostCondition;
 trait WordPressTests
 {
 	/**
-     * @var callable[]
-     */
-    protected $wpIntCleanUp = [];
+	 * @var callable[]
+	 */
+	protected $wpIntQueue = [];
 
-    use ActionAssertions;
-    use CacheAssertions;
-    use \Pretzlaw\WPInt\Filter\FilterAssertions;
-    use FunctionsAssertions;
-    use MetaDataAssertions;
-    use PluginAssertions;
-    use PostAssertions;
+	use ActionAssertions;
+	use CacheAssertions;
+	use \Pretzlaw\WPInt\Filter\FilterAssertions;
+	use FunctionsAssertions;
+	use MetaDataAssertions;
+	use PluginAssertions;
+	use PostAssertions;
 
-    use PostTypeAssertions;
-    use ShortcodeAssertions;
-    use UserAssertions;
-    use WidgetAssertions;
+	use PostTypeAssertions;
+	use ShortcodeAssertions;
+	use UserAssertions;
+	use WidgetAssertions;
+
+	/**
+	 * @postCondition
+	 */
+	public function wpIntPostConditions()
+	{
+		$postConditions = $this->wpIntQueue[PostCondition::class];
+		$this->wpIntQueue[PostCondition::class] = [];
+
+		foreach ($postConditions as $item) {
+			/** @var PostCondition $item */
+			try {
+				$this->addToAssertionCount($item->verifyPostCondition());
+			} catch (InvalidCountException $e) {
+				// Transform Mockery exception to get the proper console output
+				throw new AssertionFailedError($e->getMessage(), $e->getCode(), $e);
+			}
+		}
+	}
 
 	/**
 	 * Clean up previous calls
@@ -62,36 +85,58 @@ trait WordPressTests
 	 * if previous tests failed way to hard.
 	 *
 	 * @after
-	 * @before
 	 */
 	public function wpIntCleanUp()
 	{
-		foreach ($this->wpIntCleanUp as $callback) {
-			if ($callback instanceof PostCondition) {
-				$this->addToAssertionCount(
-					$callback->verifyPostCondition()
-				);
-			}
-
+		foreach ($this->wpIntQueue[CleanUpInterface::class] as $callback) {
+			/** @var CleanUpInterface $callback */
 			$callback();
 		}
 
-		$this->wpIntCleanUp = [];
+		if (version_compare(Versions::getVersion('phpunit/phpunit'), '9.1.0', '<')) {
+			// Before PHP 9.1.0 there were no @postCondition tag so we trigger it manually
+			$this->wpIntPostConditions();
+		}
+
+		$this->wpIntQueue[CleanUpInterface::class] = [];
 	}
 
 	/**
-	 * @param CleanUpInterface $cleanUp
+	 * Check and clean the queue
+	 *
+	 * @before
+	 */
+	public function wpIntCleanQueue()
+	{
+		$remaining = implode(', ', array_keys(array_filter($this->wpIntQueue)));
+		if ($remaining) {
+			throw new Warning('Previous test did not clean up: ' . $remaining);
+		}
+
+		$this->wpIntQueue = [
+			CleanUpInterface::class => [],
+			PostCondition::class => [],
+		];
+	}
+
+	/**
+	 * @param $subject
 	 *
 	 * @return mixed|null
 	 */
-	public function wpIntApply(CleanUpInterface $cleanUp)
+	public function wpIntApply($subject)
 	{
 		// Prepend because clean-up does FIFO
-		// todo only prepend if interface is given
-		array_unshift($this->wpIntCleanUp, $cleanUp);
+		if ($subject instanceof CleanUpInterface) {
+			array_unshift($this->wpIntQueue[CleanUpInterface::class], $subject);
+		}
 
-		if ($cleanUp instanceof ApplicableInterface) {
-			return $cleanUp->apply();
+		if ($subject instanceof PostCondition) {
+			$this->wpIntQueue[PostCondition::class][] = $subject;
+		}
+
+		if ($subject instanceof ApplicableInterface) {
+			return $subject->apply();
 		}
 
 		return null;

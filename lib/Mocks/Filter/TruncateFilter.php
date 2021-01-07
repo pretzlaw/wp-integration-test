@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Mocks\Filter;
 
+use Pretzlaw\WPInt\ApplicableInterface;
+use Pretzlaw\WPInt\CleanUpInterface;
 use Pretzlaw\WPInt\Mocks\CannotBeAppliedMoreThanException;
 use WP_Hook;
 use const Pretzlaw\WPInt\Filter\FILTER_WAS_EMPTY;
@@ -31,7 +33,7 @@ use const Pretzlaw\WPInt\Filter\FILTER_WAS_EMPTY;
  *
  * @copyright 2021 Pretzlaw (https://rmp-up.de)
  */
-class TruncateFilter
+class TruncateFilter implements CleanUpInterface, ApplicableInterface
 {
     const FILTER_WAS_EMPTY = -1;
     private $backup;

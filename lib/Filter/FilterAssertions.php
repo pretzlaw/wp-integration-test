@@ -105,9 +105,8 @@ trait FilterAssertions
             $filterNames = [$filterNames];
         }
 
-		// todo ::backupFilter
 		global $wp_filter;
-		$this->wpIntCleanUp[] = (new Filter\TruncateFilter($filterNames, $wp_filter))->apply();
+        $this->wpIntApply(new Filter\TruncateFilter($filterNames, $wp_filter));
 	}
 
 	/**

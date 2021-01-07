@@ -28,7 +28,7 @@ interface CleanUpInterface
 	 * Cleans up an assertion or mocked stuff
 	 *
 	 * @return mixed
-	 * @deprecated 0.4.0 rename to wpIntCleanUp()
+	 * @deprecated 0.4.0 rename to cleanUp()
 	 */
 	public function __invoke();
 }
