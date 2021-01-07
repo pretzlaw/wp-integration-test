@@ -20,14 +20,13 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Mocks\Other;
+namespace Pretzlaw\WPInt\Test\Other;
 
-use Pretzlaw\WPInt\Mocks\OtherTestCase;
+use Pretzlaw\WPInt\Test\OtherTestCase;
 use ReflectionFunction;
 
 /**
  * DisableWpDieTest
- *
  */
 class DisableWpDieTest extends OtherTestCase
 {

@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * OtherTestCase.php
+ * MockPostMetaForAnyTypeTest.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,16 +20,35 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Mocks;
+namespace Pretzlaw\WPInt\Test\MetaData;
 
-use Pretzlaw\WPInt\Test\TestCase;
+use Pretzlaw\WPInt\Mocks\MetaData;
+use Pretzlaw\WPInt\Test\MetaDataTestCase;
 
 /**
- * Other
+ * MockPostMetaForAnyTypeTest
  *
- * @copyright 2021 Pretzlaw (https://rmp-up.de)
+ * @covers \Pretzlaw\WPInt\Mocks\MetaData
  */
-class OtherTestCase extends TestCase
+class MetaDataForThirdPartyDataTypesTest extends MetaDataTestCase
 {
+	protected function compatTearDown()
+	{
+		$this->metaDataMock->__invoke();
 
+		parent::compatTearDown();
+	}
+
+	/**
+	 * @group unit
+	 */
+	public function testReturnsMockedMetaValue()
+	{
+		$this->assertMetaDataIsUnchanged('existing');
+
+		$newValue = [uniqid('', true)];
+		$this->metaDataMock->apply()->andReturn($newValue);
+
+		$this->assertMetaData($newValue, $this->metaType, $this->objectId, 'existing');
+	}
 }

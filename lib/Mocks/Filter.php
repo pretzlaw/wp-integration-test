@@ -75,9 +75,6 @@ class Filter implements CleanUpInterface, ApplicableInterface, PostCondition
 
 		$higherOrderMessage = $this->mock->shouldReceive('apply_filters');
 
-		// in doubt
-		//$this->mock->shouldReceive('apply_filters')->withAnyArgs()->andReturnArg(0);
-
 		add_filter($this->filterName, $this->callback, $this->priority, PHP_INT_MAX);
 
 		return $higherOrderMessage;
@@ -90,7 +87,7 @@ class Filter implements CleanUpInterface, ApplicableInterface, PostCondition
 
 	public function __invoke()
 	{
-		remove_filter($this->filterName, $this->callback);
+		remove_filter($this->filterName, $this->callback, $this->priority);
 	}
 
 	public function verifyPostCondition(): int

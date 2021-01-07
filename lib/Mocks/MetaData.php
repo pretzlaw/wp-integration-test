@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Mocks;
 
-use PHPUnit\Framework\Constraint\IsAnything;
+use Mockery\Matcher\Any;
+use Pretzlaw\WPInt\ApplicableInterface;
+use Pretzlaw\WPInt\CleanUpInterface;
 
-class MetaData
+class MetaData extends Filter implements ApplicableInterface, CleanUpInterface
 {
-    /**
+	/**
+	 * @var null
+	 */
+	private $objectId;
+	/**
      * @var string
      */
     private $type;
@@ -20,41 +27,38 @@ class MetaData
     /**
      * ExpectedMetaUpdate constructor.
      *
-     * @see \get_metadata() "get_{$meta_type}_metadata" filter.
-     *
      * @param string $type
      * @param string $metaKey
      * @param null $objectId
      * @param null $single
+	 *
+     * @see \get_metadata() "get_{$meta_type}_metadata" filter.
      */
     public function __construct(
         string $type,
         $metaKey,
-        $objectId = null,
-        $single = null
+        $objectId = null
     )
     {
-        if (null === $objectId) {
-            $objectId = new IsAnything();
-        }
-
-        if (null === $single) {
-            $single = new IsAnything();
-        }
-
-        parent::__construct(
-            'get_' . $type . '_metadata',
-            true,
-            // Filter sends in "null" as current value.
-            [null, $objectId, $metaKey, $single]
-        );
-
         $this->type = $type;
         $this->metaKey = $metaKey;
-    }
 
-    protected function fixExceptionMessage(\Exception $e)
-    {
-        return sprintf('%s-meta "%s" was not read.', $this->type, $this->metaKey);
-    }
+        if (null === $objectId) {
+        	$objectId = new Any();
+		}
+
+		$this->objectId = $objectId;
+
+		parent::__construct('get_' . $type . '_metadata', PHP_INT_MAX);
+	}
+
+	/**
+	 * @return mixed|\Mockery\Expectation|\Mockery\ExpectationInterface|\Mockery\HigherOrderMessage
+	 */
+	public function apply()
+	{
+		$anything = new Any();
+
+		return parent::apply()->with($anything, $this->objectId, $this->metaKey, $anything);
+	}
 }
