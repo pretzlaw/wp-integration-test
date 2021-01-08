@@ -79,9 +79,13 @@ class DisableWpDieTest extends OtherTestCase
 		$coveredFilter = $this->getWpDieFilter();
 
 		sort($allWpDieFilter);
+
+		// We may cover more than exists in previous versions,
+		// so we reduce it and assert that we cover the existing ones.
+		$coveredFilter = array_intersect($allWpDieFilter, $coveredFilter);
 		sort($coveredFilter);
 
-		static::assertSame($allWpDieFilter, $coveredFilter);
+		static::assertEquals($allWpDieFilter, $coveredFilter);
 	}
 
 	/**
