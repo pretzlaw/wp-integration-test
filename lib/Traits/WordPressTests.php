@@ -50,6 +50,7 @@ trait WordPressTests
 	use \Pretzlaw\WPInt\Filter\FilterAssertions;
 	use FunctionsAssertions;
 	use MetaDataAssertions;
+	use OptionAssertions;
 	use PluginAssertions;
 	use PostAssertions;
 
