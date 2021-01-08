@@ -11,6 +11,7 @@ php:
 env:
   global:
     - PHPUNIT_VERSION=6.5.*
+    - XDEBUG_MODE=coverage
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
@@ -26,9 +27,9 @@ matrix:
   # see https://codex.wordpress.org/WordPress_Versions
   # see https://phpunit.de/upported-versions.html
   - php: '7.3'
-    env: PHPUNIT_VERSION="7.5.*" WP_VERSION=5.2
+    env: PHPUNIT_VERSION="8.5.*" WP_VERSION=5.2
   - php: '7.2'
-    env: PHPUNIT_VERSION="7.0.*" WP_VERSION=5.0
+    env: PHPUNIT_VERSION="7.5.*" WP_VERSION=5.0
 
   - php: '7.1'
     env: PHPUNIT_VERSION="6.5.*" WP_VERSION=4.8
