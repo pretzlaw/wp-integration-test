@@ -87,6 +87,10 @@ class Filter implements CleanUpInterface, ApplicableInterface, PostCondition
 
 	public function __invoke()
 	{
+		if (null === $this->callback || false === has_filter($this->filterName, $this->callback)) {
+			return;
+		}
+
 		remove_filter($this->filterName, $this->callback, $this->priority);
 	}
 

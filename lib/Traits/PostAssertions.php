@@ -4,12 +4,28 @@
 namespace Pretzlaw\WPInt\Traits;
 
 
+use Mockery\Matcher\Any;
 use PHPUnit\Framework\MockObject\MockObject;
 use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 use Pretzlaw\WPInt\Mocks\Post\ExpectWpInsertPost;
 
 trait PostAssertions {
-	use PostQueryAssertions;
+	/**
+	 * @param int $id Post-ID.
+	 * @param \WP_Post|array $returnVal Post object or it's data as array (will be transformed into post object).
+	 */
+	protected static function mockGetPost(int $id, $returnVal)
+	{
+		if ( \is_array( $returnVal ) ) {
+			$returnVal = new \WP_Post( new \ArrayObject( $returnVal ) );
+		}
+
+		if (!$returnVal->ID) {
+			$returnVal->ID = $id;
+		}
+
+		wp_cache_set( $id, $returnVal, 'posts' );
+	}
 
     /**
      * @var MockObject[]
@@ -17,24 +33,7 @@ trait PostAssertions {
      */
 	private $wpPostClutter = [];
 
-	protected function expectWpPostCreationWithSubset( $expectedSubset ) {
-        $mockObject = new ExpectWpInsertPost($expectedSubset);
-
-        $mockObject->expects($this->atLeastOnce());
-        $this->wpIntMocks[] = $mockObject;
-        $this->wpPostClutter[] = $mockObject;
-
-        $mockObject->addFilter();
+	protected function expectWpInsertPost( $expectedSubset ) {
+		$this->wpIntApply(new ExpectWpInsertPost($expectedSubset));
 	}
-
-    /**
-     * @after
-     */
-	protected function tearDownPostClutter() {
-        foreach ($this->wpPostClutter as $clutter) {
-            if ($clutter instanceof ExpectedFilter) {
-                $clutter->removeFilter();
-            }
-        }
-    }
 }

@@ -4,26 +4,31 @@
 namespace Pretzlaw\WPInt\Mocks\Post;
 
 
-use PHPUnit\Framework\Constraint\ArraySubset;
-use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
-use Pretzlaw\WPInt\Mocks\ExpectedFilter;
+use Mockery\Matcher\Any;
+use Pretzlaw\WPInt\Mocks\Filter;
 
-class ExpectWpInsertPost {
-    /**
-     * ExpectWpInsertPost constructor.
-     *
-     * @param array $post_data
-     */
-	public function __construct( array $post_data ) {
-		parent::__construct(
-			'wp_insert_post_empty_content',
-			true, // Aborts real insertion
-			[ new AnyParameters(), new ArraySubset( $post_data ) ]
-		);
+class ExpectWpInsertPost extends Filter {
+	/**
+	 * @var array
+	 */
+	private $subset;
+
+	/**
+	 * ExpectWpInsertPost constructor.
+	 *
+	 */
+	public function __construct( array $subset ) {
+		parent::__construct('wp_insert_post_empty_content');
+
+		$this->subset = $subset;
 	}
 
-    protected function fixExceptionMessage(\Exception $e)
-    {
-        return 'wp_insert_post has not been called.';
-    }
+	public function apply()
+	{
+		parent::apply()
+			->atLeast()
+			->times(1)
+			->with(new Any(), new \Mockery\Matcher\Subset($this->subset))
+			->andReturnArg(0);
+	}
 }
