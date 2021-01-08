@@ -32,6 +32,7 @@ use Pretzlaw\WPInt\Test\Filter\Assertions\FilterHasCallbackTestCase;
  * CallbackExistsTest
  *
  * @covers \Pretzlaw\WPInt\Constraint\FilterHasCallback
+ * @covers \Pretzlaw\WPInt\Constraint\MatchesConstraint
  */
 class CallbackExistsTest extends FilterHasCallbackTestCase
 {

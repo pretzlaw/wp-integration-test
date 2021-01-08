@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace Pretzlaw\WPInt\Mocks\Cache;
 
 use Pretzlaw\WPInt\Mocks\Cache;
+use Pretzlaw\WPInt\Test\Coverage;
 use Pretzlaw\WPInt\Test\TestCase;
 use WP_Object_Cache;
 

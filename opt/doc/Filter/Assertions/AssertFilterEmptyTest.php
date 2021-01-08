@@ -32,6 +32,7 @@ use WP_Hook;
  * AssertFilterEmptyTest
  *
  * @covers \Pretzlaw\WPInt\Constraint\FilterEmpty
+ * @covers \Pretzlaw\WPInt\Constraint\WpHookEmpty
  * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::assertFilterEmpty
  * @covers \Pretzlaw\WPInt\Filter\FilterAssertions::assertFilterNotEmpty
  * @covers \Pretzlaw\WPInt\Traits\ActionAssertions::assertActionEmpty
