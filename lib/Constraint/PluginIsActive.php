@@ -22,8 +22,6 @@
 
 namespace Pretzlaw\WPInt\Constraint;
 
-use PHPUnit\Framework\Constraint\Constraint;
-
 /**
  * Check if plugin is active
  *

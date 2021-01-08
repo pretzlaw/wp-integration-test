@@ -21,7 +21,7 @@
 
 namespace Pretzlaw\WPInt\Constraint\Widget;
 
-use PHPUnit\Framework\Constraint\Constraint;
+use Pretzlaw\WPInt\Constraint\Constraint;
 
 /**
  * WidgetExists

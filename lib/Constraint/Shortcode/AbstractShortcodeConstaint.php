@@ -21,7 +21,7 @@
 
 namespace Pretzlaw\WPInt\Constraint\Shortcode;
 
-use PHPUnit\Framework\Constraint\Constraint;
+use Pretzlaw\WPInt\Constraint\Constraint;
 
 /**
  * AbstractShortcodeConstaint

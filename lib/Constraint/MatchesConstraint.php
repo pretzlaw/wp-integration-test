@@ -21,9 +21,7 @@
 
 namespace Pretzlaw\WPInt\Constraint;
 
-use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsEqual;
-use PHPUnit\Framework\Constraint\IsInstanceOf;
+use PHPUnit\Framework\Constraint\Constraint as PHPUnitConstraint;
 
 /**
  * ShortcodeHasCallback
@@ -47,7 +45,7 @@ class MatchesConstraint extends Constraint
             return true;
         }
 
-        if ($constraint instanceof Constraint) {
+        if ($constraint instanceof PHPUnitConstraint) {
             return $constraint->evaluate($actual, '', true);
         }
 

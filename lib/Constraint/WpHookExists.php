@@ -2,9 +2,6 @@
 
 namespace Pretzlaw\WPInt\Constraint;
 
-
-use PHPUnit\Framework\Constraint\Constraint;
-
 abstract class WpHookExists extends Constraint
 {
     /**

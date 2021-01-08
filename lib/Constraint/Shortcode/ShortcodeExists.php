@@ -21,8 +21,6 @@
 
 namespace Pretzlaw\WPInt\Constraint\Shortcode;
 
-use PHPUnit\Framework\Constraint\Constraint;
-
 /**
  * ShortcodeExists
  *
