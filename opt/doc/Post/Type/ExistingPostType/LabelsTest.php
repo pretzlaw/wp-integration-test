@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * TypeTestCase.php
+ * LabelsTest.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,16 +20,26 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Test\Post;
+namespace Pretzlaw\WPInt\Test\Post\Type\ExistingPostType;
 
-use Pretzlaw\WPInt\Test\TestCase;
-use WP_Post_Type;
+use Pretzlaw\WPInt\Test\Post\Type\ExistingPostTypeTestCase;
 
 /**
- * TypeTestCase
+ * LabelsTest
  *
- * @copyright 2021 Pretzlaw (https://rmp-up.de)
+ * @covers \Pretzlaw\WPInt\Traits\PostTypeAssertions::getPostTypeObject
  */
-class TypeTestCase extends TestCase
+class LabelsTest extends ExistingPostTypeTestCase
 {
+	/**
+	 * @covers \Pretzlaw\WPInt\Traits\PostTypeAssertions::assertPostTypeLabels
+	 */
+	public function testAssertionSucceedsWhenCheckingForLabels()
+	{
+		static::assertPostTypeLabels($this->postTypeName, $this->postTypeLabels);
+
+		// or with a subset
+		static::assertPostTypeLabels($this->postTypeName, ['add_new' => $this->postTypeLabels['add_new']]);
+		static::assertPostTypeLabels($this->postTypeName, ['add_new_item' => $this->postTypeLabels['add_new_item']]);
+	}
 }

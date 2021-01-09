@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * CheckPostTypeDefinitionTest.php
+ * DefinitionTest.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,21 +20,21 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Test\Post\Type;
+namespace Pretzlaw\WPInt\Test\Post\Type\ExistingPostType;
 
 use PHPUnit\Framework\AssertionFailedError;
-use Pretzlaw\WPInt\Test\Post\TypeTestCase;
+use Pretzlaw\WPInt\Test\Post\Type\ExistingPostTypeTestCase;
 
 /**
- * CheckPostTypeDefinitionTest
+ * DefinitionTest
  */
-class ExistingPostTypeTest extends TypeTestCase
+class DefinitionTest extends ExistingPostTypeTestCase
 {
 	/**
 	 * @covers \Pretzlaw\WPInt\Traits\PostTypeAssertions::assertPostTypeArgs()
 	 * @group acceptance
 	 */
-	public function testAssertingDifferentPostTypeDefintionThrowsError()
+	public function testAssertingDifferentPostTypeDefinitionThrowsError()
 	{
 		$wrongDefinition = $this->postTypeData;
 
@@ -43,15 +43,6 @@ class ExistingPostTypeTest extends TypeTestCase
 
 		$this->expectException(AssertionFailedError::class);
 		static::assertPostTypeArgs($this->postTypeName, $wrongDefinition);
-	}
-
-	/**
-	 * @covers \Pretzlaw\WPInt\Traits\PostTypeAssertions::assertPostTypeRegistered()
-	 * @group integration
-	 */
-	public function testAssertionThatItIsRegisteredSucceeds()
-	{
-		self::assertPostTypeRegistered($this->postTypeName);
 	}
 
 	/**

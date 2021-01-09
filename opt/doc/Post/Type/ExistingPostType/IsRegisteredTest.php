@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * TypeTestCase.php
+ * IsRegisteredTest.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,16 +20,24 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Test\Post;
+namespace Pretzlaw\WPInt\Test\Post\Type\ExistingPostType;
 
-use Pretzlaw\WPInt\Test\TestCase;
-use WP_Post_Type;
+use PHPUnit\Framework\AssertionFailedError;
+use Pretzlaw\WPInt\Test\Post\Type\ExistingPostTypeTestCase;
 
 /**
- * TypeTestCase
+ * IsRegisteredTest
  *
- * @copyright 2021 Pretzlaw (https://rmp-up.de)
+ * @covers \Pretzlaw\WPInt\Traits\PostTypeAssertions::getAllPostTypes
  */
-class TypeTestCase extends TestCase
+class IsRegisteredTest extends ExistingPostTypeTestCase
 {
+	/**
+	 * @covers \Pretzlaw\WPInt\Traits\PostTypeAssertions::assertPostTypeRegistered()
+	 * @group integration
+	 */
+	public function testAssertionThatItIsRegisteredSucceeds()
+	{
+		self::assertPostTypeRegistered($this->postTypeName);
+	}
 }
