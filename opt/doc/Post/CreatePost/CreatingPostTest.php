@@ -43,12 +43,13 @@ class CreatingPostTest extends CreatePostTestCase
 
 		$result = wp_insert_post($this->wpInsertPostData);
 
+		$errorMessage = '';
 		if ($result instanceof WP_Error) {
 			// Just to see what the error message is in test-output.
-			$result = $result->get_error_message();
+			$errorMessage = $result->get_error_message();
 		}
 
-		static::assertNotInstanceOf(WP_Error::class, $result, $result);
+		static::assertNotInstanceOf(WP_Error::class, $result, $errorMessage);
 
 		// 1 assertion should've been made (and succeeded)
 		static::assertSame(1, $this->expectWpInsertPost->verifyPostCondition());

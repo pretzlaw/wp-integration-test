@@ -16,7 +16,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">lib</directory>
             <exclude>
-                <directory>lib/Pretzlaw/WPInt/Tests</directory>
+                <directory>lib/Traits/WordPressTests.php</directory>
                 <file>lib/autoloader.php</file>
                 <file>lib/bootstrap.php</file>
                 <file>lib/functions.php</file>
