@@ -12,8 +12,8 @@ trait UserAssertions {
      */
     protected function mockCurrentUser($mockedUser)
     {
-        $currentUserMock = new CurrentUserMock($GLOBALS['current_user'], $mockedUser);
-
-        $this->wpIntApply($currentUserMock);
+        $this->wpIntApply(
+			new CurrentUserMock($GLOBALS['current_user'], $mockedUser)
+		);
 	}
 }

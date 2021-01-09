@@ -2,50 +2,50 @@ language: php
 
 php:
   # see http://php.net/supported-versions.php
-  - '7.0' # Until 3 Dec 2018
-  - '7.1' # Until 1 Dec 2019
-  - '7.2' # Until 30 Nov 2020
   - '7.3' # Until 6 Dec 2021
   - '7.4' # Until 28 Nov 2022
 
 env:
   global:
-    - PHPUNIT_VERSION=6.5.*
+    - PHPUNIT_VERSION=9.2.*
     - XDEBUG_MODE=coverage
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
-    - WP_VERSION=5.4
-    - WP_VERSION=nightly
+    - WP_VERSION=5.6 PHPUNIT_VERSION=9.5.*
+    - WP_VERSION=5.5 PHPUNIT_VERSION=8.5.*
+    - WP_VERSION=5.4 PHPUNIT_VERSION=7.5.*
+    - WP_VERSION=5.2 PHPUNIT_VERSION=6.5.*
 
 matrix:
-  # in the process to achieve support
-  allow_failures:
-  - php: '5.6'
-  - env: WP_VERSION=nightly
-  - env: WP_VERSION=5.5
-  - env: WP_VERSION=5.6
   include:
   # see https://codex.wordpress.org/WordPress_Versions
   # see https://phpunit.de/upported-versions.html
-  - php: '7.3'
-    env: PHPUNIT_VERSION="8.5.*" WP_VERSION=5.2
-  - php: '7.2'
-    env: PHPUNIT_VERSION="7.5.*" WP_VERSION=5.0
 
-  - php: '7.1'
-    env: PHPUNIT_VERSION="6.5.*" WP_VERSION=4.8
+  # Lowest edge as described in README.md
   - php: '7.0'
+    env: WP_VERSION=4.6 PHPUNIT_VERSION=6.5.*
+
+  # Checking deprecated PHP versions
+  - php: '7.2' # Until 30 Nov 2020
+    env: PHPUNIT_VERSION="8.5.*" WP_VERSION=5.0
+  - php: '7.1' # Until 1 Dec 2019
+    env: PHPUNIT_VERSION="7.5.*" WP_VERSION=4.8
+  - php: '7.0' # Until 3 Dec 2018
     env: PHPUNIT_VERSION="6.5.*" WP_VERSION=4.6
 
   # Trying to support ...
+  - php: '8.0'
+    env: PHPUNIT_VERSION=9.5.* WP_VERSION=5.6
   - php: '5.6'
     env: PHPUNIT_VERSION=~5 WP_VERSION=4.9
   - php: '7.4'
-    env: WP_VERSION=5.6
-  - php: '7.4'
-    env: WP_VERSION=5.5
+    env: WP_VERSION=nightly PHPUNIT_VERSION=dev-master
 
+  allow_failures:
+    - php: '5.6'
+    - php: '8.0'
+    - env: WP_VERSION=nightly PHPUNIT_VERSION=dev-master
 
 services:
   - mysql
@@ -53,7 +53,7 @@ services:
 before_install:
   - mysql -e 'CREATE DATABASE dev;'
   # Try supporting other versions
-  - composer require --update-with-dependencies phpunit/phpunit:$PHPUNIT_VERSION
+  - "[[ -z $PHPUNIT_VERSION ]] || composer require --update-with-dependencies phpunit/phpunit:$PHPUNIT_VERSION"
 
 install:
   - composer update

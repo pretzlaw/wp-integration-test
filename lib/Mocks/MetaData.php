@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Mocks;
 
+use Mockery\Matcher\AndAnyOtherArgs;
 use Mockery\Matcher\Any;
 use Pretzlaw\WPInt\ApplicableInterface;
 use Pretzlaw\WPInt\CleanUpInterface;
@@ -57,8 +58,12 @@ class MetaData extends Filter implements ApplicableInterface, CleanUpInterface
 	 */
 	public function apply()
 	{
-		$anything = new Any();
-
-		return parent::apply()->with($anything, $this->objectId, $this->metaKey, $anything);
+		return parent::apply()->with(
+			new Any(),
+			$this->objectId,
+			$this->metaKey,
+			// WP >= 5.5 has an additional arg after this (metaType)
+			new AndAnyOtherArgs()
+		);
 	}
 }

@@ -27,11 +27,7 @@ trait MetaDataAssertions {
 	 */
     protected function mockMetaData($type, $metaKey, $objectId = null)
 	{
-		$mock = new MetaData($type, $metaKey, $objectId);
-
-		$this->wpIntApply($mock);
-
-		return $this->wpIntApply($mock);
+		return $this->wpIntApply(new MetaData($type, $metaKey, $objectId));
     }
 
 	/**
