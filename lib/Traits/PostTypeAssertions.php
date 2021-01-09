@@ -4,26 +4,31 @@
 namespace Pretzlaw\WPInt\Traits;
 
 
+use Pretzlaw\WPInt\Constraint\Post\Type\IsRegistered;
+use WP_Post_Type;
+
 trait PostTypeAssertions {
-    protected static function assertPostTypeArgs(string $postType, array $exptectedArgs)
+	/**
+	 * @param string $postType
+	 *
+	 * @param array|WP_Post_Type $exptectedArgs
+	 */
+    protected static function assertPostTypeArgs(string $postType, $exptectedArgs)
     {
-		static::assertArraySubset( $exptectedArgs, (array) static::getPostTypeObject( $postType ) );
+		static::assertArraySubset( (array) $exptectedArgs, (array) self::getPostTypeObject( $postType ) );
 	}
 
 	protected static function assertPostTypeLabels( $postType, $expectedLabels ) {
         static::assertArraySubset(
             $expectedLabels,
             (array)get_post_type_labels(
-                static::getPostTypeObject($postType)
+                self::getPostTypeObject($postType)
             )
         );
 	}
 
-	protected static function assertPostTypeRegistered( $postType ) {
-		static::assertNotEmpty(
-			get_post_types( [ 'name' => $postType ] ),
-			sprintf( 'Post-Type "%s" has not been registered.', $postType )
-		);
+	protected static function assertPostTypeRegistered( $postType, string $message = '' ) {
+    	static::assertThat($postType, new IsRegistered(self::getAllPostTypes()), $message);
 	}
 
     private static function getPostTypeObject(string $postType)
@@ -41,5 +46,11 @@ trait PostTypeAssertions {
 		$postTypeObject->supports = get_all_post_type_supports( $postType );
 
 		return $postTypeObject;
+	}
+
+	private static function getAllPostTypes(): array {
+    	global $wp_post_types;
+
+    	return (array) $wp_post_types;
 	}
 }
