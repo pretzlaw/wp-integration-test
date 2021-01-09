@@ -4,27 +4,31 @@
 namespace Pretzlaw\WPInt\Traits;
 
 
-use Mockery\Matcher\Any;
+use Mockery\Matcher\AndAnyOtherArgs;
 use PHPUnit\Framework\MockObject\MockObject;
+use Pretzlaw\WPInt\Mocks\ExpectationFacade;
 use Pretzlaw\WPInt\Mocks\ExpectedFilter;
+use Pretzlaw\WPInt\Mocks\Facade\ReturnMethods;
 use Pretzlaw\WPInt\Mocks\Post\ExpectWpInsertPost;
+use Pretzlaw\WPInt\Mocks\ReturnOnly;
 
-trait PostAssertions {
+trait PostAssertions
+{
 	/**
 	 * @param int $id Post-ID.
 	 * @param \WP_Post|array $returnVal Post object or it's data as array (will be transformed into post object).
+	 *
+	 * @return ReturnMethods|ExpectationFacade
 	 */
-	protected static function mockGetPost(int $id, $returnVal)
+	protected function mockGetPost(int $id)
 	{
-		if ( \is_array( $returnVal ) ) {
-			$returnVal = new \WP_Post( new \ArrayObject( $returnVal ) );
-		}
+		$expectation = $this->mockCache()
+				->shouldReceive('get')
+				->with($id, 'posts', new AndAnyOtherArgs());
 
-		if (!$returnVal->ID) {
-			$returnVal->ID = $id;
-		}
-
-		wp_cache_set( $id, $returnVal, 'posts' );
+		return new class ($expectation) extends ExpectationFacade {
+			use ReturnMethods;
+		};
 	}
 
     /**
