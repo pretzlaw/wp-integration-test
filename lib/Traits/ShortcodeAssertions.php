@@ -21,6 +21,7 @@
 
 namespace Pretzlaw\WPInt\Traits;
 
+use Mockery\Expectation;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\LogicalNot;
@@ -77,15 +78,14 @@ trait ShortcodeAssertions
     /**
      * @param string $shortcodeName
      *
-     * @return Shortcode
+     * @return Expectation
      */
     public function mockShortcode(string $shortcodeName)
     {
-        $mock = new Shortcode($shortcodeName);
-        $this->wpIntMocks[] = $mock;
+    	if (empty($GLOBALS['shortcode_tags'])) {
+			$GLOBALS['shortcode_tags'] = [];
+		}
 
-        $mock->register();
-
-        return $mock;
+    	return $this->wpIntApply(new Shortcode($shortcodeName, $GLOBALS['shortcode_tags']));
     }
 }

@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * MockFacade.php
+ * ShortcodeTestCase.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,38 +20,47 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Mocks;
+namespace Pretzlaw\WPInt\Test;
 
-use Mockery\Expectation;
-use Mockery\ExpectationInterface;
+use Mockery;
 
 /**
- * MockFacade
+ * ShortcodeTestCase
  *
  * @copyright 2021 Pretzlaw (https://rmp-up.de)
  */
-abstract class ExpectationFacade
+class ShortcodeTestCase extends TestCase
 {
 	/**
-	 * @var Expectation
+	 * @var callable
 	 */
-	protected $expectation;
-
-	public function __construct(ExpectationInterface $expectation)
-	{
-		$this->expectation = $expectation;
-	}
+	protected $shortcodeCallback;
+	/**
+	 * @var Mockery\Expectation
+	 */
+	protected $shortcodeCallbackMock;
 
 	/**
-	 * Set the exception message
-	 *
-	 * @param string $message
-	 * @return $this
+	 * @var string
 	 */
-	public function because(string $message)
-	{
-		$this->expectation->because($message);
+	protected $shortcodeName;
+	/**
+	 * @var string
+	 */
+	protected $shortcodeReturn;
 
-		return $this;
+	protected function compatSetUp()
+	{
+		$this->shortcodeCallbackMock = Mockery::mock();
+		$this->shortcodeCallback = [$this->shortcodeCallbackMock, '__invoke'];
+		$this->shortcodeName = md5(uniqid('', true));
+		$this->shortcodeReturn = uniqid('', true);
+
+		$this->shortcodeCallbackMock->shouldReceive('__invoke')->andReturn($this->shortcodeReturn);
+	}
+
+	protected function compatTearDown()
+	{
+		remove_shortcode($this->shortcodeName);
 	}
 }

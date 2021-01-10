@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * MockFacade.php
+ * ShortcodeExistsTest.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,38 +20,42 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Mocks;
+namespace Pretzlaw\WPInt\Test\Shortcode;
 
-use Mockery\Expectation;
-use Mockery\ExpectationInterface;
+use Pretzlaw\WPInt\Test\ShortcodeTestCase;
 
 /**
- * MockFacade
+ * ShortcodeExistsTest
  *
  * @copyright 2021 Pretzlaw (https://rmp-up.de)
  */
-abstract class ExpectationFacade
+class ShortcodeExistsTestCase extends ShortcodeTestCase
 {
 	/**
-	 * @var Expectation
+	 * @var array
 	 */
-	protected $expectation;
+	protected $shortcodeTagsList;
 
-	public function __construct(ExpectationInterface $expectation)
+	protected function compatSetUp()
 	{
-		$this->expectation = $expectation;
+		parent::compatSetUp();
+
+		$this->shortcodeTagsList = [
+			// with some random just to have some data
+			md5(uniqid('', true)) => '__return_false',
+			md5(uniqid('', true)) => '__return_false',
+			$this->shortcodeName => $this->shortcodeCallback,
+			md5(uniqid('', true)) => '__return_false',
+			md5(uniqid('', true)) => '__return_false',
+		];
+
+		add_shortcode($this->shortcodeName, $this->shortcodeCallback);
 	}
 
-	/**
-	 * Set the exception message
-	 *
-	 * @param string $message
-	 * @return $this
-	 */
-	public function because(string $message)
+	protected function compatTearDown()
 	{
-		$this->expectation->because($message);
+		remove_shortcode($this->shortcodeName);
 
-		return $this;
+		parent::compatTearDown();
 	}
 }

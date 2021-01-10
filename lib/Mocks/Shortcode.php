@@ -21,56 +21,61 @@
 
 namespace Pretzlaw\WPInt\Mocks;
 
-use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
-use PHPUnit\Framework\MockObject\Invocation\ObjectInvocation;
-use PHPUnit\Framework\MockObject\InvocationMocker;
-use PHPUnit\Framework\MockObject\Matcher\Invocation;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
+use Mockery;
+use Pretzlaw\WPInt\ApplicableInterface;
+use Pretzlaw\WPInt\CleanUpInterface;
+use Pretzlaw\WPInt\Mocks\Double\Shortcode as ShortcodeDouble;
 
 /**
  * Shortcode
- *
- * @copyright 2020 M. Pretzlaw (https://rmp-up.de)
  */
-class Shortcode
+class Shortcode implements ApplicableInterface, CleanUpInterface
 {
-    /**
-     * @return bool
-     * @throws \Exception
-     */
-    public function __invoke()
-    {
-        return $this->__phpunit_getInvocationMocker()->invoke(
-            new ObjectInvocation('WordPress Shortcode ', $this->name, \func_get_args(), 'string', $this)
-        );
-    }
+	/**
+	 * @var callable|null
+	 */
+	private $backup;
 
-    /**
-     * @param \Exception $e
-     *
-     * @return string
-     */
-    protected function fixExceptionMessage(\Exception $e)
-    {
-        return \strtr(
-            $e->getMessage(),
-            [
-                'method name' => 'WordPress shortcode',
-                'Method ' => 'Shortcode ',
-                ' called ' => ' used ',
-            ]
-        );
-    }
+	/**
+	 * @var string
+	 */
+	private $name;
 
-    public function register()
-    {
-        add_shortcode($this->name, $this);
-    }
+	/**
+	 * Reference to list that shall be modified
+	 *
+	 * @var array<string, callable>
+	 */
+	private $shorcodeTags;
+	private $mock;
 
-    protected function remove()
-    {
-        remove_shortcode($this->name);
-    }
+	/**
+	 * Shortcode constructor.
+	 *
+	 * @param string $name Name of the shortcode that will be mocked
+	 * @param array $shorcodeTags List of shortcodes where the mock should be placed
+	 */
+	public function __construct(string $name, array &$shorcodeTags)
+	{
+		$this->name = $name;
+		$this->shorcodeTags =& $shorcodeTags;
+		$this->backup = $shorcodeTags[$name] ?? null;
+	}
+
+	public function apply()
+	{
+		$this->mock = Mockery::mock(ShortcodeDouble::class);
+		$this->shorcodeTags[$this->name] = [$this->mock, 'do_shortcode'];
+
+		return $this->mock->shouldReceive('do_shortcode');
+	}
+
+	public function __invoke()
+	{
+		$this->shorcodeTags[$this->name] = $this->backup;
+
+		if (null === $this->backup) {
+			unset($this->shorcodeTags[$this->name]);
+		}
+	}
 }

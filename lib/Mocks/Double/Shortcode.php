@@ -2,7 +2,7 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * MockFacade.php
+ * Shortcode.php
  *
  * LICENSE: This source file is created by the company around M. Pretzlaw
  * located in Germany also known as rmp-up. All its contents are proprietary
@@ -20,38 +20,17 @@
 
 declare(strict_types=1);
 
-namespace Pretzlaw\WPInt\Mocks;
-
-use Mockery\Expectation;
-use Mockery\ExpectationInterface;
+namespace Pretzlaw\WPInt\Mocks\Double;
 
 /**
- * MockFacade
+ * Shortcode
  *
  * @copyright 2021 Pretzlaw (https://rmp-up.de)
  */
-abstract class ExpectationFacade
+class Shortcode
 {
-	/**
-	 * @var Expectation
-	 */
-	protected $expectation;
-
-	public function __construct(ExpectationInterface $expectation)
+	public function do_shortcode()
 	{
-		$this->expectation = $expectation;
-	}
-
-	/**
-	 * Set the exception message
-	 *
-	 * @param string $message
-	 * @return $this
-	 */
-	public function because(string $message)
-	{
-		$this->expectation->because($message);
-
-		return $this;
+		return '';
 	}
 }
