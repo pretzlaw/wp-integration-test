@@ -58,7 +58,7 @@ class MockTest extends TestCase
 		apply_filters($this->filterName, null);
 		apply_filters($this->filterName, null);
 
-		$this->wpIntCleanUp();
+		$this->wpIntPostConditions();
 	}
 
 	public function testCanMockFilter()

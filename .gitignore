@@ -4,6 +4,7 @@
 /.composer
 /.docker
 /.env
+/.phpunit.result.cache
 /html
 /srv
 /var

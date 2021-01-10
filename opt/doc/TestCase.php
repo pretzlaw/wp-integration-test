@@ -109,6 +109,4 @@ class TestCase extends \RmpUp\PHPUnitCompat\TestCase
 			sprintf('Expected object "%s" to not be a mock but it is one.', get_class($object))
 		);
 	}
-
-
 }
