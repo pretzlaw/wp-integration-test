@@ -28,7 +28,7 @@ use WP_Post;
 /**
  * LoadMockedPostTest
  *
- * @copyright 2021 Pretzlaw (https://rmp-up.de)
+ * @covers \Pretzlaw\WPInt\Mocks\ExpectationFacade
  */
 class LoadMockedPostTest extends CreatePostTestCase
 {

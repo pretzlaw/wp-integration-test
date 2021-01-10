@@ -22,6 +22,7 @@
 namespace Pretzlaw\WPInt\Constraint\Widget;
 
 use Pretzlaw\WPInt\Constraint\Constraint;
+use WP_Widget_Factory;
 
 /**
  * WidgetExists
@@ -43,13 +44,17 @@ class ContainsWidgetBaseId extends Constraint
     }
 
     /**
-     * @param \WP_Widget[]|\Traversable $other
+     * @param \WP_Widget[]|\Traversable|WP_Widget_Factory $widgets
      *
      * @return bool
      */
-    protected function matches($other): bool
+    protected function matches($widgets): bool
     {
-        foreach ($other as $item) {
+    	if ($widgets instanceof WP_Widget_Factory) {
+    		$widgets = $widgets->widgets;
+		}
+
+        foreach ($widgets as $item) {
             if ($item->id_base === $this->baseId) {
                 return true;
             }

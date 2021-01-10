@@ -76,9 +76,7 @@ trait WidgetAssertions
 
     protected function backupWidgets()
     {
-        $backup = new BackupVariable(static::getWidgetFactory()->widgets);
-
-        $this->wpIntMocks[] = $backup;
+    	$this->wpIntApply(new BackupVariable(static::getWidgetFactory()->widgets));
     }
 
     /**
@@ -108,22 +106,9 @@ trait WidgetAssertions
 
     protected function unregisterWidgetsById(string $idBase)
     {
-        $backup = [];
-        foreach (static::getWidgetFactory()->widgets as $hash => $widget) {
-            /** @var \WP_Widget $widget */
-            if ($idBase === $widget->id_base) {
-                $backup[$hash] = $widget;
-                unset(static::getWidgetFactory()->widgets[$hash]);
-            }
-        }
-
-        $recovery = new Recovery(static function () use ($backup) {
-            foreach ($backup as $hash => $widget) {
-                static::getWidgetFactory()->widgets[$hash] = $widget;
-            }
-        });
-
-        $this->wpIntMocks[] = $recovery;
+    	$this->wpIntApply(
+    		new Widget\UnregisterWidget(static::getWidgetFactory()->widgets, $idBase)
+		);
     }
 
     /**
