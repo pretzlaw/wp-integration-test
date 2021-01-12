@@ -79,24 +79,6 @@ trait WidgetAssertions
     	$this->wpIntApply(new BackupVariable(static::getWidgetFactory()->widgets));
     }
 
-    /**
-     * @param \WP_Widget|MockObject $widget
-     * @param string                $idBase
-     */
-    public function mockWidget($widget)
-    {
-        if (false === $widget instanceof \WP_Widget && false === $widget instanceof MockObject) {
-            throw new \InvalidArgumentException(
-                '::mockWidget needs either a WP_Widget or MockObject instance'
-            );
-        }
-
-        $registerTemporary = new Widget($widget);
-
-        $this->registerMockObject($registerTemporary);
-        $registerTemporary->register();
-    }
-
     protected function unregisterAllWidgets()
     {
         $this->backupWidgets();
@@ -113,14 +95,14 @@ trait WidgetAssertions
 
     /**
      * Global instance of the widget factory
-     *
-     * @return WP_Widget_Factory
-     */
-    protected static function getWidgetFactory(): WP_Widget_Factory
-    {
-        /** @var WP_Widget_Factory $wp_widget_factory */
-        global $wp_widget_factory;
+	 *
+	 * @return WP_Widget_Factory
+	 */
+	protected static function getWidgetFactory(): WP_Widget_Factory
+	{
+		/** @var WP_Widget_Factory $wp_widget_factory */
+		global $wp_widget_factory;
 
-        return $wp_widget_factory;
-    }
+		return $wp_widget_factory;
+	}
 }

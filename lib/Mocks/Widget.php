@@ -21,38 +21,40 @@
 
 namespace Pretzlaw\WPInt\Mocks;
 
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
-use PHPUnit\Framework\MockObject\MockObject;
+use Pretzlaw\WPInt\ApplicableInterface;
+use Pretzlaw\WPInt\CleanUpInterface;
 
 /**
  * Widget
- *
- * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
- * @method InvocationMocker method($constraint)
  */
-class Widget
+class Widget implements ApplicableInterface, CleanUpInterface
 {
-    private $target;
+	private $hash;
+	private $target;
+	private $widgetList;
 
-    /**
-     * Widget constructor.
-     *
-     * @param \WP_Widget|MockObject $widgetOrMock
-     */
-    public function __construct($widgetOrMock)
-    {
-        $this->target = $widgetOrMock;
+	/**
+	 * Widget constructor.
+	 *
+	 * @param \WP_Widget $widgetOrMock
+	 */
+	public function __construct($widgetOrMock, &$widgetList)
+	{
+		$this->target = $widgetOrMock;
+		$this->widgetList =& $widgetList;
 
-        parent::__construct($widgetOrMock->id_base);
-    }
+		$this->hash = spl_object_hash($this->target);
+	}
 
-    public function register()
-    {
-        register_widget($this->target);
-    }
+	public function apply()
+	{
+		$this->widgetList[$this->hash] = $this->target;
+	}
 
-    protected function remove()
-    {
-        unregister_widget($this->target);
-    }
+	public function __invoke()
+	{
+		if (isset($this->widgetList[$this->hash])) {
+			unset($this->widgetList[$this->hash]);
+		}
+	}
 }

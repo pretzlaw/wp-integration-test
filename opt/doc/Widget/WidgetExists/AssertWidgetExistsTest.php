@@ -56,6 +56,7 @@ class AssertWidgetExistsTest extends WidgetExistsTestCase
 
 	/**
 	 * @covers \Pretzlaw\WPInt\Traits\WidgetAssertions::assertWidgetNotExists
+	 *
 	 * @group integration
 	 */
 	public function testAssertionThatWidgetNotExistsThrowsError()

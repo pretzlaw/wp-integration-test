@@ -21,8 +21,6 @@
 
 namespace Pretzlaw\WPInt\Mocks;
 
-use Pretzlaw\WPInt\ApplicableInterface;
-
 /**
  * BackupVariable
  */

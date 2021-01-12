@@ -41,6 +41,10 @@ class WidgetExistsTestCase extends WidgetTestCase
 	protected $widgetFactory;
 	protected $widgetName;
 	protected $widgetIdBase;
+
+	/**
+	 * @var WP_Widget|Mockery\MockInterface
+	 */
 	protected $widgetMock;
 
 	protected function compatSetUp()
