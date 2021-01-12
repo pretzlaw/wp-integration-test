@@ -40,6 +40,6 @@ class ShortcodeExists extends AbstractShortcodeConstaint
      */
     public function toString(): string
     {
-        return 'is registered';
+        return 'is registered as shortcode';
     }
 }

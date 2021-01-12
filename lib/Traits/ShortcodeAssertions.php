@@ -22,7 +22,6 @@
 namespace Pretzlaw\WPInt\Traits;
 
 use Mockery\Expectation;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use Pretzlaw\WPInt\Constraint\MatchesConstraint;
