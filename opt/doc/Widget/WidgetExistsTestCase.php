@@ -66,7 +66,11 @@ class WidgetExistsTestCase extends WidgetTestCase
 		$wp_widget_factory->register($this->widgetMock);
 
 		$this->widgetFactory = (new ReflectionClass(WP_Widget_Factory::class))->newInstanceWithoutConstructor();
+
+		// Put among others
+		$this->widgetFactory->register(Mockery::mock(WP_Widget::class)->makePartial());
 		$this->widgetFactory->register($this->widgetMock);
+		$this->widgetFactory->register(Mockery::mock(WP_Widget::class)->makePartial());
 	}
 
 	protected function compatTearDown()

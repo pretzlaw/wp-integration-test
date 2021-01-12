@@ -55,6 +55,7 @@ class LoadMockedPostTest extends CreatePostTestCase
 	}
 
 	/**
+	 * @covers \Pretzlaw\WPInt\Mocks\Facade\ReturnMethods
 	 * @covers \Pretzlaw\WPInt\Traits\PostAssertions::mockGetPost()
 	 */
 	public function testMockedPostWillBeReturned()

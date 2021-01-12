@@ -28,6 +28,7 @@ use Pretzlaw\WPInt\Test\GlobalsTestCase;
 /**
  * OverrideGlobalVariableTest
  *
+ * @covers \Pretzlaw\WPInt\Mocks\BackupVariable
  * @covers \Pretzlaw\WPInt\Mocks\Variable
  */
 class OverrideGlobalVariableTest extends GlobalsTestCase

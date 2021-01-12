@@ -34,6 +34,7 @@ use Pretzlaw\WPInt\Test\Shortcode\ShortcodeExistsTestCase;
 class ShortcodeAssertionsTest extends ShortcodeExistsTestCase
 {
 	/**
+	 * @covers \Pretzlaw\WPInt\Constraint\Shortcode\AbstractShortcodeConstaint
 	 * @covers \Pretzlaw\WPInt\Constraint\Shortcode\ShortcodeExists
 	 */
 	public function testConstraintThatShortcodeExistsShouldSucceed()

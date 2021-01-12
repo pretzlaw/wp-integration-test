@@ -7,8 +7,20 @@ namespace Pretzlaw\WPInt\Constraint;
  *
  * @package Pretzlaw\WPInt\Constraint
  */
-abstract class WpHookEmpty extends WpHookExists
+abstract class WpHookEmpty extends Constraint
 {
+	/**
+	 * @var array|\WP_Hook[]
+	 */
+	protected $list;
+
+	public function __construct($list = null)
+	{
+		parent::__construct();
+
+		$this->list = $list;
+	}
+
     protected function matches($filterName): bool
     {
         $list = $this->getWpHook($filterName);
@@ -34,4 +46,19 @@ abstract class WpHookEmpty extends WpHookExists
     {
         return 'has callbacks registered';
     }
+
+	/**
+	 * @param string $filterName
+	 * @return \WP_Hook|array|null
+	 */
+	final protected function getWpHook(string $filterName)
+	{
+		$list = $this->getList();
+
+		if (null === $list || !array_key_exists($filterName, $list)) {
+			return null;
+		}
+
+		return $list[$filterName];
+	}
 }
