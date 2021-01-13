@@ -9,14 +9,15 @@ php:
 env:
   global:
     - PHPUNIT_VERSION=9.3.*
+    - MOCKERY_VERSION=1.3.*
     - XDEBUG_MODE=coverage
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
     # see https://phpunit.de/supported-versions.html
-    - WP_VERSION=5.6 PHPUNIT_VERSION=9.5.*
-    - WP_VERSION=5.5 PHPUNIT_VERSION=8.5.*
-    - WP_VERSION=5.4 PHPUNIT_VERSION=7.5.*
-    - WP_VERSION=5.2 PHPUNIT_VERSION=6.5.*
+    - WP_VERSION=5.6 PHPUNIT_VERSION=9.5.* MOCKERY_VERSION=1.3.*
+    - WP_VERSION=5.5 PHPUNIT_VERSION=8.5.* MOCKERY_VERSION=1.3.*
+    - WP_VERSION=5.4 PHPUNIT_VERSION=7.5.* MOCKERY_VERSION=1.3.*
+    - WP_VERSION=5.2 PHPUNIT_VERSION=6.5.* MOCKERY_VERSION=1.3.*
 
 matrix:
   include:
@@ -33,7 +34,9 @@ matrix:
   - php: '7.0'
     env: WP_VERSION=4.6 PHPUNIT_VERSION=6.5.*
 
+  #
   # Checking deprecated PHP versions
+  #
   - php: '7.2' # Until 30 Nov 2020
     env: PHPUNIT_VERSION="8.5.*" WP_VERSION=5.0
   - php: '7.1' # Until 1 Dec 2019
@@ -41,15 +44,32 @@ matrix:
   - php: '7.0' # Until 3 Dec 2018
     env: PHPUNIT_VERSION="6.5.*" WP_VERSION=4.6
 
-  # Trying to support ...
+  #
+  # Trying to support ... (first entry indicates what we try to support)
+  #
   - php: '5.6'
     env: PHPUNIT_VERSION=~5 WP_VERSION=4.9
-  - php: '7.4'
-    env: WP_VERSION=nightly PHPUNIT_VERSION=dev-master
+  - env: MOCKERY_VERSION=1.2.*
+    php: '7.0'
+  - env: MOCKERY_VERSION=1.4.*
+    php: '7.4'
+
+  # ... upcoming versions
+  - env: WP_VERSION=nightly
+    php: '7.4'
+  - env: PHPUNIT_VERSION=dev-master
+    php: '8.0'
+  - php: nightly
 
   allow_failures:
-    - php: '5.6'
-    - env: WP_VERSION=nightly PHPUNIT_VERSION=dev-master
+  - php: '5.6'
+  - env: MOCKERY_VERSION=1.2.*
+  - env: MOCKERY_VERSION=1.4.*
+  - env: WP_VERSION=nightly
+  - env: PHPUNIT_VERSION=dev-master
+  - php: nightly
+
+  fast_finish: true
 
 services:
   - mysql
