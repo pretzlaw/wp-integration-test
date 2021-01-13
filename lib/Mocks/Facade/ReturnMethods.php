@@ -24,13 +24,15 @@ namespace Pretzlaw\WPInt\Mocks\Facade;
 
 use Mockery\Expectation;
 
+/**
+ * Trait ReturnMethods
+ *
+ * @package Pretzlaw\WPInt\Mocks\Facade
+ *
+ * @property Expectation $expectation
+ */
 trait ReturnMethods
 {
-	/**
-	 * @var Expectation
-	 */
-	protected $expectation;
-
 	public function andReturn(...$args)
 	{
 		$this->expectation->andReturn(...$args);

@@ -14,9 +14,8 @@
  * note to mail@rmp-up.de so we can mail you a copy.
  *
  * @package    wp-integration-test
- * @copyright  2020 M. Pretzlaw
+ * @copyright  2021 M. Pretzlaw
  * @license    https://rmp-up.de/license-generic.txt
- * @since      2020-01-09
  */
 
 namespace Pretzlaw\WPInt\Constraint\Shortcode;
@@ -24,7 +23,7 @@ namespace Pretzlaw\WPInt\Constraint\Shortcode;
 /**
  * ShortcodeExists
  *
- * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
+ * @copyright  2021 M. Pretzlaw (https://rmp-up.de)
  */
 class ShortcodeExists extends AbstractShortcodeConstaint
 {

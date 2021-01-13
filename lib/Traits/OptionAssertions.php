@@ -22,12 +22,13 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Traits;
 
+use Mockery\Expectation;
 use Mockery\Matcher\AndAnyOtherArgs;
 
 /**
  * OptionAssertions
  *
- * @method \Mockery\Expectation mockFilter(string $filterName, int $priority = 10)
+ * @method Expectation mockFilter(string $filterName, int $priority = 10)
  */
 trait OptionAssertions
 {

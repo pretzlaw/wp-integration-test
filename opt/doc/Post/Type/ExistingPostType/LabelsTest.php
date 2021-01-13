@@ -32,6 +32,7 @@ use Pretzlaw\WPInt\Test\Post\Type\ExistingPostTypeTestCase;
 class LabelsTest extends ExistingPostTypeTestCase
 {
 	/**
+	 * @covers \Pretzlaw\WPInt\Constraint\AssocArrayHasSubset
 	 * @covers \Pretzlaw\WPInt\Traits\PostTypeAssertions::assertPostTypeLabels
 	 */
 	public function testAssertionSucceedsWhenCheckingForLabels()

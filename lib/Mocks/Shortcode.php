@@ -13,10 +13,9 @@
  * of the license and are unable to obtain it through the web, please send a
  * note to mail@rmp-up.de so we can mail you a copy.
  *
- * @package    wp-integration-test
- * @copyright  2020 M. Pretzlaw
- * @license    https://rmp-up.de/license-generic.txt
- * @since      2020-01-10
+ * @package   wp-integration-test
+ * @copyright 2021 M. Pretzlaw
+ * @license   https://rmp-up.de/license-generic.txt
  */
 
 namespace Pretzlaw\WPInt\Mocks;
@@ -47,7 +46,6 @@ class Shortcode implements ApplicableInterface, CleanUpInterface
 	 * @var array<string, callable>
 	 */
 	private $shorcodeTags;
-	private $mock;
 
 	/**
 	 * Shortcode constructor.
@@ -64,10 +62,10 @@ class Shortcode implements ApplicableInterface, CleanUpInterface
 
 	public function apply()
 	{
-		$this->mock = Mockery::mock(ShortcodeDouble::class);
-		$this->shorcodeTags[$this->name] = [$this->mock, 'do_shortcode'];
+		$mock = Mockery::mock(ShortcodeDouble::class);
+		$this->shorcodeTags[$this->name] = [$mock, 'do_shortcode'];
 
-		return $this->mock->shouldReceive('do_shortcode');
+		return $mock->shouldReceive('do_shortcode');
 	}
 
 	public function __invoke()

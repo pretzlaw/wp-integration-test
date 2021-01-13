@@ -69,7 +69,7 @@ class TruncateFilter implements CleanUpInterface, ApplicableInterface
                 continue;
             }
 
-            if ($this->wpFilter[$filterName] instanceof \WP_Hook) {
+            if ($this->wpFilter[$filterName] instanceof WP_Hook) {
                 $this->wpFilter[$filterName]->callbacks = $backup;
                 continue;
             }
@@ -98,7 +98,7 @@ class TruncateFilter implements CleanUpInterface, ApplicableInterface
             }
 
             $this->backup[$filterName] = $this->wpFilter[$filterName];
-            if (class_exists('WP_Hook') && $this->wpFilter[$filterName] instanceof \WP_Hook) {
+            if (class_exists('WP_Hook') && $this->wpFilter[$filterName] instanceof WP_Hook) {
                 $this->backup[$filterName] = $this->backup[$filterName]->callbacks;
                 $this->wpFilter[$filterName]->callbacks = [];
 

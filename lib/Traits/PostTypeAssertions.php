@@ -6,6 +6,7 @@ namespace Pretzlaw\WPInt\Traits;
 
 use Pretzlaw\WPInt\Constraint\AssocArrayHasSubset;
 use Pretzlaw\WPInt\Constraint\Post\Type\IsRegistered;
+use RuntimeException;
 use WP_Post_Type;
 
 trait PostTypeAssertions
@@ -45,10 +46,10 @@ trait PostTypeAssertions
 		$postTypeObject = get_post_type_object($postType);
 
 		if (
-			false === $postTypeObject instanceof \WP_Post_Type
+			false === $postTypeObject instanceof WP_Post_Type
 			&& !is_object($postTypeObject)
 		) {
-			throw new \RuntimeException('Post type has no object - maybe not registered yet or typo?');
+			throw new RuntimeException('Post type has no object - maybe not registered yet or typo?');
 		}
 
 		// Sometimes the supports property gets dropped so we fetch it again.

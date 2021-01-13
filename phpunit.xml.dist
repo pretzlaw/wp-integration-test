@@ -18,6 +18,7 @@
             <exclude>
                 <directory>lib/Mocks/Double</directory>
                 <directory>lib/Traits/WordPressTests.php</directory>
+                <file>lib/Constraint/Constraint.php</file>
                 <file>lib/autoloader.php</file>
                 <file>lib/bootstrap.php</file>
                 <file>lib/functions.php</file>

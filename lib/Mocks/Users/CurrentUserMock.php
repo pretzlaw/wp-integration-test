@@ -7,6 +7,7 @@ namespace Pretzlaw\WPInt\Mocks\Users;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use Pretzlaw\WPInt\ApplicableInterface;
 use Pretzlaw\WPInt\CleanUpInterface;
+use WP_User;
 
 /**
  * @method InvocationMocker method($constraint)
@@ -14,16 +15,16 @@ use Pretzlaw\WPInt\CleanUpInterface;
 class CurrentUserMock implements ApplicableInterface, CleanUpInterface
 {
 	/**
-	 * @var \WP_User
+	 * @var WP_User
 	 */
 	private $backup;
 	/**
-	 * @var \WP_User|null
+	 * @var WP_User|null
 	 */
 	private $currentUser;
 
 	/**
-	 * @var \WP_User|null
+	 * @var WP_User|null
 	 */
 	private $mockedUser;
 
@@ -32,8 +33,8 @@ class CurrentUserMock implements ApplicableInterface, CleanUpInterface
 	/**
 	 * CurrentUserMock constructor.
 	 *
-	 * @param \WP_User $currentUser
-	 * @param \WP_User|null|string $mockedUser
+	 * @param WP_User $currentUser
+	 * @param WP_User|null|string $mockedUser
 	 */
 	public function __construct(&$currentUser, $mockedUser = null)
 	{

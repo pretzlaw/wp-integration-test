@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Mocks;
 
+use Mockery\Expectation;
+use Mockery\ExpectationInterface;
+use Mockery\HigherOrderMessage;
 use Mockery\Matcher\AndAnyOtherArgs;
 use Mockery\Matcher\Any;
-use Pretzlaw\WPInt\ApplicableInterface;
-use Pretzlaw\WPInt\CleanUpInterface;
 
-class MetaData extends Filter implements ApplicableInterface, CleanUpInterface
+class MetaData extends Filter
 {
 	/**
 	 * @var null
@@ -54,7 +55,7 @@ class MetaData extends Filter implements ApplicableInterface, CleanUpInterface
 	}
 
 	/**
-	 * @return mixed|\Mockery\Expectation|\Mockery\ExpectationInterface|\Mockery\HigherOrderMessage
+	 * @return mixed|Expectation|ExpectationInterface|HigherOrderMessage
 	 */
 	public function apply()
 	{

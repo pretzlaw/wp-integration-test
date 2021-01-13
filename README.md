@@ -123,11 +123,8 @@ different method names (e.g. `shouldReceive`, `andReturn` as seen above).
 
 ### Expectations / Mocks
 
-* ->expectUpdateMeta
-* ->expectUpdatePostMeta
-* ->expectWpPostCreationWithSubset
+* ->expectWpPostInsertPost
 * ->mockCache
-* ->mockCacheGet
 * ->mockCurrentUser
 * ->mockFilter
 * ::mockGetPost
@@ -135,7 +132,6 @@ different method names (e.g. `shouldReceive`, `andReturn` as seen above).
 * ->mockPostMeta
 * ->mockShortcode
 * ->mockUserMeta
-* ->mockWidget
 
 
 ### Other helper
@@ -146,7 +142,6 @@ different method names (e.g. `shouldReceive`, `andReturn` as seen above).
 * ::getShortcodeCallback
 * ::getWidgetFactory
 * ::getWpHooks
-* ->overridePostMetaData
 * ->unregisterAllWidgets
 * ->unregisterWidgetsById
 
@@ -156,7 +151,7 @@ by [opening an issue](https://github.com/pretzlaw/wp-integration-test/issues).
 
 ## License
 
-Copyright 2020 Pretzlaw (rmp-up.de)
+Copyright 2021 Pretzlaw (rmp-up.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software
 and associated documentation files (the "Software"), to deal in the Software without restriction,

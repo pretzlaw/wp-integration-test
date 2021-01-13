@@ -11,12 +11,13 @@ use Pretzlaw\WPInt\Mocks\ExpectedFilter;
 use Pretzlaw\WPInt\Mocks\Facade\ReturnMethods;
 use Pretzlaw\WPInt\Mocks\Post\ExpectWpInsertPost;
 use Pretzlaw\WPInt\Mocks\ReturnOnly;
+use WP_Post;
 
 trait PostAssertions
 {
 	/**
 	 * @param int $id Post-ID.
-	 * @param \WP_Post|array $returnVal Post object or it's data as array (will be transformed into post object).
+	 * @param WP_Post|array $returnVal Post object or it's data as array (will be transformed into post object).
 	 *
 	 * @return ReturnMethods|ExpectationFacade
 	 */
@@ -30,12 +31,6 @@ trait PostAssertions
 			use ReturnMethods;
 		};
 	}
-
-    /**
-     * @var MockObject[]
-     * @deprecated 0.4 Please use wpIntMocks instead.
-     */
-	private $wpPostClutter = [];
 
 	protected function expectWpInsertPost( $expectedSubset ) {
 		$this->wpIntApply(new ExpectWpInsertPost($expectedSubset));

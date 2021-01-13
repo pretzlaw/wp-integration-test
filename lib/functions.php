@@ -2,6 +2,14 @@
 
 namespace Pretzlaw\WPInt;
 
+use Exception;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RecursiveRegexIterator;
+use RegexIterator;
+use function file_exists;
+use const DIRECTORY_SEPARATOR;
+
 function prepare_env() {
 	$serverVars = [
 		'SERVER_PROTOCOL' => 'HTTP/1.0',
@@ -20,13 +28,13 @@ function prepare_env() {
 /**
  * @param $path
  *
- * @throws \Exception
+ * @throws Exception
  */
 function load_wp( $path ) {
-	$wpLoad = $path . \DIRECTORY_SEPARATOR . 'wp-blog-header.php';
+	$wpLoad = $path . DIRECTORY_SEPARATOR . 'wp-blog-header.php';
 
-	if ( ! \file_exists( $wpLoad ) ) {
-        throw new \Exception( 'Missing wp-blog-header.php to load WordPress' );
+	if ( ! file_exists( $wpLoad ) ) {
+        throw new Exception( 'Missing wp-blog-header.php to load WordPress' );
 	}
 
 	require_once $wpLoad;
@@ -35,7 +43,7 @@ function load_wp( $path ) {
 /**
  * @param null $path
  *
- * @throws \Exception
+ * @throws Exception
  */
 function run_wp( $path = null ) {
 	\Pretzlaw\WPInt\prepare_env();
@@ -48,7 +56,7 @@ function run_wp( $path = null ) {
 }
 
 /**
- * @throws \Exception
+ * @throws Exception
  */
 function locate_wordpress() {
     $env = getenv( 'WP_DIR' );
@@ -58,13 +66,13 @@ function locate_wordpress() {
     }
 
 	// Locate downwards.
-	$directory     = new \RecursiveDirectoryIterator( getcwd() );
-	$iterator      = new \RecursiveIteratorIterator(
+	$directory     = new RecursiveDirectoryIterator( getcwd() );
+	$iterator      = new RecursiveIteratorIterator(
 		$directory,
-		\RecursiveIteratorIterator::LEAVES_ONLY,
-		\RecursiveIteratorIterator::CATCH_GET_CHILD
+		RecursiveIteratorIterator::LEAVES_ONLY,
+		RecursiveIteratorIterator::CATCH_GET_CHILD
 	);
-	$regex         = new \RegexIterator( $iterator, '/.*\/wp-load\.php$/', \RecursiveRegexIterator::GET_MATCH );
+	$regex         = new RegexIterator( $iterator, '/.*\/wp-load\.php$/', RecursiveRegexIterator::GET_MATCH );
 
 	foreach ( $regex as $wpLoadPath ) {
         return dirname( current( $wpLoadPath ) );

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Pretzlaw\WPInt\Filter;
 
 use Exception;
+use Mockery\Expectation;
+use Mockery\ExpectationInterface;
+use Mockery\HigherOrderMessage;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
@@ -43,7 +46,7 @@ trait FilterAssertions
     }
 
     /**
-     * @return \WP_Hook[]|array[]
+     * @return WP_Hook[]|array[]
      */
     protected static function getWpHooks()
     {
@@ -115,7 +118,7 @@ trait FilterAssertions
 	 * @param string $filterName
 	 * @param int $priority
 	 *
-	 * @return \Mockery\ExpectationInterface|\Mockery\Expectation|\Mockery\HigherOrderMessage
+	 * @return ExpectationInterface|Expectation|HigherOrderMessage
 	 */
 	protected function mockFilter(string $filterName, int $priority = 10)
 	{

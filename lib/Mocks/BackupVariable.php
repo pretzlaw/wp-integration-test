@@ -13,10 +13,9 @@
  * of the license and are unable to obtain it through the web, please send a
  * note to mail@rmp-up.de so we can mail you a copy.
  *
- * @package    wp-integration-test
- * @copyright  2020 M. Pretzlaw
- * @license    https://rmp-up.de/license-generic.txt
- * @since      2020-01-11
+ * @package   wp-integration-test
+ * @copyright 2021 M. Pretzlaw
+ * @license   https://rmp-up.de/license-generic.txt
  */
 
 namespace Pretzlaw\WPInt\Mocks;

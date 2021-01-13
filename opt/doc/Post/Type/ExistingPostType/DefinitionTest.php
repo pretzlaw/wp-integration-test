@@ -31,7 +31,9 @@ use Pretzlaw\WPInt\Test\Post\Type\ExistingPostTypeTestCase;
 class DefinitionTest extends ExistingPostTypeTestCase
 {
 	/**
+	 * @covers \Pretzlaw\WPInt\Constraint\AssocArrayHasSubset
 	 * @covers \Pretzlaw\WPInt\Traits\PostTypeAssertions::assertPostTypeArgs()
+	 *
 	 * @group acceptance
 	 */
 	public function testAssertingDifferentPostTypeDefinitionThrowsError()
@@ -46,6 +48,7 @@ class DefinitionTest extends ExistingPostTypeTestCase
 	}
 
 	/**
+	 * @covers \Pretzlaw\WPInt\Constraint\AssocArrayHasSubset
 	 * @covers \Pretzlaw\WPInt\Traits\PostTypeAssertions::assertPostTypeArgs
 	 */
 	public function testCanAssertSubsetOfPostTypeDefinition()

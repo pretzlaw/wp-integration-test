@@ -13,11 +13,9 @@
  * of the license and are unable to obtain it through the web, please send a
  * note to mail@rmp-up.de so we can mail you a copy.
  *
- * @package    pretzlaw/wp-integration-test
- * @copyright  2020 Mike Pretlaw
- * @license    https://rmp-up.de/license-generic.txt
- * @link       https://project.rmp-up.de/pretzlaw/wp-integration-test
- * @since      2018-12-25
+ * @package   pretzlaw/wp-integration-test
+ * @copyright 2021 Mike Pretlaw
+ * @license   https://rmp-up.de/license-generic.txt
  */
 
 namespace Pretzlaw\WPInt\Constraint;
@@ -25,8 +23,7 @@ namespace Pretzlaw\WPInt\Constraint;
 /**
  * Check if plugin is active
  *
- * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
- * @since      2018-12-25
+ * @copyright 2021 M. Pretzlaw (https://rmp-up.de)
  */
 class PluginIsActive extends Constraint
 {

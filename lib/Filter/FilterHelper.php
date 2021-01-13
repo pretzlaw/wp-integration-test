@@ -4,8 +4,7 @@
 namespace Pretzlaw\WPInt\Filter;
 
 
-use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsIdentical;
+use PHPUnit\Framework\Exception;
 
 /**
  * Helper for working with filters
@@ -39,7 +38,7 @@ class FilterHelper {
   *
 	 * @param $pattern
 	 *
-	 * @throws \PHPUnit\Framework\Exception
+	 * @throws Exception
 	 */
 
 

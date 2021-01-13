@@ -5,6 +5,7 @@ namespace Pretzlaw\WPInt\Mocks\Post;
 
 
 use Mockery\Matcher\Any;
+use Mockery\Matcher\Subset;
 use Pretzlaw\WPInt\Mocks\Filter;
 
 class ExpectWpInsertPost extends Filter {
@@ -28,7 +29,7 @@ class ExpectWpInsertPost extends Filter {
 		parent::apply()
 			->atLeast()
 			->times(1)
-			->with(new Any(), new \Mockery\Matcher\Subset($this->subset))
+			->with(new Any(), new Subset($this->subset))
 			->andReturnArg(0);
 	}
 }

@@ -14,27 +14,23 @@
  * note to mail@rmp-up.de so we can mail you a copy.
  *
  * @package    wp-integration-test
- * @copyright  2020 M. Pretzlaw
+ * @copyright  2021 M. Pretzlaw
  * @license    https://rmp-up.de/license-generic.txt
- * @since      2020-01-10
  */
 
 namespace Pretzlaw\WPInt\Traits;
 
 use PHPUnit\Framework\Constraint\LogicalNot;
-use PHPUnit\Framework\MockObject\MockObject;
 use Pretzlaw\WPInt\Constraint\Widget\ContainsWidgetBaseId;
 use Pretzlaw\WPInt\Constraint\Widget\WidgetIsInstanceOf;
 use Pretzlaw\WPInt\Mocks\BackupVariable;
-use Pretzlaw\WPInt\Mocks\Recovery;
 use Pretzlaw\WPInt\Mocks\Widget;
-use WP_Widget;
 use WP_Widget_Factory;
 
 /**
  * WidgetTests
  *
- * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
+ * @copyright  2021 M. Pretzlaw (https://rmp-up.de)
  */
 trait WidgetAssertions
 {

@@ -22,8 +22,11 @@ declare(strict_types=1);
 
 namespace Pretzlaw\WPInt\Constraint;
 
+use ArrayObject;
 use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\Comparator\ComparisonFailure;
+use Traversable;
+use function array_replace_recursive;
+use function iterator_to_array;
 
 /**
  * AssocArrayHasSubset
@@ -38,7 +41,7 @@ class AssocArrayHasSubset extends Constraint
 	private $checkedSubset;
 
 	/**
-	 * @var array|\Traversable
+	 * @var array|Traversable
 	 */
 	protected $subset;
 
@@ -48,7 +51,7 @@ class AssocArrayHasSubset extends Constraint
 	protected $strict;
 
 	/**
-	 * @param array|\Traversable $subset
+	 * @param array|Traversable $subset
 	 * @param bool               $strict Check for object identity
 	 */
 	public function __construct($subset, $strict = false)
@@ -84,7 +87,7 @@ class AssocArrayHasSubset extends Constraint
 		$other        = $this->toArray($other);
 		$this->subset = $this->toArray($this->subset);
 
-		$patched = \array_replace_recursive($other, $this->subset);
+		$patched = array_replace_recursive($other, $this->subset);
 
 		$this->checkedSubset = array_intersect_key($other, $this->subset);
 
@@ -121,18 +124,18 @@ class AssocArrayHasSubset extends Constraint
 	}
 
 	/**
-	 * @param array|\Traversable $other
+	 * @param array|Traversable $other
 	 *
 	 * @return array
 	 */
 	private function toArray($other)
 	{
-		if ($other instanceof \ArrayObject) {
+		if ($other instanceof ArrayObject) {
 			return $other->getArrayCopy();
 		}
 
-		if ($other instanceof \Traversable) {
-			return \iterator_to_array($other);
+		if ($other instanceof Traversable) {
+			return iterator_to_array($other);
 		}
 
 		// Keep BC even if we know that array would not be the expected one

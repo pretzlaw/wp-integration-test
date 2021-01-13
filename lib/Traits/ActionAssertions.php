@@ -7,6 +7,7 @@ namespace Pretzlaw\WPInt\Traits;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use Pretzlaw\WPInt\Constraint\ActionEmpty;
 use Pretzlaw\WPInt\Constraint\ActionHasCallback;
+use WP_Hook;
 
 /**
  * Trait ActionAssertions
@@ -30,8 +31,6 @@ trait ActionAssertions {
     }
 
     /**
-     * @since 0.2.0
-     *
      * @param string $action The action name to check.
      * @param string $message Message in case of error.
      */
@@ -41,7 +40,7 @@ trait ActionAssertions {
     }
 
     /**
-     * @return \WP_Hook[]
+     * @return WP_Hook[]
      * @internal
      */
     protected static function getActionHooks(): array

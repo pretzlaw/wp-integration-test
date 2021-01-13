@@ -13,11 +13,9 @@
  * of the license and are unable to obtain it through the web, please send a
  * note to mail@rmp-up.de so we can mail you a copy.
  *
- * @package    pretzlaw/wp-integration-test
- * @copyright  2020 M. Pretzlaw
- * @license    https://rmp-up.de/license-generic.txt
- * @link       https://project.rmp-up.de/pretzlaw/wp-integration-test
- * @since      2018-12-27
+ * @package   pretzlaw/wp-integration-test
+ * @copyright 2021 M. Pretzlaw
+ * @license   https://rmp-up.de/license-generic.txt
  */
 
 declare(strict_types=1);
@@ -31,8 +29,7 @@ use WP_Object_Cache;
 /**
  * CacheAssertions
  *
- * @copyright  2020 M. Pretzlaw (https://rmp-up.de)
- * @since      2018-12-27
+ * @copyright  2021 M. Pretzlaw (https://rmp-up.de)
  */
 trait CacheAssertions
 {

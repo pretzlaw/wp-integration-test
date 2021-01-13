@@ -2,6 +2,9 @@
 
 namespace Pretzlaw\WPInt\Constraint;
 
+use WP_Hook;
+use function count;
+
 /**
  * Check for empty filters
  *
@@ -10,7 +13,7 @@ namespace Pretzlaw\WPInt\Constraint;
 abstract class WpHookEmpty extends Constraint
 {
 	/**
-	 * @var array|\WP_Hook[]
+	 * @var array|WP_Hook[]
 	 */
 	protected $list;
 
@@ -30,11 +33,11 @@ abstract class WpHookEmpty extends Constraint
             return true;
         }
 
-        if ($list instanceof \WP_Hook) {
+        if ($list instanceof WP_Hook) {
             return !$list->has_filters();
         }
 
-        return 0 === \count($list);
+        return 0 === count($list);
     }
 
     /**
@@ -49,7 +52,7 @@ abstract class WpHookEmpty extends Constraint
 
 	/**
 	 * @param string $filterName
-	 * @return \WP_Hook|array|null
+	 * @return WP_Hook|array|null
 	 */
 	final protected function getWpHook(string $filterName)
 	{
