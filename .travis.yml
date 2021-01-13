@@ -4,10 +4,11 @@ php:
   # see http://php.net/supported-versions.php
   - '7.3' # Until 6 Dec 2021
   - '7.4' # Until 28 Nov 2022
+  # - '8.0' # Until 26 Nov 2023
 
 env:
   global:
-    - PHPUNIT_VERSION=9.2.*
+    - PHPUNIT_VERSION=9.3.*
     - XDEBUG_MODE=coverage
   matrix:
     # see https://codex.wordpress.org/WordPress_Versions
@@ -22,6 +23,12 @@ matrix:
   # see https://codex.wordpress.org/WordPress_Versions
   # see https://phpunit.de/upported-versions.html
 
+  # Bleeding edge
+  - php: '8.0'
+    env: WP_VERSION=5.6 PHPUNIT_VERSION=9.5.*
+  - php: '8.0'
+    env: WP_VERSION=5.4 PHPUNIT_VERSION=9.3.*
+
   # Lowest edge as described in README.md
   - php: '7.0'
     env: WP_VERSION=4.6 PHPUNIT_VERSION=6.5.*
@@ -35,8 +42,6 @@ matrix:
     env: PHPUNIT_VERSION="6.5.*" WP_VERSION=4.6
 
   # Trying to support ...
-  - php: '8.0'
-    env: PHPUNIT_VERSION=9.5.* WP_VERSION=5.6
   - php: '5.6'
     env: PHPUNIT_VERSION=~5 WP_VERSION=4.9
   - php: '7.4'
@@ -44,7 +49,6 @@ matrix:
 
   allow_failures:
     - php: '5.6'
-    - php: '8.0'
     - env: WP_VERSION=nightly PHPUNIT_VERSION=dev-master
 
 services:
@@ -57,6 +61,8 @@ before_install:
 
 install:
   - composer update
+  # PHP8 compat
+  - "[[ $TRAVIS_PHP_VERSION != 8.0 ]] || composer require --ignore-platform-reqs -w wp-cli/wp-cli-bundle:2.4.*"
   # Using WP-CLI instead of Composer because this way we can use the env matrix (above).
   - vendor/bin/wp --allow-root core download --version=$WP_VERSION --force
   - vendor/bin/wp --allow-root config create --force --dbuser=travis --dbpass="" --dbhost="127.0.0.1"

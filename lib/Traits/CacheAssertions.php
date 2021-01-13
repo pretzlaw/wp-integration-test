@@ -44,7 +44,7 @@ trait CacheAssertions
 			$objectCache =& $GLOBALS['wp_object_cache'];
 		}
 
-		if (method_exists($objectCache, 'mockery_verify')) {
+		if (is_object($objectCache) && method_exists($objectCache, 'mockery_verify')) {
 			// Already a mock which we will reuse.
 			return $objectCache;
 		}
