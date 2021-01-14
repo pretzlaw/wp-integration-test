@@ -23,12 +23,12 @@ declare(strict_types=1);
 namespace Pretzlaw\WPInt\Traits;
 
 use Mockery\Exception\InvalidCountException;
-use PackageVersions\Versions;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Warning;
 use Pretzlaw\WPInt\ApplicableInterface;
 use Pretzlaw\WPInt\CleanUpInterface;
 use Pretzlaw\WPInt\Filter\FilterAssertions;
+use Pretzlaw\WPInt\Helper\PHPUnit;
 use Pretzlaw\WPInt\Mocks\PostCondition;
 
 /**
@@ -92,7 +92,7 @@ trait WordPressTests
 			$callback();
 		}
 
-		if (version_compare(Versions::getVersion('phpunit/phpunit'), '9.1.0', '<')) {
+		if (PHPUnit::getVersion() < 9) {
 			// Before PHP 9.1.0 there were no @postCondition tag so we trigger it manually
 			$this->wpIntPostConditions();
 		}
