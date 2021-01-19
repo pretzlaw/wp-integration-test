@@ -1,16 +1,20 @@
+![](https://img.shields.io/badge/PHP-7.0%20--%208.0-blue?style=for-the-badge&logo=php)
+![](https://img.shields.io/badge/WordPress-4.6%20--%205.6-blue?style=for-the-badge&logo=wordpress)
+![](https://img.shields.io/badge/PHPUnit-6.5%20--%209.5-blue?style=for-the-badge)
+
 # WordPress Integration Test Helper
 
 > Mocking return value of functions/filters and more for testing WordPress with PHPUnit.
 
 Writing tests with WordPress is a pain as the very old
-[the official WordPress Unit Tests](https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/)
+[official WordPress Unit Tests](https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/)
 always require a lot of hands on for custom projects
 and other Testing-Frameworks try to mock the hell out of WordPress.
 The solution is to have a nice integration tests package that ...
 
 - ... can be integrated into your already existing tests (using Traits).
 - ... enabled you to test your package against other Plugins or Themes.
-- ... ease testing down to the common PHPUnit style.
+- ... allows testing in advanced complex projects.
 
 Overall the goal is **simplicity** and **no time wasting crap** (for me and you).
 
@@ -20,22 +24,17 @@ Download or just
 
     composer install --dev pretzlaw/wp-integration-test
 
-We do not require that much
+Besides PHP and WordPress we do not require that much
 ([see Packagist.org for more details](https://packagist.org/packages/pretzlaw/wp-integration-test)):
 
-- PHP 7.0 - 7.4 or 8.0
-- WordPress 4.6 - 5.6
 - phpUnit 6.5 - 9.5
 - mockery 1.3
-
-Tests expand continuously to cover a bigger range one day
-([see Travis CI](https://travis-ci.org/pretzlaw/wp-integration-test)).
 
 
 ## Usage
 
-Either you have some of these or you need basic bootstrapping
-in the phpunit.xml or phpunit.dist.xml like this:
+If you start from scratch and do not have some bootstrapping already,
+then you can use our bootstrapping like this:
 
 ```xml
 <phpunit bootstrap="vendor/Pretzlaw/WPInt/bootstrap.php">
@@ -48,23 +47,24 @@ in the phpunit.xml or phpunit.dist.xml like this:
 </phpunit>
 ```
 
-The bootstrapping just loads WordPress
-[as the wp-cli would do](https://github.com/wp-cli/wp-cli/blob/master/php/wp-cli.php)
-using the `\Pretzlaw\WP_Int\run_wp()` function.
+Using this bootstrap.php is **not** mandatory.
+Feel free to create a custom bootstrapping file,
+when you need to test CLI and admin stuff too.
 
 
 ### Example
 
-If you know PHPUnit already then mocking isn't something new (I hope).
-With WPInt it can be done like this:
+If you know PHPUnit already then asserting
+and mocking shouldn't be something new.
+With WPInt it can be for most PHPUnit Tests by adding one Trait:
 
 ```php
 class FooTest extends \PHPUnit\Framework\TestCase {
 
     use \Pretzlaw\WPInt\Traits\WordPressTests;
-    // or via WPAssert::assert...() methods 
     
     function testBar() {
+
         // Assertions (simple or with special constraints)
         static::assertActionHasCallback( 'init', 'my_own_init' );
         static::assertShortcodeHasCallback(
@@ -73,81 +73,80 @@ class FooTest extends \PHPUnit\Framework\TestCase {
         );
         
         // Mock posts or meta-data
-        $this->mockGetPost( 1337, [ 'post_content' => 'foobar' ] );
-        $this->mockPostMeta( 'some_key', 'Some value!' ); // For all posts
-        $this->mockMetaData( 'my-own-cpt', 'another_key', 'ec', 1337 ); // Just for ID 1337
+        $this->mockGetPost( 1337 )->andReturn( /* your wp post mock */ );
+        $this->mockPostMeta( 'some_key' )->andReturn( 'Some value!' ); // For all posts
+        $this->mockMetaData( 'my-own-cpt', 'another_key', 1337 )->andReturn( 'ec' ); // Just for ID 1337
         
-        // Mock actions, mockFilter, mockCache, ...
+        // Mock actions, filter, cache, ...
         $this->mockFilter( 'user_has_cap' )
              ->andReturn( true );
         
-        // Or make use of the shortcuts
         $this->mockCache()
             ->shouldReceive('get')
             ->with('my_own_cache')
             ->andReturn('yeah');
 
+        // Or use one of several shortcuts and helper
         $this->disableWpDie();
     }
 }
 ```
 
-Unfortunately the PHPUnit Mocking system changes often,
-which made it hard to establish compatibility with it.
-We are using
+As you see above we are using
 [mockery/mockery:~1](https://packagist.org/packages/mockery/mockery)
-which is easier to use than PHPUnit Mocking and more stable but uses
+which is easier to use and maintain but uses
 different method names (e.g. `shouldReceive`, `andReturn` as seen above).
 
 
-### Assertions
+### List of all Assertions
 
-* ::assertActionHasCallback
-* ::assertActionNotEmpty
-* ->assertActionNotHasCallback
-* ::assertFilterEmpty
-* ::assertFilterHasCallback
-* ::assertFilterNotEmpty
-* ::assertFilterNotHasCallback
-* ->assertPluginIsActive
-* ->assertPluginIsNotActive
-* ::assertPostTypeArgs
-* ::assertPostTypeLabels
-* ::assertPostTypeRegistered
-* ::assertShortcodeExists
-* ::assertShortcodeHasCallback
-* ::assertShortcodeNotExists
-* ::assertWidgetExists
-* ::assertWidgetIsInstanceOf
-* ::assertWidgetIsNotInstanceOf
-* ::assertWidgetNotExists
+* assert Action Has Callback
+* assert Action Not Empty
+* assert Action Not Has Callback
+* assert Filter Empty
+* assert Filter Has Callback
+* assert Filter Not Empty
+* assert Filter Not Has Callback
+* assert Plugin Is Active
+* assert Plugin Is Not Active
+* assert Post Type Args
+* assert Post Type Labels
+* assert Post Type Registered
+* assert Shortcode Exists
+* assert Shortcode Has Callback
+* assert Shortcode Not Exists
+* assert Widget Exists
+* assert Widget Is Instance Of
+* assert Widget Is Not Instance Of
+* assert Widget Not Exists
 
-### Expectations / Mocks
+### List of WordPress Expectations / Mocks
 
-* ->expectWpPostInsertPost
-* ->mockCache
-* ->mockCurrentUser
-* ->mockFilter
-* ::mockGetPost
-* ->mockMetaData
-* ->mockPostMeta
-* ->mockShortcode
-* ->mockUserMeta
+* expect Wp Post Insert Post
+* mock Cache
+* mock Current User
+* mock Filter
+* mock Get Post
+* mock Meta Data
+* mock Post Meta
+* mock Shortcode
+* mock User Meta
 
 
-### Other helper
+### Other testing helper
 
-* ->backupWidgets
-* ->disableWpDie
-* ::getAllShortcodes
-* ::getShortcodeCallback
-* ::getWidgetFactory
-* ::getWpHooks
-* ->unregisterAllWidgets
-* ->unregisterWidgetsById
+* backup Widgets
+* disable `wp_die()`
+* get All Shortcodes
+* get Shortcode Callback
+* get Widget Factory
+* get Wp Hooks
+* unregister All Widgets
+* unregister Widgets By Id
 
-Feel free to request for additional features or point out more common shortcuts
-by [opening an issue](https://github.com/pretzlaw/wp-integration-test/issues).
+Feel free to request for additional features
+or point out more common shortcuts by
+[opening an issue](https://github.com/pretzlaw/wp-integration-test/issues).
 
 
 ## License
